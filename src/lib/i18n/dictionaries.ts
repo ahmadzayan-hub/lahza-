@@ -4,8 +4,8 @@ export const RTL_LOCALES: Locale[] = ["ar"];
 
 export const dict = {
   en: {
-    "app.name": "Prompt Orchestrator",
-    "app.tagline": "Your AI prompt writing assistant.",
+    "app.name": "Prismly",
+    "app.tagline": "Refract any idea into a perfect prompt.",
     "nav.workspace": "Workspace",
     "nav.templates": "Templates",
     "nav.history": "History",
@@ -13,10 +13,10 @@ export const dict = {
     "nav.signout": "Sign out",
     "lang.toggle": "العربية",
 
-    "home.pill": "100% free stack",
-    "home.title": "Turn rough ideas into perfectly engineered prompts.",
+    "home.pill": "✦ Free · multilingual · offline-ready",
+    "home.title": "Refract any idea into the perfect prompt.",
     "home.subtitle":
-      "We detect intent, ask the right clarification questions, and rebuild your prompt for ChatGPT, Claude, Copilot, or Gemini.",
+      "Prismly turns a vague thought into a structured, model-aware prompt — for ChatGPT, Claude, Copilot or Gemini. Type, speak, or attach a file; we do the rest.",
     "home.cta.workspace": "Open workspace",
     "home.cta.templates": "Browse templates",
     "home.step1.title": "Drop your raw idea",
@@ -95,8 +95,8 @@ export const dict = {
   },
 
   ar: {
-    "app.name": "مُنسِّق الموجِّهات",
-    "app.tagline": "مساعدك الذكي لصياغة موجِّهات الذكاء الاصطناعي.",
+    "app.name": "منشور",
+    "app.tagline": "حوِّل أي فكرة عابرة إلى موجِّه احترافي.",
     "nav.workspace": "مساحة العمل",
     "nav.templates": "القوالب",
     "nav.history": "السِّجل",
@@ -104,10 +104,10 @@ export const dict = {
     "nav.signout": "تسجيل الخروج",
     "lang.toggle": "English",
 
-    "home.pill": "مجاني بالكامل",
-    "home.title": "حوِّل فكرتك العابرة إلى موجِّه احترافي مُتقَن.",
+    "home.pill": "✦ مجاني · متعدّد اللغات · يعمل دون اتصال",
+    "home.title": "حوِّل أي فكرة عابرة إلى الموجِّه المثالي.",
     "home.subtitle":
-      "نحدّد نيّتك، ونطرح الأسئلة الصحيحة لتوضيح طلبك، ثم نُعيد صياغة الموجِّه ليناسب ChatGPT أو Claude أو Copilot أو Gemini.",
+      "يحوِّل «منشور» فكرتك الأولية إلى موجِّه احترافي مُهيكل ومُهيَّأ لنموذجك — ChatGPT أو Claude أو Copilot أو Gemini. اكتب أو أمْلِ صوتيًا أو أرفق ملفًا، ودَع الباقي علينا.",
     "home.cta.workspace": "افتح مساحة العمل",
     "home.cta.templates": "تصفّح القوالب",
     "home.step1.title": "اكتب فكرتك أو أمْلِها صوتيًا",

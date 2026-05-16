@@ -3,6 +3,7 @@
 import { useT } from "@/lib/i18n/I18nProvider";
 import HeroIllustration from "@/components/HeroIllustration";
 import { PenIcon, ChatIcon, SparkleIcon } from "@/components/StepIcons";
+import Logo from "@/components/Logo";
 
 export default function HomePage() {
   const t = useT();
@@ -15,7 +16,10 @@ export default function HomePage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-8 sm:pb-12 text-center">
-        <span className="inline-block text-xs font-semibold tracking-wide uppercase rounded-full bg-brand-50 text-brand-700 px-3 py-1">
+        <div className="flex justify-center mb-5">
+          <Logo className="w-14 h-14 rounded-2xl shadow-xl shadow-indigo-500/20 po-float" />
+        </div>
+        <span className="inline-block text-xs font-semibold tracking-wide rounded-full bg-white/70 backdrop-blur border border-slate-200 px-3 py-1 text-transparent po-spectrum bg-clip-text">
           {t("home.pill")}
         </span>
         <h1 className="mt-5 text-3xl sm:text-5xl font-bold tracking-tight leading-tight bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">
@@ -23,7 +27,7 @@ export default function HomePage() {
         </h1>
         <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">{t("home.subtitle")}</p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
-          <a href="/workspace" className="btn-primary">{t("home.cta.workspace")}</a>
+          <a href="/workspace" className="btn-primary po-shimmer">{t("home.cta.workspace")}</a>
           <a href="/templates" className="btn-ghost border border-slate-300">{t("home.cta.templates")}</a>
         </div>
       </div>
@@ -76,8 +80,8 @@ function StepCard({
     emerald: "bg-emerald-50 text-emerald-700"
   };
   return (
-    <div className="card hover:shadow-md transition group">
-      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${tones[tone]} group-hover:scale-105 transition`}>
+    <div className="card hover:shadow-md hover:-translate-y-0.5 transition group">
+      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${tones[tone]} group-hover:scale-110 group-hover:rotate-3 transition`}>
         {icon}
       </div>
       <div className="mt-3 font-medium">{title}</div>

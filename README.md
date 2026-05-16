@@ -1,8 +1,15 @@
-# Prompt Orchestrator
+# Prismly · منشور
 
-A 100% free, multi-tenant SaaS that turns rough user ideas into polished,
-model-aware prompts. Built on **Next.js + Supabase + Ollama + Vercel** —
-zero hosting, database, and AI fees.
+> **Refract any idea into the perfect prompt.**
+
+Prismly is a 100% free, multilingual (EN/AR), offline-ready SaaS that
+turns vague ideas into structured, model-aware prompts. A prism takes
+one raw input and refracts it into a spectrum — Prismly takes one rough
+thought and refracts it into CONTEXT / TASK / CONSTRAINTS / FORMAT /
+SUCCESS sections tuned for ChatGPT, Claude, Copilot or Gemini.
+
+Built on **Next.js + Supabase + Ollama + Vercel** — zero hosting,
+database or AI fees.
 
 ## Features
 

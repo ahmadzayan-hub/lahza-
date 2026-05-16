@@ -5,11 +5,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Prompt Orchestrator — AI Prompt Writing Assistant",
-  description: "Turn rough ideas into perfectly engineered prompts. Free, multilingual, mobile-ready.",
-  applicationName: "Prompt Orchestrator",
+  title: "Prismly — Refract any idea into the perfect prompt",
+  description: "Turn rough ideas into structured, model-aware prompts. Voice, file, multilingual (EN/AR), offline-ready.",
+  applicationName: "Prismly",
   manifest: "/manifest.webmanifest",
-  appleWebApp: { capable: true, title: "Prompt Orchestrator", statusBarStyle: "default" },
+  appleWebApp: { capable: true, title: "Prismly", statusBarStyle: "default" },
   icons: {
     icon: "/icon.svg",
     apple: "/icon.svg"
