@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { env, assertSupabaseEnv } from "@/lib/env";
+import { serverEnv } from "@/lib/env.server";
 
 export function getServerSupabase() {
   assertSupabaseEnv();
@@ -32,10 +33,10 @@ import { createClient } from "@supabase/supabase-js";
 
 /** Service-role client for trusted server work (extension API, internal jobs). */
 export function getServiceSupabase() {
-  if (!env.supabaseServiceKey) {
+  if (!serverEnv.supabaseServiceKey) {
     throw new Error("SUPABASE_SERVICE_ROLE_KEY not configured");
   }
-  return createClient(env.supabaseUrl, env.supabaseServiceKey, {
+  return createClient(env.supabaseUrl, serverEnv.supabaseServiceKey, {
     auth: { persistSession: false, autoRefreshToken: false }
   });
 }

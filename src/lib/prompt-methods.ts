@@ -6,7 +6,7 @@
  */
 
 import type { TargetModel } from "@/lib/types";
-import { postFormatForModel } from "@/lib/services/formatter";
+import { postFormatForModel } from "@/lib/format-rules";
 
 export type PromptMethodId =
   | "auto"

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSupabase, getServiceSupabase } from "@/lib/supabase/server";
-import { env } from "@/lib/env";
+import { serverEnv as env } from "@/lib/env.server";
 
 export interface AuthContext {
   userId: string;

@@ -6,8 +6,8 @@
  * prompt for any of: chatgpt | claude | copilot | gemini | generic.
  */
 
-import { ruleBasedGaps } from "@/lib/services/clarification";
-import { postFormatForModel } from "@/lib/services/formatter";
+import { ruleBasedGaps } from "@/lib/gap-rules";
+import { postFormatForModel } from "@/lib/format-rules";
 import type { TargetModel } from "@/lib/types";
 
 export type Intent =

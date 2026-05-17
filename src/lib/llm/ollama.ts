@@ -1,4 +1,4 @@
-import { env } from "@/lib/env";
+import { serverEnv as env } from "@/lib/env.server";
 
 export interface OllamaOptions {
   model?: string;

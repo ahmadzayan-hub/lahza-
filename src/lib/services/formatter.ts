@@ -3,6 +3,9 @@ import { PROMPT_RECONSTRUCTION, MODEL_FORMAT_HINTS } from "@/lib/llm/prompts";
 import type { TargetModel } from "@/lib/types";
 import { renderSkeleton, type RenderInput } from "./template";
 
+// Re-export the pure rule from its new home so existing callers keep working.
+export { postFormatForModel } from "@/lib/format-rules";
+
 export interface FormatResult {
   final_prompt: string;
   rationale: string;
@@ -30,23 +33,4 @@ export async function reconstructPrompt(
     final_prompt: skeleton,
     rationale: "LLM reconstruction failed; returning the structured skeleton."
   };
-}
-
-/** Lightweight, per-model post-formatter for the final string. */
-export function postFormatForModel(prompt: string, model: TargetModel): string {
-  switch (model) {
-    case "claude":
-      // wrap sections in XML if not already
-      if (!/<context>|<task>|<format>/i.test(prompt)) {
-        return `<task>\n${prompt}\n</task>`;
-      }
-      return prompt;
-    case "copilot":
-      // Copilot prefers code-comment style intent at the top
-      return `// Intent:\n// ${prompt.split("\n").join("\n// ")}\n`;
-    case "chatgpt":
-    case "generic":
-    default:
-      return prompt;
-  }
 }
