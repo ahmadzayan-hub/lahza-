@@ -34,7 +34,7 @@ export default function ContactPage() {
         <div className="card text-center py-12">
           <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Message Sent!</h2>
-          <p className="text-slate-500">Thank you for reaching out. We'll get back to you shortly at {form.email}.</p>
+          <p className="text-slate-500">Thank you for reaching out. We&apos;ll get back to you shortly at {form.email}.</p>
         </div>
       ) : (
         <div className="card">

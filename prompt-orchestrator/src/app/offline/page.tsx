@@ -9,7 +9,7 @@ export default function OfflinePage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636a9 9 0 010 12.728M5.636 5.636a9 9 0 000 12.728M12 3v1m0 16v1m-9-9h1m16 0h1" />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">You're offline</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">You&apos;re offline</h1>
         <p className="text-slate-500 mb-6">Some pages are available offline. Connect to the internet to access AI features.</p>
         <button onClick={() => window.location.reload()} className="btn-primary">Try Again</button>
       </div>

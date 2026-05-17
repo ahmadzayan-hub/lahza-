@@ -48,7 +48,7 @@ export default function FAQPage() {
 
       <div className="mt-12 text-center card">
         <p className="text-slate-700 dark:text-slate-300 font-medium mb-2">Still have questions?</p>
-        <p className="text-sm text-slate-500 mb-4">We're happy to help. Reach out to our support team.</p>
+        <p className="text-sm text-slate-500 mb-4">We&apos;re happy to help. Reach out to our support team.</p>
         <Link href="/contact" className="btn-primary">Contact Support</Link>
       </div>
     </main>

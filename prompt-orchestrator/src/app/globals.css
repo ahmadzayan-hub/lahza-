@@ -39,6 +39,7 @@ html, body {
   @apply h-full antialiased;
   background: var(--bg);
   color: #0f172a;
+  font-family: var(--font-inter), "Segoe UI", system-ui, sans-serif;
   -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
 }
@@ -46,7 +47,7 @@ html, body {
 html.dark body { color: #e2e8f0; }
 
 html[dir="rtl"] body {
-  font-family: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", system-ui, sans-serif;
+  font-family: var(--font-ibm-plex-arabic), "Noto Sans Arabic", "Segoe UI", system-ui, sans-serif;
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────────── */

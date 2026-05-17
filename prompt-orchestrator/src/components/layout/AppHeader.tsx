@@ -214,7 +214,7 @@ export function AppHeader({ onMenuClick, title }: AppHeaderProps) {
 
             {!searching && query.length >= 2 && results.length === 0 && (
               <div className="px-4 py-6 text-center text-sm text-slate-400">
-                No results for "<span className="text-slate-600 dark:text-slate-300 font-medium">{query}</span>"
+                No results for &ldquo;<span className="text-slate-600 dark:text-slate-300 font-medium">{query}</span>&rdquo;
               </div>
             )}
 

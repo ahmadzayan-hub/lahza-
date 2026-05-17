@@ -38,7 +38,7 @@ export default function HowItWorksPage() {
       <section className="bg-gradient-to-br from-brand-950 to-teal-900 text-white py-20 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">How Tweenz AI Works</h1>
         <p className="text-xl text-white/70 max-w-2xl mx-auto">
-          From document upload to AI-powered insights — here's your path to MBA excellence.
+          From document upload to AI-powered insights — here&apos;s your path to MBA excellence.
         </p>
       </section>
 
