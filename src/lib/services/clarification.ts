@@ -1,6 +1,5 @@
-import { generateJson } from "@/lib/llm/ollama";
+import { generateJson } from "@/lib/llm/dispatch";
 import { GAP_ANALYSIS, QUESTION_GENERATION } from "@/lib/llm/prompts";
-import { env } from "@/lib/env";
 
 export interface Gap {
   slot: string;
@@ -49,9 +48,9 @@ export function ruleBasedGaps(rawPrompt: string): Gap[] {
 export async function findGaps(rawPrompt: string, intent: string): Promise<Gap[]> {
   const heuristic: Gap[] = ruleBasedGaps(rawPrompt);
 
-  const llm = await generateJson<{ gaps: Gap[] }>(
+  const { data: llm } = await generateJson<{ gaps: Gap[] }>(
     `INTENT: ${intent}\nRAW PROMPT:\n"""\n${rawPrompt}\n"""`,
-    { system: GAP_ANALYSIS, model: env.ollamaReasoning, temperature: 0.2 }
+    { system: GAP_ANALYSIS, tier: "reasoning", temperature: 0.2 }
   );
 
   const llmGaps = "gaps" in llm && Array.isArray(llm.gaps) ? llm.gaps : [];
@@ -75,9 +74,9 @@ export async function generateQuestions(
   gaps: Gap[]
 ): Promise<ClarificationQuestion[]> {
   if (gaps.length === 0) return [];
-  const result = await generateJson<{ questions: ClarificationQuestion[] }>(
+  const { data: result } = await generateJson<{ questions: ClarificationQuestion[] }>(
     `INTENT: ${intent}\nRAW PROMPT:\n"""\n${rawPrompt}\n"""\nGAPS:\n${JSON.stringify(gaps)}`,
-    { system: QUESTION_GENERATION, model: env.ollamaFast, temperature: 0.3 }
+    { system: QUESTION_GENERATION, tier: "fast", temperature: 0.3 }
   );
   if ("questions" in result && Array.isArray(result.questions)) {
     return result.questions

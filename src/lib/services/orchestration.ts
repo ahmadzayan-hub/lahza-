@@ -1,6 +1,5 @@
-import { generateJson } from "@/lib/llm/ollama";
+import { generateJson } from "@/lib/llm/dispatch";
 import { INTENT_DETECTION } from "@/lib/llm/prompts";
-import { env } from "@/lib/env";
 
 export interface IntentResult {
   intent: string;
@@ -11,17 +10,18 @@ export interface IntentResult {
 /**
  * Prompt Orchestration Service.
  * Top-level entry: takes a raw prompt, returns detected intent.
+ * Routes via the LLM dispatcher (OpenAI -> Ollama -> throw).
  */
 export async function detectIntent(rawPrompt: string): Promise<IntentResult> {
-  const result = await generateJson<IntentResult>(
+  const { data } = await generateJson<IntentResult>(
     `RAW PROMPT:\n"""\n${rawPrompt}\n"""\n\nClassify it.`,
-    { system: INTENT_DETECTION, model: env.ollamaFast, temperature: 0.0 }
+    { system: INTENT_DETECTION, tier: "fast", temperature: 0.0 }
   );
-  if ("intent" in result && typeof result.intent === "string") {
+  if ("intent" in data && typeof data.intent === "string") {
     return {
-      intent: result.intent,
-      confidence: typeof result.confidence === "number" ? result.confidence : 0.5,
-      reason: result.reason
+      intent: data.intent,
+      confidence: typeof data.confidence === "number" ? data.confidence : 0.5,
+      reason: data.reason
     };
   }
   return { intent: "other", confidence: 0.3 };

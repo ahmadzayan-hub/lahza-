@@ -1,6 +1,5 @@
-import { generateJson } from "@/lib/llm/ollama";
+import { generateJson } from "@/lib/llm/dispatch";
 import { PROMPT_RECONSTRUCTION, MODEL_FORMAT_HINTS } from "@/lib/llm/prompts";
-import { env } from "@/lib/env";
 import type { TargetModel } from "@/lib/types";
 import { renderSkeleton, type RenderInput } from "./template";
 
@@ -16,9 +15,9 @@ export async function reconstructPrompt(
   const skeleton = renderSkeleton(input);
   const hint = MODEL_FORMAT_HINTS[targetModel] ?? MODEL_FORMAT_HINTS.generic;
 
-  const result = await generateJson<FormatResult>(
+  const { data: result } = await generateJson<FormatResult>(
     `${hint}\n\nSKELETON:\n${skeleton}`,
-    { system: PROMPT_RECONSTRUCTION, model: env.ollamaRewrite, temperature: 0.3 }
+    { system: PROMPT_RECONSTRUCTION, tier: "rewrite", temperature: 0.3 }
   );
 
   if ("final_prompt" in result && typeof result.final_prompt === "string") {
@@ -27,7 +26,6 @@ export async function reconstructPrompt(
       rationale: result.rationale ?? ""
     };
   }
-  // last-resort fallback so the user always gets *something* useful
   return {
     final_prompt: skeleton,
     rationale: "LLM reconstruction failed; returning the structured skeleton."
