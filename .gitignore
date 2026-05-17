@@ -18,5 +18,7 @@ npm-debug.log*
 .vscode/
 .idea/
 
-# extension build
-extension/dist/
+# per-project build outputs
+zaian-studio-extension/dist/
+zaian-studio-mobile/android/
+zaian-studio-mobile/ios/
