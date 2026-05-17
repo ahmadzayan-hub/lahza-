@@ -153,7 +153,7 @@ export default function VoiceInput({ onTranscript, className }: Props) {
   if (!supported) {
     return (
       <span className={`text-xs text-slate-500 ${className ?? ""}`} title={t("voice.unsupported")}>
-        🎤 —
+        🎤
       </span>
     );
   }

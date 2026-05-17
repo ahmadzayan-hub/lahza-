@@ -103,7 +103,7 @@ export default function HistoryPage() {
                 ? (locale === "ar"
                     ? methodById(stats.topMethods[0].method).name_ar
                     : methodById(stats.topMethods[0].method).name_en)
-                : "—"
+                : "·"
             }
             tone="emerald"
             small

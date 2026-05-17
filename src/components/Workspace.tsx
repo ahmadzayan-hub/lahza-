@@ -18,6 +18,9 @@ import ExportButton from "@/components/ExportButton";
 import { buildPromptByMethod, type PromptMethodId } from "@/lib/prompt-methods";
 import { scorePrompt } from "@/lib/quality-score";
 import { saveLocalSession } from "@/lib/local-history";
+import { estimateTokens } from "@/lib/token-estimate";
+import { readDraft, writeDraft, clearDraft } from "@/lib/auto-save";
+import { pinPrompt, isPinnedByText } from "@/lib/pinned-prompts";
 
 interface PromptVersion {
   id: string;
@@ -60,7 +63,7 @@ export default function Workspace() {
   const [copied, setCopied] = useState(false);
 
 
-  // Hydrate a starter dropped from /templates
+  // Hydrate starter from /templates OR last unsubmitted draft from localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
     const stash = sessionStorage.getItem("po_starter");
@@ -71,8 +74,25 @@ export default function Workspace() {
         if (m) setModel(m);
       } catch { /* ignore */ }
       sessionStorage.removeItem("po_starter");
+      return;
+    }
+    const d = readDraft();
+    if (d) {
+      setRaw(d.raw);
+      if (d.model) setModel(d.model as TargetModel);
+      if (d.method) setMethod(d.method as PromptMethodId);
     }
   }, []);
+
+  // Auto-save the draft as the user types (debounced)
+  useEffect(() => {
+    if (!raw) {
+      clearDraft();
+      return;
+    }
+    const id = setTimeout(() => writeDraft({ raw, model, method }), 500);
+    return () => clearTimeout(id);
+  }, [raw, model, method]);
 
   function composedPrompt(): string {
     return raw + formatAttachedAsContext(files, locale);
@@ -133,7 +153,7 @@ export default function Workspace() {
       setFinalPrompt(built.prompt);
       setRationale(built.rationale);
       persistLocal(composed, built.prompt, intent.intent, built.method);
-      setInfo(locale === "ar" ? "وضع محلي — لا يحتاج إلى اتصال." : "Running locally — no backend needed.");
+      setInfo(locale === "ar" ? "وضع محلي. لا يحتاج إلى اتصال." : "Running locally. No backend needed.");
       setLoading(false);
       return;
     }
@@ -146,7 +166,7 @@ export default function Workspace() {
       source: "local"
     });
     setAnswers({});
-    setInfo(locale === "ar" ? "وضع محلي — لا يحتاج إلى اتصال." : "Running locally — no backend needed.");
+    setInfo(locale === "ar" ? "وضع محلي. لا يحتاج إلى اتصال." : "Running locally. No backend needed.");
     setLoading(false);
   }
 
@@ -160,6 +180,7 @@ export default function Workspace() {
         target_model: model,
         score: scorePrompt(finalText).overall
       });
+      clearDraft();
     } catch {
       /* quota — fine to ignore */
     }
@@ -256,10 +277,15 @@ export default function Workspace() {
               <path d="M50 5 L58 42 L95 50 L58 58 L50 95 L42 58 L5 50 L42 42 Z" fill="url(#sp)"/>
             </svg>
 
-            <div className="flex items-baseline justify-between">
+            <div className="flex items-baseline justify-between flex-wrap gap-1">
               <label className="text-sm font-semibold">{t("ws.label.raw")}</label>
-              <span className="text-xs text-slate-500">
+              <span className="text-xs text-slate-500 tabular-nums">
                 {t("ws.stats", { chars: beforeStats.chars, words: beforeStats.words })}
+                {raw && (
+                  <span className="ms-2 text-slate-400">
+                    {locale === "ar" ? "~" : "≈"}{estimateTokens(raw)} {locale === "ar" ? "وحدة" : "tok"}
+                  </span>
+                )}
               </span>
             </div>
 
@@ -388,6 +414,7 @@ export default function Workspace() {
                     <SparkIcon /> {t("ws.final_title")}
                   </div>
                   <div className="flex items-center gap-2">
+                    <PinButton finalText={finalPrompt} model={model} method={method} />
                     <ExportButton content={finalPrompt} />
                     <button onClick={copyFinal} className="btn-ghost border border-slate-300 dark:border-slate-700 text-xs sm:text-sm">
                       {copied ? t("ws.copied") : t("ws.btn.copy")}
@@ -463,7 +490,7 @@ export default function Workspace() {
               </div>
               <ul className="mt-3 space-y-2 text-xs text-slate-600">
                 <li className="flex gap-2"><span>🎤</span><span>{locale === "ar" ? "اضغط الميكروفون مرّة، تحدّث بحرية، ثم اضغط ثانية للإيقاف." : "Tap the mic once, speak freely, tap again to stop."}</span></li>
-                <li className="flex gap-2"><span>📎</span><span>{locale === "ar" ? "أرفق صورًا أو CSV أو PDF — يُدمج الوصف في الموجِّه." : "Attach images, CSV, or PDFs — described inside the prompt."}</span></li>
+                <li className="flex gap-2"><span>📎</span><span>{locale === "ar" ? "أرفق صورًا أو CSV أو PDF. يُدمج الوصف داخل الموجِّه." : "Attach images, CSV, or PDFs. Described inside the prompt."}</span></li>
                 <li className="flex gap-2"><span>⚡</span><span>{locale === "ar" ? "«تحسين سريع» يتخطّى الأسئلة ويولّد الموجِّه فورًا." : "“Quick enhance” skips clarifications and generates instantly."}</span></li>
               </ul>
             </div>
@@ -538,5 +565,38 @@ function SparkIcon() {
         </linearGradient>
       </defs>
     </svg>
+  );
+}
+
+function PinButton({
+  finalText,
+  model,
+  method
+}: { finalText: string; model: TargetModel; method: PromptMethodId }) {
+  const { locale } = useI18n();
+  const [pinned, setPinned] = useState(false);
+  useEffect(() => { setPinned(isPinnedByText(finalText)); }, [finalText]);
+
+  function toggle() {
+    if (pinned) return;
+    const title = finalText.split("\n")[0].slice(0, 60) || (locale === "ar" ? "موجِّه محفوظ" : "Saved prompt");
+    pinPrompt({ title, text: finalText, method, target_model: model, tags: [] });
+    setPinned(true);
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      disabled={pinned}
+      title={locale === "ar" ? "ثبّت في المكتبة" : "Pin to library"}
+      className="btn-ghost border border-slate-300 dark:border-slate-700 text-xs sm:text-sm"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill={pinned ? "currentColor" : "none"}
+           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 17l0 5M5 9l7 8l7-8M5 9c0-1 1-3 3-3h8c2 0 3 2 3 3l-7 8z"/>
+      </svg>
+      {pinned ? (locale === "ar" ? "مثبّت" : "Pinned") : (locale === "ar" ? "ثبّت" : "Pin")}
+    </button>
   );
 }

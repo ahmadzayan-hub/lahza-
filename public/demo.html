@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Prompt Orchestrator — Live Demo</title>
+<title>Prismly · Live Demo</title>
 <meta name="description" content="Turn rough ideas into perfectly engineered prompts. Free SaaS built on Next.js + Supabase + Ollama + Vercel." />
 <style>
   :root {
@@ -223,7 +223,7 @@
     <h1>Turn rough ideas into perfectly engineered prompts.</h1>
     <p>
       Prompt Orchestrator detects your intent, asks the right clarification
-      questions, and rebuilds your prompt — formatted for ChatGPT, Claude,
+      questions, and rebuilds your prompt formatted for ChatGPT, Claude,
       Copilot, or any model. Multi-tenant SaaS. Browser extension included.
     </p>
     <div class="badges">
@@ -255,7 +255,7 @@
       </div>
       <div class="qa">
         <label>What action should the tweet drive?</label>
-        <div class="why">Click, reply, follow, or sale — each needs a different hook.</div>
+        <div class="why">Click, reply, follow, or sale, each needs a different hook.</div>
       </div>
     </div>
   </div>
@@ -273,7 +273,7 @@
     <div class="card">
       <div class="icon">🔎</div>
       <h3>Gap Analysis</h3>
-      <p>Rule-based heuristics + LLM reasoning find the 3–6 missing details that matter most.</p>
+      <p>Rule-based heuristics + LLM reasoning find the 3 to 6 missing details that matter most.</p>
     </div>
     <div class="card">
       <div class="icon">❓</div>
@@ -305,7 +305,7 @@
 
   <div class="mock" style="margin-top:18px">
     <div id="step-1">
-      <span class="step-tag">Step 1 — Raw prompt</span>
+      <span class="step-tag">Step 1 · Raw prompt</span>
       <textarea id="raw" placeholder="e.g. Help me refactor my React data table to be faster">write a tweet about coffee that converts</textarea>
       <div class="row">
         <label class="muted" style="font-size:13px">Target:</label>
@@ -321,7 +321,7 @@
     </div>
 
     <div id="step-2" style="display:none">
-      <span class="step-tag">Step 2 — Clarifications</span>
+      <span class="step-tag">Step 2 · Clarifications</span>
       <p class="muted" style="margin:0 0 6px;font-size:13px">Detected intent: <strong id="intent">writing</strong> · <span id="conf">92%</span> confidence</p>
       <div id="qa" class="qa-list"></div>
       <div class="row">
@@ -332,7 +332,7 @@
     </div>
 
     <div id="step-3" style="display:none">
-      <span class="step-tag">Step 3 — Final prompt</span>
+      <span class="step-tag">Step 3 · Final prompt</span>
       <pre id="finalPrompt"></pre>
       <div class="row">
         <button class="btn btn-ghost" onclick="back2()">Back</button>
@@ -426,7 +426,7 @@
       conf: 0.92,
       questions: [
         { q: "Who is the target audience?", why: "Tone, vocabulary, and emoji density depend on it." },
-        { q: "What action should the tweet drive?", why: "Click, reply, follow, or sale — each needs a different hook." },
+        { q: "What action should the tweet drive?", why: "Click, reply, follow, or sale, each needs a different hook." },
         { q: "Any constraint on length, tone, or hashtags?", why: "Twitter limits + brand voice." }
       ],
       build: (raw, model, answers) => {

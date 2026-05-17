@@ -292,8 +292,8 @@ export function formatAttachedAsContext(files: AttachedFile[], locale: "en" | "a
     }
     const placeholder =
       locale === "ar"
-        ? "_(محتوى الملف غير نصّي — أرسله للنموذج كمرفق منفصل عند التنفيذ.)_"
-        : "_(non-text content — send the actual file to the model alongside this prompt.)_";
+        ? "_(محتوى الملف غير نصّي. أرسله للنموذج كمرفق منفصل عند التنفيذ.)_"
+        : "_(non-text content. Send the actual file to the model alongside this prompt.)_";
     return `${head}\n${placeholder}`;
   });
   return `\n\n## ${header}\n${note}\n\n${blocks.join("\n\n")}`;

@@ -12,6 +12,11 @@ const config: Config = {
           600: "#2563eb",
           700: "#1d4ed8"
         }
+      },
+      fontFamily: {
+        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui"],
+        arabic: ["var(--font-arabic)", "Tajawal", "system-ui"],
+        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo"]
       }
     }
   },

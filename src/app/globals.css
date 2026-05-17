@@ -6,9 +6,10 @@
 html.dark { color-scheme: dark; }
 
 html, body { @apply h-full antialiased; }
-html[dir="rtl"] body {
-  font-family: "Segoe UI", "Tajawal", "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
-}
+/* RTL switches to the dedicated Arabic typeface */
+html[dir="rtl"] body { font-family: var(--font-arabic), "Tajawal", system-ui, sans-serif; }
+/* Monospaced output blocks use the developer-friendly mono face */
+pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 textarea, input, select {
   @apply rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition;
@@ -50,7 +51,6 @@ button {
 .end-2 { inset-inline-end: 0.5rem; }
 .end-3 { inset-inline-end: 0.75rem; }
 
-pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 
 /* --- Motion --- */
 @keyframes po-fade-in {

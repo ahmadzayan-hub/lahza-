@@ -107,7 +107,7 @@ export default function MethodCompare({ raw, targetModel, className }: Props) {
           <p className="text-xs text-slate-500 dark:text-slate-400">
             {locale === "ar"
               ? "الرقم بجوار كل أسلوب هو تقييم الجودة. اختر الأعلى أو الأنسب لطلبك."
-              : "The number next to each method is its quality score. Pick the highest — or the one that best fits your task."}
+              : "The number next to each method is its quality score. Pick the highest, or the one that best fits your task."}
           </p>
         </div>
       )}

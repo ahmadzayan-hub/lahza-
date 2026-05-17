@@ -13,10 +13,10 @@ export const dict = {
     "nav.signout": "Sign out",
     "lang.toggle": "العربية",
 
-    "home.pill": "✦ Free · multilingual · offline-ready",
+    "home.pill": "Free · multilingual · offline ready",
     "home.title": "Refract any idea into the perfect prompt.",
     "home.subtitle":
-      "Prismly turns a vague thought into a structured, model-aware prompt — for ChatGPT, Claude, Copilot or Gemini. Type, speak, or attach a file; we do the rest.",
+      "Prismly turns a vague thought into a structured, model aware prompt for ChatGPT, Claude, Copilot or Gemini. Type, speak, or attach a file; we do the rest.",
     "home.cta.workspace": "Open workspace",
     "home.cta.templates": "Browse templates",
     "home.step1.title": "Drop your raw idea",
@@ -31,7 +31,7 @@ export const dict = {
     "ws.try_starter": "Try a starter:",
     "ws.target": "Target model",
     "ws.model.generic": "Generic",
-    "ws.btn.quick": "⚡ Quick enhance",
+    "ws.btn.quick": "Quick enhance",
     "ws.btn.start": "Start with questions",
     "ws.btn.restart": "Restart",
     "ws.btn.new_session": "New session",
@@ -108,10 +108,10 @@ export const dict = {
     "nav.signout": "تسجيل الخروج",
     "lang.toggle": "English",
 
-    "home.pill": "✦ مجاني · يدعم العربية · يعمل دون اتصال",
+    "home.pill": "مجاني · يدعم العربية · يعمل دون اتصال",
     "home.title": "حوِّل فكرتك إلى الموجِّه الأمثل.",
     "home.subtitle":
-      "يُعيد «منشور» صياغة فكرتك الأولية في موجِّه احترافي مُهيكَل ومُعَدّ خصِّيصًا للنموذج الذي تختاره — ChatGPT أو Claude أو Copilot أو Gemini. اكتب، أو أملِ صوتيًا، أو أرفق ملفًا، ودَع الباقي علينا.",
+      "يُعيد «منشور» صياغة فكرتك الأولية في موجِّه احترافي مُهيكَل ومُعَدّ خصِّيصًا للنموذج الذي تختاره: ChatGPT أو Claude أو Copilot أو Gemini. اكتب، أو أملِ صوتيًا، أو أرفق ملفًا، ودَع الباقي علينا.",
     "home.cta.workspace": "افتح مساحة العمل",
     "home.cta.templates": "تصفَّح القوالب",
     "home.step1.title": "اكتب فكرتك أو أملِها صوتيًا",
@@ -126,7 +126,7 @@ export const dict = {
     "ws.try_starter": "ابدأ من اقتراح جاهز:",
     "ws.target": "النموذج المستهدف",
     "ws.model.generic": "عام",
-    "ws.btn.quick": "⚡ تحسين سريع",
+    "ws.btn.quick": "تحسين سريع",
     "ws.btn.start": "ابدأ بالأسئلة",
     "ws.btn.restart": "إعادة البدء",
     "ws.btn.new_session": "جلسة جديدة",
@@ -182,7 +182,7 @@ export const dict = {
     "templates.open_workspace": "افتح مساحة العمل",
 
     "login.title": "تسجيل الدخول",
-    "login.subtitle": "سنُرسل إليك رابط دخول مباشرًا عبر البريد الإلكتروني — دون الحاجة إلى كلمة مرور.",
+    "login.subtitle": "سنُرسل إليك رابط دخول مباشرًا عبر البريد الإلكتروني، دون الحاجة إلى كلمة مرور.",
     "login.placeholder": "you@example.com",
     "login.btn.send": "أرسل الرابط",
     "login.sent": "تفقَّد بريدك الإلكتروني.",

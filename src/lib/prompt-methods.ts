@@ -70,8 +70,8 @@ export const METHODS: PromptMethod[] = [
     id: "zero_shot",
     name_en: "Zero-shot",
     name_ar: "بلا أمثلة",
-    desc_en: "No examples — just a clear instruction. Fast and concise.",
-    desc_ar: "بدون أمثلة — تعليمات واضحة فقط. سريع ومختصر.",
+    desc_en: "No examples. Just a clear instruction. Fast and concise.",
+    desc_ar: "بدون أمثلة، تعليمات واضحة فقط. سريع ومختصر.",
     bestFor_en: "Simple, well-defined tasks",
     bestFor_ar: "المهام البسيطة الواضحة"
   },
@@ -106,8 +106,8 @@ export const METHODS: PromptMethod[] = [
     id: "critique",
     name_en: "Critique & improve",
     name_ar: "نقد وتحسين",
-    desc_en: "Paste an existing prompt — we score it and return an improved version.",
-    desc_ar: "ألصق موجِّهًا موجودًا — نقيّمه ونعيد لك نسخة محسّنة.",
+    desc_en: "Paste an existing prompt. We score it and return an improved version.",
+    desc_ar: "ألصق موجِّهًا موجودًا، ونعطيك تقييمه ونسخة محسّنة منه.",
     bestFor_en: "Improving a draft you already have",
     bestFor_ar: "تحسين مسودّة موجودة"
   }
@@ -244,14 +244,14 @@ const BUILDERS: Record<Exclude<PromptMethodId, "auto">, Builder> = {
     const get = (re: RegExp) => qa.find((q) => re.test(q.question))?.answer ?? "";
     return [
       `# ${L.goal}\n${raw}`,
-      `# ${L.context}\n${get(/context|سياق/i) || "—"}`,
-      `# ${L.input}\n${get(/input|مدخل/i) || "—"}`,
-      `# ${L.constraints}\n${get(/constraint|قيد/i) || "—"}`,
+      `# ${L.context}\n${get(/context|سياق/i) || L.defaultContext}`,
+      `# ${L.input}\n${get(/input|مدخل/i) || L.defaultInput}`,
+      `# ${L.constraints}\n${get(/constraint|قيد/i) || L.defaultConstraints}`,
       `# ${L.outputFormat}\n${get(/format|صيغة/i) || L.defaultFormat}`,
       `# ${L.quality}\n${get(/quality|جودة/i) || L.defaultQuality}`,
       `# ${L.audience}\n${get(/audience|جمهور/i) || L.defaultAudience}`,
       `# ${L.tone}\n${get(/tone|نبرة/i) || L.defaultTone}`,
-      `# ${L.risks}\n${get(/risk|خطر|تجنّب/i) || "—"}`,
+      `# ${L.risks}\n${get(/risk|خطر|تجنّب/i) || L.defaultRisks}`,
       `# ${L.validation}\n${get(/valid|تحقّق/i) || L.defaultValidation}`
     ].join("\n\n");
   },
@@ -284,12 +284,12 @@ function rationaleFor(m: PromptMethodId, locale: "en" | "ar"): string {
   };
   const en: Record<string, string> = {
     craft: "Built around the CRAFT framework: Context, Role, Audience, Format, Tone.",
-    task: "Direct task-first prompt — minimal scaffolding for a quick answer.",
+    task: "Direct task-first prompt. Minimal scaffolding for a quick answer.",
     role: "Casts the AI as a specific expert, then states task and constraints.",
-    zero_shot: "Short, no examples — assumes the AI already knows the domain.",
+    zero_shot: "Short, no examples. Assumes the AI already knows the domain.",
     few_shot: "Provides examples so the AI mirrors a pattern before answering.",
     chain: "Breaks the task into ordered steps for clearer multi-step reasoning.",
-    structured: "Full structured template — ideal for business reports and executive memos.",
+    structured: "Full structured template. Ideal for business reports and executive memos.",
     critique: "Asks the AI to critique the original prompt and return an improved version."
   };
   return (locale === "ar" ? ar : en)[m] ?? "";
@@ -330,6 +330,10 @@ function labels(locale: "en" | "ar") {
       defaultTone: "احترافية وواضحة",
       defaultQuality: "محدّد، دقيق، قابل للتنفيذ",
       defaultValidation: "أعد قراءة الإجابة قبل التسليم وتحقّق من اكتمالها.",
+      defaultContext: "استنتج السياق من الطلب نفسه.",
+      defaultInput: "لا توجد بيانات مدخلة إضافية.",
+      defaultConstraints: "لا توجد قيود محدّدة.",
+      defaultRisks: "تجنّب المعلومات غير المؤكَّدة.",
       originalPrompt: "الموجِّه الأصلي",
       critiqueTask: "اقرأ الموجِّه التالي، استخرج نقاط ضعفه، ثم اكتب نسخة محسّنة منه.",
       critiqueOutput: "1) نقاط القوّة\n2) نقاط الضعف\n3) توصيات\n4) النسخة المحسّنة"
@@ -368,6 +372,10 @@ function labels(locale: "en" | "ar") {
     defaultTone: "Professional and clear",
     defaultQuality: "Specific, accurate, actionable",
     defaultValidation: "Re-read the answer for completeness before delivering.",
+    defaultContext: "Infer the context from the request itself.",
+    defaultInput: "No additional input data supplied.",
+    defaultConstraints: "No specific constraints.",
+    defaultRisks: "Avoid unverified information.",
     originalPrompt: "Original prompt",
     critiqueTask: "Read the prompt below, identify its weaknesses, then write an improved version.",
     critiqueOutput: "1) Strengths\n2) Weaknesses\n3) Recommendations\n4) Improved version"

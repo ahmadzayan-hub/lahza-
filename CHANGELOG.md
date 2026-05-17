@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.9.0 — Typography, dashes-out, and three more features
+
+- Distinct font pair: **Space Grotesk** (Latin) + **IBM Plex Sans Arabic** (Arabic) + **JetBrains Mono** (code/output), all loaded via `next/font/google`.
+- Removed every em-dash, en-dash and decorative AI symbol (`✦ ✨ ★ ⚡`) from user-facing strings.
+- Arabic refined further for native MSA register and proper punctuation.
+- **Token estimator + cost hint** on the textarea.
+- **Pin to library** button on the final prompt, with `pinned-prompts` store (up to 200).
+- **Auto-save draft** to localStorage every 500 ms so a refresh never loses work.
+- 62 / 62 tests pass (added 10 for the new modules); typecheck clean; build green; all 6 routes 200.
+
 ## v0.8.0 — Prompt Engineering Intelligence
 
 - 🧠 **8 prompt methods** with a selector: Auto (recommends best), CRAFT, Task, Role, Zero-shot, Few-shot, Chain, Structured, Critique. Each method has a dedicated builder and shows description + best-for hint.

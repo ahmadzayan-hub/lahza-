@@ -1,88 +1,100 @@
-# Prismly · Release Readiness Assessment
+# Prismly · Final Release Readiness
 
-**Version:** v0.8.0 · **Status:** Ready for public trial
+**Version:** v0.9.0
+**Verdict:** Ready for public trial release.
 
-## ✅ What is ready
+## What this is
 
-### Core product
-| Capability | Status |
+A multilingual (English + Arabic) AI prompt-engineering platform that turns vague ideas into structured, model-aware prompts. Eight prompt methods (CRAFT, Task, Role, Zero-shot, Few-shot, Chain, Structured, Critique) plus an Auto-recommender. Works offline thanks to a built-in rule-based engine; uses OpenAI for higher-quality cloud reconstruction when a key is configured.
+
+## Quality gate (this build)
+
+| Check | Result |
 |---|---|
-| Workspace flow (raw → questions → final) | ✅ Works end-to-end EN + AR, with or without backend |
-| Offline / no-backend local engine | ✅ Always produces a result; falls back automatically |
-| **8 prompt methods** (CRAFT, Task, Role, Zero-shot, Few-shot, Chain, Structured, Critique, plus Auto) | ✅ Selector + builder + descriptions |
-| **Quality Score** (0–100 across 10 dimensions) | ✅ Score card with strengths / weaknesses / recommendations |
-| **Method comparison** (5 methods side-by-side, scored) | ✅ Inline collapsible panel |
-| **Local history** (last 50 sessions in localStorage) | ✅ No auth needed |
-| **Mini dashboard** on /history (total, avg score, last 7 days, top method) | ✅ Visible after first session |
-| **Voice input** (continuous, auto-restart, EN + AR) | ✅ Live mm:ss counter |
-| **All file types** (text, image, audio, video, PDF, binary) with previews + metadata in prompt context | ✅ |
-| **Export** (.md / .txt download) | ✅ |
-| **Templates catalog** (9 curated, EN + AR) | ✅ No API call required |
+| Unit tests | **62 / 62 pass** across 11 files |
+| TypeScript strict | clean |
+| Production build | green (13 routes + middleware 80.8 kB) |
+| Live route smoke | `/`, `/workspace`, `/templates`, `/history`, `/login`, `/demo.html` all **200** |
+| `/api/health` | `{"status":"ok","service":"prismly"}` |
+| Privacy audit | no personal references, no leaked API keys, no `OPENAI_API_KEY` / `sk-proj` / `gpt-4o` in client bundle |
+| Visual symbols | no decorative AI symbols (✦ ✨ ★) and no em/en dashes in user-facing strings |
+| Arabic typography | IBM Plex Sans Arabic loaded via `next/font`, proper RTL, native MSA wording |
 
-### UI / UX
-| | |
+## What ships in v0.9.0
+
+### Core experience
+- Workspace with raw text + voice input + file upload (all file types)
+- 8 prompt methods + Auto recommend
+- Live quality score (0 to 100) across 10 dimensions
+- Method comparison panel (5 methods side by side)
+- Before / After view with token estimate
+- Final-prompt export (.md, .txt)
+- Pin to library (new in v0.9)
+- Auto-save draft to localStorage (new in v0.9)
+- Token estimator with cost hint (new in v0.9)
+- Keyboard shortcut: Cmd/Ctrl + Enter
+
+### Backend
+- Three-layer LLM dispatcher: OpenAI when key present, else Ollama, else local engine
+- Server-only API key handling (verified absent from client bundle)
+- Per-process daily call cap (default 500, configurable)
+- Supabase session refresh middleware
+
+### Internationalisation
+- English and Arabic dictionaries (native MSA, professional UAE/Gulf register)
+- RTL layout switching with `html[dir="rtl"]`
+- Distinct Arabic font (IBM Plex Sans Arabic)
+- All user-visible strings free of decorative symbols and em-dashes
+
+### Design
+- Distinct font pair: **Space Grotesk** for Latin, **IBM Plex Sans Arabic** for Arabic, **JetBrains Mono** for prompt code blocks
+- Light + dark themes (persists, respects OS preference)
+- Brand mark: prism logo (white ray refracting into a colour spectrum)
+- Subtle motion: floating logo, spectrum-text pill, button shimmer; honours `prefers-reduced-motion`
+- Responsive: single-column mobile, two-column desktop with sticky side panel
+
+### Persistence
+- Local history (last 50 sessions in localStorage, no auth required)
+- Pinned library (up to 200 entries)
+- Mini dashboard on /history: total, average quality, last 7 days, top method
+
+### PWA
+- Installable on Android and iOS (Add to Home Screen)
+- Service worker (`po-shell-v6`) caches the app shell
+- Capacitor scaffold ready in `mobile/` for a Play Store APK
+
+## Known limitations
+| Item | Why deferred |
 |---|---|
-| Responsive: mobile, tablet, desktop | ✅ Single column → 2-column at lg breakpoint |
-| Dark mode | ✅ Toggle in header, persists, respects OS preference |
-| Multilingual (English, Arabic) | ✅ RTL, Arabic refined for native MSA professional tone |
-| Motion + animations | ✅ Floating logo, spectrum text, button shimmer; honours `prefers-reduced-motion` |
-| Branded mark | ✅ Prismly prism logo (white ray → spectrum) |
-| PWA installable | ✅ Manifest + service worker (cache `po-shell-v6`) |
-| Keyboard shortcut: Cmd/Ctrl+Enter to generate | ✅ |
-
-### Quality
-| | |
-|---|---|
-| Unit tests | ✅ **42/42 pass** across 7 files |
-| TypeScript strict | ✅ Clean |
-| Production build | ✅ All 13 routes + middleware (80.8 kB) |
-| Smoke test all routes | ✅ /, /workspace, /templates, /history, /login, /demo.html → all **200** |
-| `/api/health` | ✅ Returns `{"status":"ok","service":"prismly"}` |
-| Privacy: no personal/employer references | ✅ Audited; only GitHub URL reference removed |
-
-## ⚠ Known limitations (publish-time)
-- **Backend optional**: Supabase + Ollama aren't required because local engine always works. If they aren't configured, history won't sync across devices and sessions don't persist between browsers.
-- **Voice**: Web Speech API support varies. iOS Safari lacks it — UI shows `🎤 —` gracefully.
-- **No PDF/DOCX text extraction**: attached PDFs include metadata only; users send the actual file alongside the prompt.
-- **No image OCR**: same — image preview included, OCR deferred.
-- **Auth**: only magic-link email via Supabase. Not wired to a payment provider yet.
-
-## 🧪 Smoke test (run on a fresh phone)
-1. Open the deploy URL → landing shows the prism logo floating, spectrum pill animating.
-2. Tap **العربية** → entire UI flips RTL with native Arabic copy.
-3. **Workspace**: type a prompt, click **Quick enhance** → quality score card + final prompt + side-by-side before/after.
-4. **Mic**: tap once → speak → tap to stop. mm:ss timer increments while listening.
-5. **Files**: drop a CSV + an image + a PDF → all show as cards; image gets a thumbnail; final prompt includes an "Attached data" block.
-6. **Compare methods**: expand panel → 5 method buttons with quality scores; pick any → see that prompt.
-7. **Export**: click Export → choose .md or .txt → file downloads.
-8. **Templates**: 9 cards render; tapping one loads it into Workspace.
-9. **History**: shows dashboard (total/avg/last 7/top method) and the local session you just created.
-10. **Dark mode toggle**: header → moon icon → page flips dark cleanly.
-
-## 🚀 Deploy checklist
-1. **Branch**: `claude/prompt-orchestrator-saas-YOoP8` holds Prismly. `main` was overwritten by another agent. To deploy Prismly publicly, on Vercel:
-   - **Project Settings → Git → Production Branch** = `claude/prompt-orchestrator-saas-YOoP8`
-   - **OR** force-push that branch to `main` (only if you're sure you want to overwrite the other agent's work)
-2. **Environment variables** (optional — local engine works without them):
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-3. **Redeploy** Vercel — automatic on push.
-4. **Verify** at `https://<your-project>.vercel.app`:
-   - `/api/health` returns `{"status":"ok","service":"prismly"}`
-   - Run the 10-step smoke test above.
-
-## 🔮 Deferred (not blockers)
-| Feature | Why deferred |
-|---|---|
-| PDF / DOCX text extraction | Needs `pdf.js` + `mammoth.js` (~300 KB) |
-| Image OCR (paste a screenshot, get text) | Needs `tesseract.js` (~1 MB) |
+| PDF / DOCX in-browser text extraction | Needs pdf.js + mammoth.js (~300 KB) |
+| Image OCR | Needs tesseract.js (~1 MB) |
 | Streaming LLM responses | Requires SSE plumbing |
-| Public share links | Needs unguessable-token route |
-| Per-IP rate limiting | Needs counters table |
-| Native Android APK | Scaffold ready in `mobile/`; needs Android Studio |
-| Subscription billing | Needs Stripe + Apple/Google IAP |
-| Dashboard charts (sparklines) | Today shows numbers — sufficient for v0.8 |
+| Public share links | Needs server-side token route |
+| Subscription billing | Stripe + Apple IAP + Google Play Billing not wired |
 
-## Final verdict
-**Ready to publish as a public trial.** The platform never leaves the user empty-handed (local engine fallback). All eight prompt methods produce coherent, scored, exportable prompts in English and refined UAE-professional Arabic. Voice, files, templates, history, dashboard, dark mode, responsive across mobile/tablet/desktop, motion + accessibility done.
+## Smoke test for a fresh user (10 steps)
+1. Open the deploy URL. Landing renders with the prism logo floating gently.
+2. Tap **العربية**. Whole interface flips to RTL with native Arabic copy.
+3. Open Workspace. Type a prompt of any length. Note the live char/word/token counter.
+4. Press **Quick enhance**. Within ~1 second you see the quality score card, the final prompt, and the before/after panel.
+5. Click **Pin**. The button turns into "Pinned".
+6. Click **Export**. Pick `.md`. File downloads.
+7. Tap the mic. Speak a sentence. Tap mic again. The text appears appended to the textarea.
+8. Drop an image and a CSV onto Attach files. Both appear as cards.
+9. Refresh the browser. Your half-typed prompt is restored from auto-saved draft.
+10. Open /history. The session you ran is listed with its quality score, method, and model.
+
+## Deploy steps
+1. Vercel → Settings → Git → Production Branch = `claude/prompt-orchestrator-saas-YOoP8`
+2. Vercel → Settings → Environment Variables (Production + Preview + Development):
+   - `OPENAI_API_KEY` (your rotated key, server only)
+   - `OPENAI_MODEL` = `gpt-4o-mini` (recommended)
+   - `LLM_DAILY_CALL_LIMIT` = `200` (recommended soft brake)
+   - Optionally: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` for auth/history sync
+3. Set hard monthly cap at https://platform.openai.com/account/limits (e.g. $10)
+4. Trigger redeploy
+5. Verify at `https://<your-project>.vercel.app/api/health` returns `{"status":"ok","service":"prismly"}`
+6. Run the 10-step smoke test above
+
+## Why I cannot give you a working link from here
+My environment is a private sandbox container with no public ingress. Only your Vercel deploy serves a public URL. Once you complete the deploy steps above, your public URL will serve this build.
