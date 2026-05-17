@@ -102,6 +102,7 @@ export default function Workspace() {
   const [finalPrompt, setFinalPrompt] = useState<string | null>(null);
   const [rationale, setRationale] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [voiceActive, setVoiceActive] = useState(false); // true while recording/stopping/processing
   const [error, setError] = useState<{ message: string; hint?: string } | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -369,30 +370,17 @@ export default function Workspace() {
     setTimeout(() => { void startSession(true); }, 50);
   }
 
-  // Voice transcript handler with two modes:
-  //   - isFinal=true  → commit the chunk and clear the interim buffer.
-  //   - isFinal=false → render this chunk live so the user sees their words,
-  //                     but mark it as provisional so the next chunk can
-  //                     replace it instead of doubling up.
-  const interimBaseRef = useRef<string>("");
+  // Voice transcript handler.
+  // The new MediaRecorder-based VoiceInput only calls this once, with
+  // isFinal=true, after Whisper returns the complete transcription.
+  // Interim streaming is intentionally removed — analysis never starts
+  // until the user presses Stop and the full audio is transcribed.
   function handleVoice(text: string, isFinal: boolean) {
-    if (isFinal) {
-      setRaw((cur) => {
-        const base = interimBaseRef.current || cur;
-        const cleaned = (base ? base.trim() + " " : "") + text.trim();
-        interimBaseRef.current = "";
-        return cleaned;
-      });
-    } else {
-      setRaw((cur) => {
-        // Capture the committed-so-far baseline the first time we see an
-        // interim chunk; subsequent interim updates rewrite from there.
-        if (!interimBaseRef.current) interimBaseRef.current = cur;
-        const base = interimBaseRef.current;
-        const sep = base && !base.endsWith(" ") ? " " : "";
-        return base + sep + text;
-      });
-    }
+    if (!isFinal || !text.trim()) return;
+    setRaw((cur) => {
+      const base = cur.trim();
+      return base ? base + " " + text.trim() : text.trim();
+    });
   }
 
   function restoreFromHistory(entry: LocalHistoryEntry) {
@@ -545,11 +533,7 @@ export default function Workspace() {
             <div className="absolute bottom-2 end-2">
               <VoiceInput
                 onTranscript={handleVoice}
-                onAutoSubmit={() => {
-                  // Voice "smart-submit": after the user stops speaking for a
-                  // beat, kick off the questions flow automatically.
-                  if (raw.trim().length >= 3 && !loading) void startSession(false);
-                }}
+                onRecordingStateChange={setVoiceActive}
                 onTypeInstead={() => {
                   const el = document.getElementById("po-raw") as HTMLTextAreaElement | null;
                   el?.focus();
@@ -618,14 +602,16 @@ export default function Workspace() {
             )}
             <button
               onClick={() => startSession(true)}
-              disabled={loading || raw.length < 3}
+              disabled={loading || voiceActive || raw.length < 3}
+              title={voiceActive ? (locale === "ar" ? "أوقف التسجيل أولاً" : "Stop recording first") : undefined}
               className="btn-ghost border border-slate-300"
             >
               {t("ws.btn.quick")}
             </button>
             <button
               onClick={() => startSession(false)}
-              disabled={loading || raw.length < 3}
+              disabled={loading || voiceActive || raw.length < 3}
+              title={voiceActive ? (locale === "ar" ? "أوقف التسجيل أولاً" : "Stop recording first") : undefined}
               className="btn-primary"
             >
               {loading ? t("ws.btn.working") : session ? t("ws.btn.restart") : t("ws.btn.start")}

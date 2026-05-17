@@ -506,6 +506,9 @@ export const dict = {
     "label.ai": "AI",
     "label.required": "Required",
     "label.optional": "Optional",
+
+    "voice.denied":    "Microphone access was denied. Please allow it in your browser settings.",
+    "voice.no_device": "No microphone detected. Please connect one and try again.",
   },
 
   ar: {
@@ -1011,6 +1014,9 @@ export const dict = {
     "label.ai": "ذكاء اصطناعي",
     "label.required": "مطلوب",
     "label.optional": "اختياري",
+
+    "voice.denied":    "تم رفض إذن الميكروفون. يرجى السماح به من إعدادات المتصفح.",
+    "voice.no_device": "لم يُعثر على ميكروفون. يرجى توصيل ميكروفون والمحاولة مجدداً.",
   },
 } as const;
 
