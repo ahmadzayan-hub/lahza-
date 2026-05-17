@@ -81,7 +81,7 @@ export default function CoursesPage() {
 
   const CourseForm = ({ course }: { course?: Course | null }) => (
     <form onSubmit={handleSave} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="col-span-2">
           <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">{t("course.name")} *</label>
           <input name="name" required defaultValue={course?.name} placeholder="e.g. Strategic Management" />

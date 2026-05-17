@@ -1,204 +1,235 @@
 "use client";
-import { useI18n } from "@/lib/i18n/I18nProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { Progress } from "@/components/ui/Progress";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { EmptyState } from "@/components/ui/EmptyState";
 import {
-  BookOpen, Clock, Megaphone, BarChart3, Bot, Package, Newspaper,
-  AlertTriangle, CheckCircle, TrendingUp, Zap, Plus, ArrowRight
+  BookOpen, Clock, Brain, Zap, ArrowRight, Flame,
+  CheckCircle, AlertTriangle, Megaphone, CalendarCheck,
+  TrendingUp, Bot, Layers,
 } from "lucide-react";
 import { format } from "date-fns";
 
-interface Course { id: string; name: string; code: string; progress: number; instructor: string; }
-interface Deadline { id: string; title: string; course_name: string; due_date: string; risk: "safe"|"due_soon"|"at_risk"|"overdue"; type: string; }
+interface Course    { id: string; name: string; code: string; progress: number; instructor: string; }
+interface Deadline  { id: string; title: string; course_name: string; due_date: string; risk: "safe"|"due_soon"|"at_risk"|"overdue"; type: string; }
 interface Announcement { id: string; title: string; summary: string; risk_level: string; course_name: string; created_at: string; }
 
+function RingProgress({ value, size = 48, stroke = 4, color = "#3b82f6" }: { value: number; size?: number; stroke?: number; color?: string }) {
+  const r = (size - stroke) / 2;
+  const circ = 2 * Math.PI * r;
+  const dash = (value / 100) * circ;
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: "rotate(-90deg)" }}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(148,163,184,0.2)" strokeWidth={stroke} />
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={stroke}
+        strokeDasharray={`${dash} ${circ - dash}`} strokeLinecap="round"
+        style={{ transition: "stroke-dasharray 1.2s cubic-bezier(0.4,0,0.2,1)" }}
+      />
+    </svg>
+  );
+}
+
+const riskColors: Record<string, "red"|"yellow"|"green"|"blue"> = {
+  overdue: "red", at_risk: "red", due_soon: "yellow", safe: "green",
+};
+const riskLabels: Record<string, string> = {
+  overdue: "Overdue", at_risk: "At Risk", due_soon: "Due Soon", safe: "Safe",
+};
+
 export default function DashboardPage() {
-  const { t } = useI18n();
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [deadlines, setDeadlines] = useState<Deadline[]>([]);
+  const [courses, setCourses]             = useState<Course[]>([]);
+  const [deadlines, setDeadlines]         = useState<Deadline[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading]             = useState(true);
 
   useEffect(() => {
-    async function load() {
-      try {
-        const [cRes, dRes, aRes] = await Promise.all([
-          fetch("/api/courses"),
-          fetch("/api/deadlines?view=week"),
-          fetch("/api/announcements?limit=5"),
-        ]);
-        if (cRes.ok) setCourses(await cRes.json());
-        if (dRes.ok) setDeadlines(await dRes.json());
-        if (aRes.ok) setAnnouncements(await aRes.json());
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
+    Promise.all([
+      fetch("/api/courses"),
+      fetch("/api/deadlines?view=week"),
+      fetch("/api/announcements?limit=3"),
+    ]).then(async ([cR, dR, aR]) => {
+      if (cR.ok) setCourses(await cR.json());
+      if (dR.ok) setDeadlines(await dR.json());
+      if (aR.ok) setAnnouncements(await aR.json());
+      setLoading(false);
+    });
   }, []);
 
   const hour = new Date().getHours();
-  const greetingKey = hour < 12 ? "dashboard.greeting.morning" : hour < 17 ? "dashboard.greeting.afternoon" : "dashboard.greeting.evening";
-  const greeting = t(greetingKey as any, { name: "Student" });
+  const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const urgent = deadlines.filter(d => d.risk === "overdue" || d.risk === "at_risk");
 
-  const riskColors: Record<string, "red"|"yellow"|"green"|"blue"> = {
-    overdue: "red", at_risk: "red", due_soon: "yellow", safe: "green"
-  };
-
-  const riskLabels: Record<string, string> = {
-    overdue: t("dashboard.overdue"),
-    at_risk: t("dashboard.at_risk"),
-    due_soon: t("dashboard.due_soon"),
-    safe: "Safe",
-  };
+  if (loading) return (
+    <div className="space-y-5 animate-fade-in">
+      <div className="skeleton h-44 rounded-3xl" />
+      <div className="grid grid-cols-2 gap-4"><div className="skeleton h-56 rounded-2xl" /><div className="skeleton h-56 rounded-2xl" /></div>
+      <div className="skeleton h-40 rounded-2xl" />
+    </div>
+  );
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Greeting + focus question */}
-      <div className="bg-gradient-to-br from-brand-600 to-teal-600 rounded-2xl p-6 text-white">
-        <h1 className="text-2xl font-bold mb-1">{greeting}</h1>
-        <p className="text-white/80 text-sm mb-4">{t("dashboard.focus")}</p>
-        <Link href="/ask-mba">
-          <button className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 border border-white/20 rounded-xl px-4 py-2 text-sm font-medium transition">
-            <Bot size={16} />
-            Ask My MBA Agent
-            <ArrowRight size={14} />
-          </button>
-        </Link>
-      </div>
+    <div className="space-y-5 animate-fade-up">
 
-      {/* Stats row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { icon: <BookOpen size={20} className="text-brand-600" />, label: t("dashboard.courses_active"), value: courses.filter(c => true).length, href: "/courses", bg: "bg-brand-50 dark:bg-brand-950/30" },
-          { icon: <Clock size={20} className="text-amber-600" />, label: t("dashboard.upcoming_deadlines"), value: deadlines.length, href: "/timeline", bg: "bg-amber-50 dark:bg-amber-950/30" },
-          { icon: <Megaphone size={20} className="text-purple-600" />, label: t("dashboard.unread_announcements"), value: announcements.length, href: "/announcements", bg: "bg-purple-50 dark:bg-purple-950/30" },
-          { icon: <BarChart3 size={20} className="text-emerald-600" />, label: t("dashboard.exam_readiness"), value: "72%", href: "/grades", bg: "bg-emerald-50 dark:bg-emerald-950/30" },
-        ].map(stat => (
-          <Link key={stat.label} href={stat.href}>
-            <div className={`card-hover cursor-pointer ${stat.bg}`}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center shadow-sm">
-                  {stat.icon}
-                </div>
+      {/* ── Hero / greeting ── */}
+      <div className="relative rounded-3xl overflow-hidden hero-gradient p-6 text-white shadow-float">
+        <div className="absolute top-0 right-0 w-56 h-56 rounded-full opacity-15 animate-float-slow"
+          style={{ background: "radial-gradient(circle,rgba(255,255,255,.35),transparent)", transform: "translate(30%,-30%)" }} />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-start gap-5">
+          <div className="flex-1">
+            <p className="text-white/70 text-sm mb-1">{greeting} 👋</p>
+            <h1 className="text-2xl font-bold mb-1">Alex Morgan</h1>
+            <p className="text-white/65 text-sm mb-4">MBA Year 2 · {courses.length} active courses</p>
+
+            {/* Urgent alert */}
+            {urgent.length > 0 && (
+              <div className="flex items-center gap-2 bg-red-500/20 border border-red-400/40 rounded-xl px-3.5 py-2 mb-4 text-sm">
+                <AlertTriangle size={14} className="text-red-300 flex-shrink-0" />
+                <span className="font-semibold">{urgent.length} item{urgent.length > 1 ? "s" : ""} need your attention</span>
+                <Link href="/plan" className="ml-auto text-xs text-red-200 hover:text-white underline">View</Link>
               </div>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{stat.value}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{stat.label}</p>
+            )}
+
+            <div className="flex flex-wrap gap-2">
+              <Link href="/study">
+                <button className="flex items-center gap-2 bg-white/20 hover:bg-white/30 border border-white/30 rounded-xl px-4 py-2 text-sm font-semibold transition-all hover:scale-105">
+                  <Brain size={14} /> Start Studying <ArrowRight size={12} />
+                </button>
+              </Link>
+              <Link href="/plan">
+                <button className="flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-4 py-2 text-sm transition-all hover:scale-105">
+                  <CalendarCheck size={14} /> My Plan
+                </button>
+              </Link>
             </div>
-          </Link>
-        ))}
+          </div>
+
+          {/* Quick stats */}
+          <div className="flex sm:flex-col gap-3 flex-shrink-0">
+            <div className="flex items-center gap-2.5 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-2.5 border border-white/20">
+              <div className="relative">
+                <RingProgress value={72} size={40} stroke={4} color="#34d399" />
+                <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-white">72%</span>
+              </div>
+              <div><p className="text-[10px] text-white/60">Readiness</p><p className="text-xs font-bold">Exam Ready</p></div>
+            </div>
+            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-2.5 border border-white/20">
+              <Flame size={18} className="text-orange-300 animate-pulse-soft" />
+              <div><p className="text-[10px] text-white/60">Streak</p><p className="text-xs font-bold">14 days 🔥</p></div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* My Courses */}
+      {/* ── Deadlines + Courses ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+        {/* Upcoming deadlines */}
         <div className="card">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="font-semibold text-slate-900 dark:text-slate-100">{t("nav.courses")}</h2>
-            <Link href="/courses">
-              <Button variant="ghost" size="sm">
-                <Plus size={15} />
-                {t("courses.add")}
-              </Button>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                <Clock size={13} className="text-white" />
+              </div>
+              <h2 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Deadlines This Week</h2>
+            </div>
+            <Link href="/plan" className="text-xs text-amber-600 dark:text-amber-400 font-semibold hover:underline flex items-center gap-1">
+              Full Plan <ArrowRight size={11} />
             </Link>
           </div>
-          {loading ? (
-            <div className="space-y-3">
-              {[1,2,3].map(i => <div key={i} className="skeleton h-16 rounded-xl" />)}
+
+          {deadlines.length === 0 ? (
+            <div className="py-8 text-center">
+              <CheckCircle className="w-9 h-9 mx-auto mb-2 text-emerald-400 opacity-60" />
+              <p className="text-sm text-slate-400">All caught up!</p>
             </div>
-          ) : courses.length === 0 ? (
-            <EmptyState
-              icon={<BookOpen />}
-              title={t("dashboard.no_courses")}
-              action={{ label: t("dashboard.add_course"), onClick: () => window.location.href = "/courses" }}
-            />
           ) : (
-            <div className="space-y-3">
-              {courses.slice(0, 5).map(c => (
+            <div className="space-y-2">
+              {deadlines.slice(0, 5).map(d => {
+                const isUrgent = d.risk === "overdue" || d.risk === "at_risk";
+                const isSoon   = d.risk === "due_soon";
+                const left = isUrgent ? "#ef4444" : isSoon ? "#f59e0b" : "#10b981";
+                return (
+                  <div key={d.id} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/60 dark:hover:bg-white/5 transition"
+                    style={{ borderLeft: `3px solid ${left}`, paddingLeft: "10px" }}>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">{d.title}</p>
+                      <p className="text-xs text-slate-400 truncate">{d.course_name} · {format(new Date(d.due_date), "MMM d")}</p>
+                    </div>
+                    <Badge color={riskColors[d.risk] || "gray"}>{riskLabels[d.risk]}</Badge>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Courses progress */}
+        <div className="card">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-500 to-blue-600 flex items-center justify-center">
+                <BookOpen size={13} className="text-white" />
+              </div>
+              <h2 className="font-bold text-slate-900 dark:text-slate-100 text-sm">My Courses</h2>
+            </div>
+            <Link href="/courses" className="text-xs text-brand-600 dark:text-brand-400 font-semibold hover:underline flex items-center gap-1">
+              All Courses <ArrowRight size={11} />
+            </Link>
+          </div>
+          <div className="space-y-2.5">
+            {courses.slice(0, 5).map((c, i) => {
+              const cols = ["#3b82f6","#a855f7","#14b8a6","#f59e0b","#ef4444"];
+              const col  = cols[i % cols.length];
+              return (
                 <Link key={c.id} href={`/courses/${c.id}`}>
-                  <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer">
-                    <div className="w-10 h-10 rounded-xl bg-brand-100 dark:bg-brand-950/40 flex items-center justify-center flex-shrink-0">
-                      <BookOpen size={18} className="text-brand-600" />
+                  <div className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/60 dark:hover:bg-white/5 transition cursor-pointer">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                      style={{ background: `linear-gradient(135deg, ${col}, ${col}99)` }}>
+                      {c.code?.slice(0,2) || "CO"}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">{c.name}</p>
-                      <p className="text-xs text-slate-400">{c.instructor}</p>
-                      <Progress value={c.progress} size="sm" className="mt-1.5" />
+                      <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">{c.name}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <div className="flex-1 h-1.5 rounded-full overflow-hidden bg-slate-200/60 dark:bg-slate-700/60">
+                          <div className="h-full rounded-full transition-all duration-700"
+                            style={{ width: `${c.progress}%`, background: `linear-gradient(90deg, ${col}, ${col}cc)` }} />
+                        </div>
+                        <span className="text-[10px] font-bold text-slate-400">{c.progress}%</span>
+                      </div>
                     </div>
-                    <span className="text-xs text-slate-400 flex-shrink-0">{c.progress}%</span>
                   </div>
                 </Link>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Upcoming Deadlines */}
-        <div className="card">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="font-semibold text-slate-900 dark:text-slate-100">{t("dashboard.upcoming_deadlines")}</h2>
-            <Link href="/timeline">
-              <Button variant="ghost" size="sm">
-                {t("timeline.add")}
-                <Plus size={15} />
-              </Button>
-            </Link>
+              );
+            })}
           </div>
-          {loading ? (
-            <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="skeleton h-14 rounded-xl" />)}</div>
-          ) : deadlines.length === 0 ? (
-            <EmptyState icon={<Clock />} title={t("timeline.empty")} />
-          ) : (
-            <div className="space-y-2.5">
-              {deadlines.slice(0, 6).map(d => (
-                <div key={d.id} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-                  {d.risk === "overdue" || d.risk === "at_risk"
-                    ? <AlertTriangle size={16} className="text-red-500 flex-shrink-0" />
-                    : d.risk === "due_soon"
-                    ? <Clock size={16} className="text-amber-500 flex-shrink-0" />
-                    : <CheckCircle size={16} className="text-emerald-500 flex-shrink-0" />
-                  }
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">{d.title}</p>
-                    <p className="text-xs text-slate-400">{d.course_name}</p>
-                  </div>
-                  <div className="flex-shrink-0 text-end">
-                    <Badge color={riskColors[d.risk] || "gray"}>{riskLabels[d.risk]}</Badge>
-                    <p className="text-xs text-slate-400 mt-0.5">
-                      {format(new Date(d.due_date), "MMM d")}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
-      {/* AI Recommendations */}
+      {/* ── Study tools quick access ── */}
       <div className="card">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-9 h-9 bg-teal-100 dark:bg-teal-950/40 rounded-xl flex items-center justify-center">
-            <Zap size={18} className="text-teal-600" />
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+            <Zap size={13} className="text-white" />
           </div>
-          <h2 className="font-semibold text-slate-900 dark:text-slate-100">{t("dashboard.ai_recommendations")}</h2>
-          <span className="badge-blue text-xs">{t("label.ai")}</span>
+          <h2 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Study Tools</h2>
+          <Link href="/study" className="ml-auto text-xs text-violet-600 dark:text-violet-400 font-semibold hover:underline flex items-center gap-1">
+            All Tools <ArrowRight size={11} />
+          </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { icon: <Package size={18} className="text-purple-600" />, title: "Generate Study Pack", body: "Strategic Management Lecture 3 is processed. Generate your study pack now.", href: "/study-packs", color: "bg-purple-50 dark:bg-purple-950/30" },
-            { icon: <Zap size={18} className="text-amber-600" />, title: "Review Flashcards", body: "18 flashcards pending review for Finance module.", href: "/flashcards", color: "bg-amber-50 dark:bg-amber-950/30" },
-            { icon: <Bot size={18} className="text-brand-600" />, title: "Ask Your Tutor", body: "You have an exam in 5 days. Start exam prep with your AI tutor.", href: "/tutor", color: "bg-brand-50 dark:bg-brand-950/30" },
-          ].map((r, i) => (
-            <Link key={i} href={r.href}>
-              <div className={`flex gap-3 p-4 rounded-xl cursor-pointer hover:shadow-card-hover transition ${r.color}`}>
-                <div className="flex-shrink-0 mt-0.5">{r.icon}</div>
+            { href: "/study#tutor",      icon: <Bot size={20} />,    label: "AI Tutor",       sub: "Ask anything",        grad: "from-teal-500 to-cyan-500"       },
+            { href: "/study#flashcards", icon: <Layers size={20} />, label: "Flashcards",     sub: "18 due for review",   grad: "from-amber-500 to-orange-500"    },
+            { href: "/study#quizzes",    icon: <Brain size={20} />,  label: "Quiz Me",        sub: "Test your knowledge", grad: "from-violet-500 to-purple-600"   },
+            { href: "/study#packs",      icon: <BookOpen size={20}/>, label: "Study Packs",   sub: "AI-generated notes",  grad: "from-brand-500 to-blue-600"      },
+          ].map(t => (
+            <Link key={t.href} href={t.href}>
+              <div className="group flex flex-col gap-2 p-4 rounded-2xl bg-white/40 dark:bg-white/5 border border-white/60 dark:border-white/10 hover:bg-white/70 dark:hover:bg-white/10 transition-all hover:-translate-y-0.5 cursor-pointer">
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${t.grad} flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform`}>
+                  {t.icon}
+                </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">{r.title}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{r.body}</p>
+                  <p className="text-sm font-bold text-slate-800 dark:text-slate-200">{t.label}</p>
+                  <p className="text-xs text-slate-400 mt-0.5">{t.sub}</p>
                 </div>
               </div>
             </Link>
@@ -206,48 +237,31 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Recent Announcements */}
+      {/* ── Recent announcements ── */}
       {announcements.length > 0 && (
         <div className="card">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="font-semibold text-slate-900 dark:text-slate-100">{t("nav.announcements")}</h2>
-            <Link href="/announcements">
-              <Button variant="ghost" size="sm">View all <ArrowRight size={14} /></Button>
-            </Link>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center">
+                <Megaphone size={13} className="text-white" />
+              </div>
+              <h2 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Recent Announcements</h2>
+            </div>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {announcements.map(a => (
-              <div key={a.id} className="flex gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-                <Megaphone size={16} className="text-slate-400 flex-shrink-0 mt-0.5" />
+              <div key={a.id} className="flex gap-3 p-3 rounded-xl bg-white/50 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/8 transition">
+                <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2 flex-shrink-0 animate-pulse-soft" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-800 dark:text-slate-200">{a.title}</p>
-                  {a.summary && <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">{a.summary}</p>}
+                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">{a.title}</p>
+                  {a.summary && <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{a.summary}</p>}
+                  <p className="text-[10px] text-slate-400 mt-1">{a.course_name}</p>
                 </div>
-                <span className="text-xs text-slate-400 flex-shrink-0">{a.course_name}</span>
               </div>
             ))}
           </div>
         </div>
       )}
-
-      {/* Quick actions */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { href: "/study-packs", icon: <Package size={20} />, label: t("nav.study_packs"), color: "text-purple-600 bg-purple-100 dark:bg-purple-950/40" },
-          { href: "/tutor", icon: <Bot size={20} />, label: t("nav.tutor"), color: "text-teal-600 bg-teal-100 dark:bg-teal-950/40" },
-          { href: "/weekly-brief", icon: <Newspaper size={20} />, label: t("nav.weekly_brief"), color: "text-brand-600 bg-brand-100 dark:bg-brand-950/40" },
-          { href: "/ask-mba", icon: <TrendingUp size={20} />, label: t("nav.ask_mba"), color: "text-emerald-600 bg-emerald-100 dark:bg-emerald-950/40" },
-        ].map(qa => (
-          <Link key={qa.href} href={qa.href}>
-            <div className="card-hover flex flex-col items-center gap-2.5 py-5 text-center cursor-pointer">
-              <div className={`w-11 h-11 rounded-2xl flex items-center justify-center ${qa.color}`}>
-                {qa.icon}
-              </div>
-              <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{qa.label}</span>
-            </div>
-          </Link>
-        ))}
-      </div>
     </div>
   );
 }
