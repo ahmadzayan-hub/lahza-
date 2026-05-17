@@ -6,12 +6,18 @@ import { safeFetch } from "@/lib/safe-fetch";
 import {
   detectIntentLocal,
   generateQuestionsLocal,
-  reconstructPromptLocal,
   type LocalQuestion
 } from "@/lib/local-engine";
 import type { TargetModel } from "@/lib/types";
 import VoiceInput from "@/components/VoiceInput";
 import FileUpload, { type AttachedFile, formatAttachedAsContext } from "@/components/FileUpload";
+import MethodSelector from "@/components/MethodSelector";
+import MethodCompare from "@/components/MethodCompare";
+import QualityScoreCard from "@/components/QualityScore";
+import ExportButton from "@/components/ExportButton";
+import { buildPromptByMethod, type PromptMethodId } from "@/lib/prompt-methods";
+import { scorePrompt } from "@/lib/quality-score";
+import { saveLocalSession } from "@/lib/local-history";
 
 interface PromptVersion {
   id: string;
@@ -42,6 +48,7 @@ export default function Workspace() {
   const { locale } = useI18n();
   const [raw, setRaw] = useState("");
   const [model, setModel] = useState<TargetModel>("generic");
+  const [method, setMethod] = useState<PromptMethodId>("auto");
   const [files, setFiles] = useState<AttachedFile[]>([]);
   const [session, setSession] = useState<UISession | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -51,6 +58,7 @@ export default function Workspace() {
   const [error, setError] = useState<{ message: string; hint?: string } | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+
 
   // Hydrate a starter dropped from /templates
   useEffect(() => {
@@ -112,8 +120,8 @@ export default function Workspace() {
   function runLocal(quick: boolean, composed: string) {
     const intent = detectIntentLocal(composed);
     if (quick) {
-      const result = reconstructPromptLocal({
-        raw: composed, intent: intent.intent, qa: [], targetModel: model, locale
+      const built = buildPromptByMethod({
+        method, raw: composed, qa: [], targetModel: model, locale
       });
       setSession({
         id: "local",
@@ -122,8 +130,9 @@ export default function Workspace() {
         questions: [],
         source: "local"
       });
-      setFinalPrompt(result.final_prompt);
-      setRationale(result.rationale);
+      setFinalPrompt(built.prompt);
+      setRationale(built.rationale);
+      persistLocal(composed, built.prompt, intent.intent, built.method);
       setInfo(locale === "ar" ? "وضع محلي — لا يحتاج إلى اتصال." : "Running locally — no backend needed.");
       setLoading(false);
       return;
@@ -141,6 +150,21 @@ export default function Workspace() {
     setLoading(false);
   }
 
+  function persistLocal(rawPrompt: string, finalText: string, intent: string, methodUsed: PromptMethodId) {
+    try {
+      saveLocalSession({
+        raw_prompt: rawPrompt,
+        final_prompt: finalText,
+        intent,
+        method: methodUsed,
+        target_model: model,
+        score: scorePrompt(finalText).overall
+      });
+    } catch {
+      /* quota — fine to ignore */
+    }
+  }
+
   async function submitAnswers() {
     if (!session) return;
     setLoading(true); setError(null);
@@ -150,11 +174,12 @@ export default function Workspace() {
       const qa = session.questions
         .map((q) => ({ question: q.question, answer: (answers[q.id] ?? "").trim() }))
         .filter((p) => p.answer.length > 0);
-      const result = reconstructPromptLocal({
-        raw: composed, intent: session.intent as never, qa, targetModel: model, locale
+      const built = buildPromptByMethod({
+        method, raw: composed, qa, targetModel: model, locale
       });
-      setFinalPrompt(result.final_prompt);
-      setRationale(result.rationale);
+      setFinalPrompt(built.prompt);
+      setRationale(built.rationale);
+      persistLocal(composed, built.prompt, session.intent, built.method);
       setLoading(false);
       return;
     }
@@ -178,15 +203,17 @@ export default function Workspace() {
       const qa = session.questions
         .map((q) => ({ question: q.question, answer: (answers[q.id] ?? "").trim() }))
         .filter((p) => p.answer.length > 0);
-      const result = reconstructPromptLocal({
-        raw: composed, intent: session.intent as never, qa, targetModel: model, locale
+      const built = buildPromptByMethod({
+        method, raw: composed, qa, targetModel: model, locale
       });
-      setFinalPrompt(result.final_prompt);
-      setRationale(result.rationale);
+      setFinalPrompt(built.prompt);
+      setRationale(built.rationale);
+      persistLocal(composed, built.prompt, session.intent, built.method);
       setInfo(locale === "ar" ? "أُكمل الموجِّه محليًا بعد تعذّر الخادم." : "Completed locally after server was unreachable.");
     } else {
       setFinalPrompt(r.data.version.final_prompt);
       setRationale(r.data.version.rationale);
+      persistLocal(composed, r.data.version.final_prompt, session.intent, method);
     }
     setLoading(false);
   }
@@ -240,6 +267,12 @@ export default function Workspace() {
               <textarea
                 value={raw}
                 onChange={(e) => setRaw(e.target.value)}
+                onKeyDown={(e) => {
+                  if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && raw.length >= 3 && !loading) {
+                    e.preventDefault();
+                    startSession(false);
+                  }
+                }}
                 rows={8}
                 className="w-full pe-14 min-h-[180px] sm:min-h-[220px] resize-y leading-relaxed"
                 placeholder={t("ws.placeholder.raw")}
@@ -251,7 +284,9 @@ export default function Workspace() {
 
             <FileUpload files={files} onChange={setFiles} className="mt-5" />
 
-            <div className="mt-5 pt-4 border-t border-slate-100 flex items-center gap-2 sm:gap-3 flex-wrap">
+            <MethodSelector value={method} onChange={setMethod} className="mt-5" />
+
+            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2 sm:gap-3 flex-wrap">
               <label className="text-sm font-medium text-slate-700">{t("ws.target")}</label>
               <select
                 value={model}
@@ -344,16 +379,22 @@ export default function Workspace() {
 
           {finalPrompt && (
             <>
+              <QualityScoreCard score={scorePrompt(finalPrompt)} />
+              <MethodCompare raw={composedPrompt()} targetModel={model} />
+
               <section className="card">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="font-semibold flex items-center gap-2">
                     <SparkIcon /> {t("ws.final_title")}
                   </div>
-                  <button onClick={copyFinal} className="btn-ghost border border-slate-300 text-xs sm:text-sm">
-                    {copied ? t("ws.copied") : t("ws.btn.copy")}
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <ExportButton content={finalPrompt} />
+                    <button onClick={copyFinal} className="btn-ghost border border-slate-300 dark:border-slate-700 text-xs sm:text-sm">
+                      {copied ? t("ws.copied") : t("ws.btn.copy")}
+                    </button>
+                  </div>
                 </div>
-                <pre className="mt-4 whitespace-pre-wrap rounded-lg bg-slate-50 p-4 text-sm border border-slate-200 leading-relaxed">
+                <pre className="mt-4 whitespace-pre-wrap rounded-lg bg-slate-50 dark:bg-slate-900 p-4 text-sm border border-slate-200 dark:border-slate-800 leading-relaxed">
 {finalPrompt}
                 </pre>
                 {rationale && (

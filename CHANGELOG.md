@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.8.0 — Prompt Engineering Intelligence
+
+- 🧠 **8 prompt methods** with a selector: Auto (recommends best), CRAFT, Task, Role, Zero-shot, Few-shot, Chain, Structured, Critique. Each method has a dedicated builder and shows description + best-for hint.
+- 📊 **Quality Score (0–100)** across 10 dimensions: clarity, context, role, audience, format, tone, constraints, examples, source grounding, validation. Color-coded card with per-dimension bars, strengths, weaknesses, and actionable recommendations.
+- 🔀 **Method Comparison** panel: same task built five ways (CRAFT, Structured, Few-Shot, Chain, Task), each scored, tap to view + copy.
+- 📥 **Export** — download the final prompt as `.md` or `.txt`.
+- 📜 **Local history** — last 50 sessions persist in localStorage with no auth required.
+- 📈 **Mini dashboard** on /history: total prompts, average quality, last 7 days, top method.
+- 🌙 **Dark mode** — header toggle, persists, respects OS preference, full UI coverage.
+- ⌨️ **Keyboard shortcut** — Cmd/Ctrl+Enter in the textarea to generate.
+- 🇦🇪 **Arabic refined** — every visible string rewritten for native UAE/Gulf professional MSA tone; proper diacritics where they aid comprehension; no machine-translation artefacts.
+- 🛡️ **Privacy cleanup** — removed personal/account references from source.
+- ✅ **42/42 tests pass** across 7 files; typecheck clean; production build green; all 6 routes return 200.
+
 ## v0.7.0 — Prismly (rebrand + motion)
 
 - 🌈 **Rebrand** to **Prismly** (EN) / **منشور** (AR). A prism refracts a raw idea into a structured spectrum of prompt sections — the brand metaphor now matches what the product actually does.

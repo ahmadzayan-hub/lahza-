@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import Logo from "@/components/Logo";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header() {
   const { t, locale, setLocale } = useI18n();
@@ -10,7 +11,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 backdrop-blur bg-white/80 border-b border-slate-200">
+    <header className="sticky top-0 z-30 backdrop-blur bg-white/80 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
         <a href="/" className="flex items-center gap-2 font-semibold tracking-tight min-w-0">
           <Logo className="w-8 h-8 flex-shrink-0" />
@@ -23,9 +24,10 @@ export default function Header() {
           <a href="/templates" className="btn-ghost">{t("nav.templates")}</a>
           <a href="/history" className="btn-ghost">{t("nav.history")}</a>
           <a href="/login" className="btn-ghost">{t("nav.signin")}</a>
+          <ThemeToggle />
           <button
             onClick={() => setLocale(otherLocale)}
-            className="btn-ghost border border-slate-200 text-xs"
+            className="btn-ghost border border-slate-200 dark:border-slate-700 text-xs"
             aria-label="Toggle language"
           >
             {t("lang.toggle")}
@@ -34,9 +36,10 @@ export default function Header() {
 
         {/* Mobile actions */}
         <div className="flex md:hidden items-center gap-1">
+          <ThemeToggle />
           <button
             onClick={() => setLocale(otherLocale)}
-            className="btn-ghost border border-slate-200 text-xs px-2 py-1"
+            className="btn-ghost border border-slate-200 dark:border-slate-700 text-xs px-2 py-1"
             aria-label="Toggle language"
           >
             {t("lang.toggle")}

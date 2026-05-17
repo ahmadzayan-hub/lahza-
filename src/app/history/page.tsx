@@ -1,10 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useT } from "@/lib/i18n/I18nProvider";
+import { useI18n, useT } from "@/lib/i18n/I18nProvider";
 import { safeFetch } from "@/lib/safe-fetch";
+import {
+  readLocalHistory,
+  statsFromHistory,
+  clearLocalHistory,
+  type LocalSession
+} from "@/lib/local-history";
+import { methodById } from "@/lib/prompt-methods";
+import { scoreToTone } from "@/lib/quality-score";
 
-interface SessionRow {
+interface ApiSession {
   id: string;
   raw_prompt: string;
   intent: string | null;
@@ -16,47 +24,94 @@ interface SessionRow {
 
 export default function HistoryPage() {
   const t = useT();
-  const [rows, setRows] = useState<SessionRow[]>([]);
+  const { locale } = useI18n();
+  const [cloud, setCloud] = useState<ApiSession[]>([]);
+  const [local, setLocal] = useState<LocalSession[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<{ message: string; hint?: string } | null>(null);
   const [query, setQuery] = useState("");
   const [intentFilter, setIntentFilter] = useState<string>("all");
 
   useEffect(() => {
+    setLocal(readLocalHistory());
     let cancelled = false;
     (async () => {
-      const r = await safeFetch<{ sessions: SessionRow[] }>("/api/sessions");
-      if (cancelled) return;
-      if (!r.ok || !r.data) {
-        setError(r.error ?? { message: "unknown" });
-      } else {
-        setRows(r.data.sessions ?? []);
-      }
-      setLoading(false);
+      const r = await safeFetch<{ sessions: ApiSession[] }>("/api/sessions");
+      if (!cancelled && r.ok && r.data) setCloud(r.data.sessions ?? []);
+      if (!cancelled) setLoading(false);
     })();
     return () => { cancelled = true; };
   }, []);
 
+  const stats = useMemo(() => statsFromHistory(local), [local]);
+
   const intents = useMemo(() => {
     const set = new Set<string>();
-    rows.forEach((r) => r.intent && set.add(r.intent));
+    local.forEach((r) => r.intent && set.add(r.intent));
+    cloud.forEach((r) => r.intent && set.add(r.intent));
     return Array.from(set).sort();
-  }, [rows]);
+  }, [local, cloud]);
 
-  const filtered = useMemo(() => {
+  const filteredLocal = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return rows.filter((r) => {
+    return local.filter((r) => {
       if (intentFilter !== "all" && r.intent !== intentFilter) return false;
       if (!q) return true;
-      return r.raw_prompt.toLowerCase().includes(q);
+      return r.raw_prompt.toLowerCase().includes(q) || r.final_prompt.toLowerCase().includes(q);
     });
-  }, [rows, query, intentFilter]);
+  }, [local, query, intentFilter]);
+
+  function reset() {
+    if (!confirm(locale === "ar" ? "مسح السجل المحلي؟" : "Clear local history?")) return;
+    clearLocalHistory();
+    setLocal([]);
+  }
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-10">
-      <h1 className="text-2xl font-semibold">{t("history.title")}</h1>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-6">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h1 className="text-2xl font-semibold">{t("history.title")}</h1>
+        {local.length > 0 && (
+          <button onClick={reset} className="btn-ghost border border-slate-300 dark:border-slate-700 text-xs">
+            {locale === "ar" ? "مسح السجل المحلي" : "Clear local history"}
+          </button>
+        )}
+      </div>
 
-      <div className="mt-4 flex gap-2 flex-wrap">
+      {/* Dashboard */}
+      {local.length > 0 && (
+        <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <Stat
+            label={locale === "ar" ? "إجمالي الموجِّهات" : "Total prompts"}
+            value={stats.total}
+            tone="brand"
+          />
+          <Stat
+            label={locale === "ar" ? "متوسّط الجودة" : "Avg quality"}
+            value={`${stats.avgScore}`}
+            tone={scoreToTone(stats.avgScore)}
+            suffix="/100"
+          />
+          <Stat
+            label={locale === "ar" ? "آخر 7 أيام" : "Last 7 days"}
+            value={stats.last7Days}
+            tone="violet"
+          />
+          <Stat
+            label={locale === "ar" ? "طريقة مفضّلة" : "Top method"}
+            value={
+              stats.topMethods[0]
+                ? (locale === "ar"
+                    ? methodById(stats.topMethods[0].method).name_ar
+                    : methodById(stats.topMethods[0].method).name_en)
+                : "—"
+            }
+            tone="emerald"
+            small
+          />
+        </section>
+      )}
+
+      <div className="flex gap-2 flex-wrap">
         <input
           type="search"
           placeholder={t("history.search")}
@@ -71,35 +126,70 @@ export default function HistoryPage() {
           ))}
         </select>
         <span className="text-xs text-slate-500 self-center">
-          {t("history.count", { shown: filtered.length, total: rows.length })}
+          {t("history.count", { shown: filteredLocal.length, total: local.length })}
         </span>
       </div>
 
-      {loading && <p className="mt-4 text-slate-500">…</p>}
-      {error && (
-        <div className="mt-4 rounded-md border border-rose-200 bg-rose-50 text-rose-800 p-3 text-sm">
-          <div className="font-medium">{error.message}</div>
-          {error.hint && <div className="text-rose-700 text-xs mt-1">{error.hint}</div>}
-        </div>
-      )}
+      {loading && <p className="text-slate-500 text-sm">…</p>}
 
-      <div className="mt-6 space-y-3">
-        {filtered.map((s) => (
-          <div key={s.id} className="card hover:shadow-md transition">
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span>{new Date(s.created_at).toLocaleString()}</span>
-              <span>
-                {s.intent ?? "—"} · {s.target_model ?? "generic"} · {s.status}
-              </span>
+      <div className="space-y-3">
+        {filteredLocal.map((s) => {
+          const tone = scoreToTone(s.score);
+          const toneCls = {
+            rose: "bg-rose-50 text-rose-700",
+            amber: "bg-amber-50 text-amber-700",
+            emerald: "bg-emerald-50 text-emerald-700"
+          }[tone];
+          return (
+            <div key={s.id} className="card hover:shadow-md dark:bg-slate-900 dark:border-slate-800 transition">
+              <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 flex-wrap gap-1">
+                <span>{new Date(s.created_at).toLocaleString()}</span>
+                <span className="flex items-center gap-2">
+                  <span className={`px-2 py-0.5 rounded ${toneCls}`}>{s.score}/100</span>
+                  <span>{s.intent} · {s.target_model} · {locale === "ar" ? methodById(s.method).name_ar : methodById(s.method).name_en}</span>
+                </span>
+              </div>
+              <p className="mt-2 text-sm line-clamp-2 dark:text-slate-200">{s.raw_prompt}</p>
             </div>
-            <p className="mt-2 text-sm line-clamp-3">{s.raw_prompt}</p>
-          </div>
-        ))}
-        {!loading && filtered.length === 0 && !error && (
-          <p className="text-slate-500">
-            {rows.length === 0 ? t("history.empty") : t("history.empty_filter")}
+          );
+        })}
+        {!loading && filteredLocal.length === 0 && (
+          <p className="text-slate-500 dark:text-slate-400 text-sm">
+            {local.length === 0 ? t("history.empty") : t("history.empty_filter")}
           </p>
         )}
+      </div>
+    </div>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  tone,
+  suffix,
+  small
+}: {
+  label: string;
+  value: number | string;
+  tone: "brand" | "violet" | "emerald" | "rose" | "amber";
+  suffix?: string;
+  small?: boolean;
+}) {
+  const tones: Record<string, string> = {
+    brand: "from-indigo-500 to-violet-500",
+    violet: "from-violet-500 to-fuchsia-500",
+    emerald: "from-emerald-500 to-teal-500",
+    rose: "from-rose-500 to-pink-500",
+    amber: "from-amber-500 to-orange-500"
+  };
+  return (
+    <div className="card dark:bg-slate-900 dark:border-slate-800 relative overflow-hidden">
+      <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${tones[tone]}`} />
+      <div className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">{label}</div>
+      <div className={`mt-1 font-semibold dark:text-slate-100 ${small ? "text-base" : "text-2xl"} tabular-nums`}>
+        {value}
+        {suffix && <span className="text-sm text-slate-400 ms-1">{suffix}</span>}
       </div>
     </div>
   );
