@@ -1,0 +1,25 @@
+{
+  "name": "Tweenz AI Learning OS",
+  "short_name": "Tweenz AI",
+  "description": "Your MBA study life, organized by AI. Bilingual AI academic platform.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon.svg",     "sizes": "any",     "type": "image/svg+xml" }
+  ],
+  "screenshots": [],
+  "categories": ["education", "productivity"],
+  "shortcuts": [
+    { "name": "Dashboard", "url": "/dashboard", "description": "Your academic dashboard" },
+    { "name": "AI Tutor", "url": "/tutor", "description": "Chat with your AI tutor" },
+    { "name": "Study Packs", "url": "/study-packs", "description": "Your AI study packs" },
+    { "name": "Ask My MBA", "url": "/ask-mba", "description": "Ask your MBA agent" }
+  ]
+}
