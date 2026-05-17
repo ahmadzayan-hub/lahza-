@@ -8,7 +8,7 @@ export default function PrivacyPage() {
         {[
           {
             title: "1. Introduction",
-            body: "Tweenz AI ('we', 'us', 'our') operates www.tweenz.ae, a bilingual AI academic operating system for MBA and university students. This Privacy Policy explains how we collect, use, store, and protect your personal data in compliance with applicable laws including UAE data protection regulations."
+            body: "LearnIQ ('we', 'us', 'our') operates www.learniq.ae, a bilingual AI academic operating system for MBA and university students. This Privacy Policy explains how we collect, use, store, and protect your personal data in compliance with applicable laws including UAE data protection regulations."
           },
           {
             title: "2. Data We Collect",
@@ -32,7 +32,7 @@ export default function PrivacyPage() {
           },
           {
             title: "7. Your Rights",
-            body: "You have the right to: (a) Access your personal data; (b) Correct inaccurate data; (c) Delete your account and data; (d) Export your data; (e) Withdraw consent; (f) Object to processing. To exercise these rights, go to Settings > Privacy and Data, or contact privacy@tweenz.ae."
+            body: "You have the right to: (a) Access your personal data; (b) Correct inaccurate data; (c) Delete your account and data; (d) Export your data; (e) Withdraw consent; (f) Object to processing. To exercise these rights, go to Settings > Privacy and Data, or contact privacy@learniq.ae."
           },
           {
             title: "8. Data Retention",
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
           },
           {
             title: "10. Children",
-            body: "Tweenz AI is designed for university students and professionals aged 18 and above. We do not knowingly collect data from children under 18."
+            body: "LearnIQ is designed for university students and professionals aged 18 and above. We do not knowingly collect data from children under 18."
           },
           {
             title: "11. Changes",
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
           },
           {
             title: "12. Contact",
-            body: "For privacy questions, data requests, or concerns: privacy@tweenz.ae | Tweenz AI, United Arab Emirates"
+            body: "For privacy questions, data requests, or concerns: privacy@learniq.ae | LearnIQ, United Arab Emirates"
           },
         ].map((s, i) => (
           <div key={i}>
@@ -65,7 +65,7 @@ export default function PrivacyPage() {
       <div className="mt-12 p-5 bg-slate-50 dark:bg-slate-800 rounded-2xl">
         <h3 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">سياسة الخصوصية — ملاحظة باللغة العربية</h3>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          سياسة الخصوصية الكاملة متاحة باللغة العربية. نحن نلتزم بحماية بياناتك الشخصية وفقاً للأنظمة المعمول بها. للاستفسار: privacy@tweenz.ae
+          سياسة الخصوصية الكاملة متاحة باللغة العربية. نحن نلتزم بحماية بياناتك الشخصية وفقاً للأنظمة المعمول بها. للاستفسار: privacy@learniq.ae
         </p>
       </div>
     </div>

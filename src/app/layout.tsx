@@ -2,22 +2,22 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { I18nProvider } from "@/lib/i18n/I18nProvider";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.tweenz.ae";
-const TITLE = "Tweenz AI Learning OS — MBA Study Platform | منصة التعلم الذكي";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.learniq.ae";
+const TITLE = "LearnIQ — MBA Learning OS | نظام تعلم الماجستير الذكي";
 const DESCRIPTION =
-  "Tweenz AI Learning OS — bilingual AI academic operating system for MBA and university students. Manage courses, lectures, study packs, grades, deadlines, and AI tutor chat in one professional platform. From UAE to the world. | نظام تشغيل أكاديمي ذكي ثنائي اللغة لطلاب الماجستير والجامعات.";
+  "LearnIQ is a bilingual AI academic operating system for MBA and university students. Manage courses, lectures, study packs, grades, deadlines, and AI tutor chat in one platform. From UAE, free to the world. | نظام تشغيل أكاديمي ذكي ثنائي اللغة لطلاب الماجستير والجامعات، من الإمارات إلى العالم.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
-  title: { default: TITLE, template: "%s · Tweenz AI" },
+  title: { default: TITLE, template: "%s · LearnIQ" },
   description: DESCRIPTION,
-  applicationName: "Tweenz AI",
+  applicationName: "LearnIQ",
   manifest: "/manifest.webmanifest",
-  appleWebApp: { capable: true, title: "Tweenz AI", statusBarStyle: "default" },
+  appleWebApp: { capable: true, title: "LearnIQ", statusBarStyle: "default" },
   icons: { icon: "/icon.svg", apple: "/apple-icon.png" },
-  authors: [{ name: "Tweenz AI", url: APP_URL }],
+  authors: [{ name: "LearnIQ", url: APP_URL }],
   keywords: [
-    "Tweenz AI", "MBA study app", "AI tutor", "study packs", "Moodle companion",
+    "LearnIQ", "MBA study app", "AI tutor", "study packs", "Moodle companion",
     "bilingual education", "Arabic learning", "UAE EdTech", "online MBA",
     "academic AI", "study flashcards", "grade tracker", "exam readiness",
     "منصة تعليمية", "تعلم ذكي", "ماجستير", "طلاب الجامعة"
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: APP_URL,
-    siteName: "Tweenz AI",
+    siteName: "LearnIQ",
     locale: "en_US",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Tweenz AI Learning OS" }]
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "LearnIQ MBA Learning OS" }]
   },
   twitter: {
     card: "summary_large_image",
@@ -54,8 +54,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Sora — unique geometric Latin; Cairo — premium humanist Arabic */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
         {/* Prevent flash of wrong theme */}
@@ -78,8 +79,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              name: "Tweenz AI Learning OS",
-              alternateName: ["Tweenz AI", "منصة Tweenz التعليمية"],
+              name: "LearnIQ MBA Learning OS",
+              alternateName: ["LearnIQ", "منصة LearnIQ التعليمية"],
               description: DESCRIPTION,
               url: APP_URL,
               applicationCategory: "EducationApplication",

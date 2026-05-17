@@ -27,7 +27,7 @@ export async function GET() {
   return new NextResponse(JSON.stringify(exportData, null, 2), {
     headers: {
       "Content-Type": "application/json",
-      "Content-Disposition": `attachment; filename="tweenz-data-${Date.now()}.json"`,
+      "Content-Disposition": `attachment; filename="learniq-data-${Date.now()}.json"`,
     },
   });
 }

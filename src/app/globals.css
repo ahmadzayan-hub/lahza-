@@ -5,44 +5,106 @@
 /* ─── Brand CSS variables ─────────────────────────────────────── */
 :root {
   color-scheme: light;
-  --bg: #f8fafc;
-  --brand-primary: #6366f1;
+
+  /* Palette */
+  --brand-50:  #eef2ff;
+  --brand-100: #e0e7ff;
+  --brand-400: #818cf8;
+  --brand-500: #6366f1;
+  --brand-600: #4f46e5;
+  --brand-700: #4338ca;
+  --brand-800: #3730a3;
+  --brand-900: #312e81;
+  --brand-950: #1e1b4b;
+
+  --bg:          #f5f7ff;
+  --surface:     #ffffff;
+  --surface-2:   #f0f2fb;
+  --surface-3:   #e8ebf8;
+  --border:      #dde2f4;
+  --border-subtle: #edf0fa;
+
+  --text-primary:   #0f1729;
+  --text-secondary: #4b5680;
+  --text-muted:     #8b93b8;
+
+  --brand-primary:   #6366f1;
   --brand-secondary: #8b5cf6;
-  --brand-accent: #ec4899;
-  --brand-gold: #f59e0b;
-  --surface: #ffffff;
-  --surface-2: #f8fafc;
-  --border: #e2e8f0;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --radius: 12px;
+  --brand-accent:    #06b6d4;
+  --brand-gold:      #f59e0b;
+
+  --radius:        14px;
+  --radius-sm:     10px;
+  --radius-lg:     20px;
   --header-height: 64px;
-}
-html.dark {
-  color-scheme: dark;
-  --bg: #090d1a;
-  --surface: #111827;
-  --surface-2: #0f172a;
-  --border: #1e293b;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
+  --sidebar-w:     256px;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 3px rgba(15,23,41,.06), 0 1px 2px rgba(15,23,41,.04);
+  --shadow-md:  0 4px 16px rgba(15,23,41,.08), 0 1px 4px rgba(15,23,41,.04);
+  --shadow-lg:  0 12px 40px rgba(15,23,41,.12), 0 2px 8px rgba(15,23,41,.06);
+  --shadow-brand: 0 8px 24px -4px rgba(99,102,241,.45);
 }
 
-/* ─── Base ────────────────────────────────────────────────────── */
+html.dark {
+  color-scheme: dark;
+  --bg:          #07091a;
+  --surface:     #0e1225;
+  --surface-2:   #121730;
+  --surface-3:   #1a2040;
+  --border:      #1e2645;
+  --border-subtle: #161d3a;
+  --text-primary:   #e8ecff;
+  --text-secondary: #8b93c8;
+  --text-muted:     #4b547a;
+}
+
+/* ─── Typography — Sora (LTR) + Cairo (RTL) ──────────────────── */
 html, body {
   @apply h-full antialiased;
   background-color: var(--bg);
   color: var(--text-primary);
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
-html[dir="rtl"] body {
-  font-family: "Tajawal", "IBM Plex Sans Arabic", "Segoe UI", system-ui, sans-serif;
+
+/* LTR — Sora: geometric, modern, distinctive */
+html[dir="ltr"] body,
+html[dir="ltr"] button,
+html[dir="ltr"] input,
+html[dir="ltr"] select,
+html[dir="ltr"] textarea {
+  font-family: "Sora", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+/* RTL — Cairo: humanist, legible, purpose-built for Arabic */
+html[dir="rtl"] body,
+html[dir="rtl"] button,
+html[dir="rtl"] input,
+html[dir="rtl"] select,
+html[dir="rtl"] textarea {
+  font-family: "Cairo", ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: normal;
+  letter-spacing: 0;
+  word-spacing: 0.02em;
+  line-height: 1.75;
+}
+
+/* Arabic headings — heavier weight for clarity */
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4 {
+  font-weight: 700;
+  line-height: 1.5;
   letter-spacing: 0;
 }
-html[dir="ltr"] body {
-  font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+
+/* Numbers stay LTR inside Arabic */
+html[dir="rtl"] .num,
+html[dir="rtl"] [data-num] {
+  font-family: "Sora", sans-serif;
+  direction: ltr;
+  unicode-bidi: embed;
 }
 
 /* ─── Form controls ───────────────────────────────────────────── */
@@ -226,35 +288,121 @@ html.dark .hi-card-stroke  { stroke: #7c3aed; }
 html.dark .hi-card-line    { stroke: #a78bfa; }
 html.dark .hi-card-label   { fill: #c4b5fd; }
 
-/* ─── Shimmer skeleton ────────────────────────────────────────── */
-.skeleton {
-  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.8s linear infinite;
+/* ─── App layout ──────────────────────────────────────────────── */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
 }
-html.dark .skeleton {
-  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
-  background-size: 200% 100%;
+.app-main {
+  flex: 1;
+  min-width: 0;
 }
 
-/* ─── Entrance animations ─────────────────────────────────────── */
+/* ─── Sidebar glass ───────────────────────────────────────────── */
+.sidebar-glass {
+  background: var(--surface);
+  border-inline-end: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+html.dark .sidebar-glass {
+  background: var(--surface);
+  border-inline-end: 1px solid var(--border);
+}
+
+/* ─── Nav active item ─────────────────────────────────────────── */
+.nav-active {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  color: #ffffff;
+  box-shadow: var(--shadow-brand);
+}
+
+/* ─── Hero gradient ───────────────────────────────────────────── */
+.hero-gradient {
+  background: linear-gradient(135deg, #3730a3 0%, #4f46e5 40%, #7c3aed 70%, #0e7490 100%);
+}
+
+/* ─── Card system ─────────────────────────────────────────────── */
+.card {
+  @apply rounded-2xl border p-5 transition-all duration-200;
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 240ms ease-out both;
+}
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+html.dark .card {
+  background: var(--surface);
+  border-color: var(--border);
+}
+.card-hover {
+  @apply card cursor-pointer;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── Shimmer skeleton ────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-3) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s linear infinite;
+  border-radius: var(--radius);
+}
+
+/* ─── Keyframe animations ─────────────────────────────────────── */
 @keyframes shimmer {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
+  0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-8px); }
 }
-@keyframes po-fade-in {
-  from { opacity: 0; transform: translateY(4px); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.card { animation: po-fade-in 240ms ease-out both; }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .6; }
+}
+
+.animate-fade-in    { animation: fadeIn 200ms ease-out both; }
+.animate-fade-up    { animation: fadeUp 300ms ease-out both; }
+.animate-slide-right{ animation: slideRight 300ms ease-out both; }
+.animate-float      { animation: float 3s ease-in-out infinite; }
+.animate-pulse-soft { animation: pulseSoft 2.5s ease-in-out infinite; }
+.animate-slide-up   { animation: fadeUp 300ms ease-out both; }
 
 /* ─── Focus visible ───────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--brand-primary);
   outline-offset: 2px;
   border-radius: 6px;
 }
+
+/* ─── RTL layout helpers ──────────────────────────────────────── */
+[dir="rtl"] .ltr-only { display: none; }
+[dir="ltr"] .rtl-only { display: none; }
+
+/* Flip icons in RTL */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+/* ─── Scrollbar (webkit) ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }

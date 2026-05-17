@@ -15,7 +15,7 @@ export function PublicFooter() {
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 text-white font-bold mb-3">
               <GraduationCap size={22} />
-              <span>Tweenz AI</span>
+              <span>LearnIQ</span>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed">
               {t("app.tagline")}

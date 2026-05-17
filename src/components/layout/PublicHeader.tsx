@@ -24,7 +24,7 @@ export function PublicHeader() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 font-bold text-brand-700 dark:text-brand-400">
             <GraduationCap size={26} />
-            <span className="text-lg tracking-tight">Tweenz AI</span>
+            <span className="text-lg tracking-tight">LearnIQ</span>
           </Link>
 
           {/* Desktop nav */}

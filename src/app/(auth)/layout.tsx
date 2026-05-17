@@ -9,7 +9,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       <div className="p-6">
         <Link href="/" className="inline-flex items-center gap-2.5 text-white font-bold text-lg">
           <GraduationCap size={24} />
-          Tweenz AI
+          LearnIQ
         </Link>
       </div>
 
@@ -22,7 +22,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
       {/* Footer */}
       <div className="p-6 text-center text-xs text-white/40">
-        © {new Date().getFullYear()} Tweenz AI. Operated from UAE.
+        © {new Date().getFullYear()} LearnIQ. Operated from UAE.
         {" · "}
         <Link href="/privacy" className="hover:text-white/70 transition">Privacy</Link>
         {" · "}

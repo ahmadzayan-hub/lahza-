@@ -168,7 +168,7 @@ export default function SettingsPage() {
               <div className="card space-y-3">
                 <h2 className="font-semibold text-slate-900 dark:text-white">{t("settings.privacy.title")}</h2>
                 <button
-                  onClick={() => fetch("/api/account/export").then(r => r.blob()).then(b => { const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = "tweenz-data.json"; a.click(); })}
+                  onClick={() => fetch("/api/account/export").then(r => r.blob()).then(b => { const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = "learniq-data.json"; a.click(); })}
                   className="btn-secondary w-full"
                 >
                   <Download className="w-4 h-4" />{t("settings.privacy.exportData")}

@@ -102,7 +102,7 @@ export default function PricingPage() {
           { q: "Can I cancel anytime?", a: "Yes. Cancel your subscription at any time from your billing portal. No questions asked." },
           { q: "Is there a free trial?", a: "All paid plans include a 7-day free trial. No credit card required to start." },
           { q: "Can I switch plans?", a: "Yes. Upgrade or downgrade at any time. Changes take effect immediately." },
-          { q: "Do you offer student discounts?", a: "Contact us at support@tweenz.ae with your student ID for regional pricing options." },
+          { q: "Do you offer student discounts?", a: "Contact us at support@learniq.ae with your student ID for regional pricing options." },
           { q: "Is my data private?", a: "Yes. Your uploaded files, notes, and AI conversations are private and never used for model training without your explicit opt-in." },
           { q: "What payment methods are accepted?", a: "All major credit cards via Stripe. UAE cards, international cards, and some digital wallets are supported." },
         ].map((item, i) => (

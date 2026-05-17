@@ -5,5 +5,5 @@ import { createClient } from "@/lib/db/supabase-server";
 export async function POST() {
   const supabase = createClient();
   await supabase.auth.signOut();
-  return NextResponse.redirect(new URL("/", process.env.NEXT_PUBLIC_APP_URL ?? "https://www.tweenz.ae"));
+  return NextResponse.redirect(new URL("/", process.env.NEXT_PUBLIC_APP_URL ?? "https://www.learniq.ae"));
 }

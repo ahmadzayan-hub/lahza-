@@ -9,7 +9,7 @@ export default function ForStudentsPage() {
           <div className="badge bg-white/20 text-white mb-6 text-sm">For MBA Students</div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Your MBA Journey, Powered by AI</h1>
           <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-            Stop drowning in Moodle, spreadsheets, and scattered notes. Tweenz AI brings everything together in one bilingual platform.
+            Stop drowning in Moodle, spreadsheets, and scattered notes. LearnIQ brings everything together in one bilingual platform.
           </p>
           <Link href="/signup" className="btn bg-white text-brand-700 hover:bg-slate-50 px-8 py-4 text-base font-semibold">
             Start Free — No Card Required

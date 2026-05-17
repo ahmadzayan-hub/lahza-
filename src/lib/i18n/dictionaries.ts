@@ -172,9 +172,9 @@ export const dict = {
     "profile.skip": "Skip for now",
 
     "dashboard.title": "Dashboard",
-    "dashboard.greeting.morning": "Good morning, {name}",
-    "dashboard.greeting.afternoon": "Good afternoon, {name}",
-    "dashboard.greeting.evening": "Good evening, {name}",
+    "dashboard.greeting.morning": "Good morning, {name} \u{1F44B}",
+    "dashboard.greeting.afternoon": "Good afternoon, {name} \u{1F44B}",
+    "dashboard.greeting.evening": "Good evening, {name} \u{1F44B}",
     "dashboard.focus": "What should I focus on today?",
     "dashboard.courses_active": "Active courses",
     "dashboard.upcoming_deadlines": "Upcoming deadlines",
@@ -190,6 +190,8 @@ export const dict = {
     "dashboard.due_soon": "Due soon",
     "dashboard.at_risk": "At risk",
     "dashboard.overdue": "Overdue",
+    "dashboard.safe": "Safe",
+    "dashboard.program_label": "MBA Year 2",
 
     "courses.title": "My Courses",
     "courses.add": "Add Course",
@@ -675,9 +677,9 @@ export const dict = {
     "profile.skip": "تخطي الآن",
 
     "dashboard.title": "لوحة التحكم",
-    "dashboard.greeting.morning": "صباح الخير، {name}",
-    "dashboard.greeting.afternoon": "مساء الخير، {name}",
-    "dashboard.greeting.evening": "مساء الخير، {name}",
+    "dashboard.greeting.morning": "صباح الخير يا {name}",
+    "dashboard.greeting.afternoon": "مساء الخير يا {name}",
+    "dashboard.greeting.evening": "مساء الخير يا {name}",
     "dashboard.focus": "ما الذي يجب أن أركز عليه اليوم؟",
     "dashboard.courses_active": "المقررات النشطة",
     "dashboard.upcoming_deadlines": "المواعيد القادمة",
@@ -693,6 +695,8 @@ export const dict = {
     "dashboard.due_soon": "مستحق قريباً",
     "dashboard.at_risk": "في خطر",
     "dashboard.overdue": "متأخر",
+    "dashboard.safe": "آمن",
+    "dashboard.program_label": "ماجستير إدارة الأعمال",
 
     "courses.title": "مقرراتي",
     "courses.add": "إضافة مقرر",

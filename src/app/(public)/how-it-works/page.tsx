@@ -13,7 +13,7 @@ const STEPS = [
     step: "02",
     icon: Brain,
     title: "AI Processes Your Materials",
-    description: "Tweenz AI extracts and chunks your documents, generates embeddings, and builds a personalized knowledge base — all private to you.",
+    description: "LearnIQ extracts and chunks your documents, generates embeddings, and builds a personalized knowledge base — all private to you.",
     color: "text-teal-600 bg-teal-100 dark:bg-teal-900/50",
   },
   {
@@ -36,7 +36,7 @@ export default function HowItWorksPage() {
   return (
     <main className="bg-white dark:bg-slate-950">
       <section className="bg-gradient-to-br from-brand-950 to-teal-900 text-white py-20 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">How Tweenz AI Works</h1>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">How LearnIQ Works</h1>
         <p className="text-xl text-white/70 max-w-2xl mx-auto">
           From document upload to AI-powered insights — here's your path to MBA excellence.
         </p>

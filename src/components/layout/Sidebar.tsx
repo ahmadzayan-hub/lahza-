@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useI18n } from "@/lib/i18n/I18nProvider";
 import {
   GraduationCap, LayoutDashboard, BookOpen, Brain,
-  CalendarCheck, TrendingUp, MessageSquare, Settings, X, Sparkles,
+  CalendarCheck, TrendingUp, MessageSquare, Settings, X, Sparkles, LogOut,
 } from "lucide-react";
 import clsx from "clsx";
 import type { ReactNode } from "react";
@@ -40,12 +40,14 @@ function NavLink({ href, icon, label, color, onClose }: NavItem & { onClose?: ()
 }
 
 export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
+  const { t } = useI18n();
+
   const mainNav: NavItem[] = [
-    { href: "/dashboard", icon: <LayoutDashboard size={18} />, label: "Today",    color: "text-brand-500"   },
-    { href: "/courses",   icon: <BookOpen size={18} />,        label: "Courses",  color: "text-sky-500"     },
-    { href: "/study",     icon: <Brain size={18} />,           label: "Study",    color: "text-violet-500"  },
-    { href: "/plan",      icon: <CalendarCheck size={18} />,   label: "Plan",     color: "text-amber-500"   },
-    { href: "/progress",  icon: <TrendingUp size={18} />,      label: "Progress", color: "text-emerald-500" },
+    { href: "/dashboard", icon: <LayoutDashboard size={18} />, label: t("nav.dashboard"), color: "text-brand-500"   },
+    { href: "/courses",   icon: <BookOpen size={18} />,        label: t("nav.courses"),   color: "text-sky-500"     },
+    { href: "/study",     icon: <Brain size={18} />,           label: t("nav.study_packs"), color: "text-violet-500" },
+    { href: "/plan",      icon: <CalendarCheck size={18} />,   label: t("nav.timeline"),  color: "text-amber-500"   },
+    { href: "/progress",  icon: <TrendingUp size={18} />,      label: t("nav.grades"),    color: "text-emerald-500" },
   ];
 
   const sidebar = (
@@ -58,8 +60,8 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             <GraduationCap className="w-5 h-5 text-white" />
           </div>
           <div>
-            <span className="text-sm font-bold gradient-text">Tweenz AI</span>
-            <p className="text-[9px] text-slate-400 -mt-0.5 leading-none">MBA Learning OS</p>
+            <span className="text-sm font-bold text-gradient">LearnIQ</span>
+            <p className="text-[9px] text-slate-400 -mt-0.5 leading-none">{t("app.tagline").slice(0, 28)}</p>
           </div>
         </Link>
         <button
@@ -76,13 +78,13 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-brand-50/80 to-purple-50/80 dark:from-brand-950/40 dark:to-purple-950/30 border border-brand-100/60 dark:border-brand-800/30">
           <div className="relative flex-shrink-0">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-400 to-purple-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
-              SA
+              AM
             </div>
             <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-white dark:border-slate-950" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">Alex Morgan</p>
-            <p className="text-[10px] text-slate-400 truncate">MBA Year 2</p>
+            <p className="text-[10px] text-slate-400 truncate">{t("dashboard.program_label")}</p>
           </div>
           <Sparkles className="w-3.5 h-3.5 text-brand-400 flex-shrink-0 animate-pulse-soft" />
         </div>
@@ -97,8 +99,14 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
       {/* Footer nav */}
       <div className="px-3 pb-4 flex-shrink-0 space-y-1 border-t border-white/40 dark:border-white/5 pt-3">
-        <NavLink href="/messages" icon={<MessageSquare size={18} />} label="Messages" color="text-cyan-500"  onClose={onClose} />
-        <NavLink href="/settings" icon={<Settings size={18} />}      label="Settings"  color="text-slate-500" onClose={onClose} />
+        <NavLink href="/messages" icon={<MessageSquare size={18} />} label={t("nav.messages")} color="text-cyan-500"  onClose={onClose} />
+        <NavLink href="/settings" icon={<Settings size={18} />}      label={t("nav.settings")} color="text-slate-500" onClose={onClose} />
+        <form action="/api/auth/signout" method="POST">
+          <button type="submit" className="w-full flex items-center gap-3.5 px-4 py-2.5 rounded-2xl text-sm font-medium text-slate-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/20 dark:hover:text-red-400 transition-all">
+            <LogOut size={16} className="flex-shrink-0" />
+            {t("nav.signout")}
+          </button>
+        </form>
       </div>
     </aside>
   );

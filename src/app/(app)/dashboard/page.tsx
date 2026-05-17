@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
+import { useI18n } from "@/lib/i18n/I18nProvider";
 import {
   BookOpen, Clock, Brain, Zap, ArrowRight, Flame,
   CheckCircle, AlertTriangle, Megaphone, CalendarCheck,
-  TrendingUp, Bot, Layers,
+  Bot, Layers,
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -31,11 +32,9 @@ function RingProgress({ value, size = 48, stroke = 4, color = "#3b82f6" }: { val
 const riskColors: Record<string, "red"|"yellow"|"green"|"blue"> = {
   overdue: "red", at_risk: "red", due_soon: "yellow", safe: "green",
 };
-const riskLabels: Record<string, string> = {
-  overdue: "Overdue", at_risk: "At Risk", due_soon: "Due Soon", safe: "Safe",
-};
 
 export default function DashboardPage() {
+  const { t } = useI18n();
   const [courses, setCourses]             = useState<Course[]>([]);
   const [deadlines, setDeadlines]         = useState<Deadline[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -55,8 +54,13 @@ export default function DashboardPage() {
   }, []);
 
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const greetingKey = hour < 12 ? "dashboard.greeting.morning" : hour < 17 ? "dashboard.greeting.afternoon" : "dashboard.greeting.evening";
+  const greeting = t(greetingKey, { name: "Alex" });
   const urgent = deadlines.filter(d => d.risk === "overdue" || d.risk === "at_risk");
+  const riskLabels: Record<string, string> = {
+    overdue: t("dashboard.overdue"), at_risk: t("dashboard.at_risk"),
+    due_soon: t("dashboard.due_soon"), safe: t("dashboard.safe"),
+  };
 
   if (loading) return (
     <div className="space-y-5 animate-fade-in">
@@ -70,14 +74,14 @@ export default function DashboardPage() {
     <div className="space-y-5 animate-fade-up">
 
       {/* ── Hero / greeting ── */}
-      <div className="relative rounded-3xl overflow-hidden hero-gradient p-6 text-white shadow-float">
-        <div className="absolute top-0 right-0 w-56 h-56 rounded-full opacity-15 animate-float-slow"
+      <div className="relative rounded-3xl overflow-hidden hero-gradient p-6 text-white" style={{ boxShadow: "0 20px 60px -12px rgba(79,70,229,.5)" }}>
+        <div className="absolute top-0 right-0 w-56 h-56 rounded-full opacity-15 animate-float"
           style={{ background: "radial-gradient(circle,rgba(255,255,255,.35),transparent)", transform: "translate(30%,-30%)" }} />
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-start gap-5">
           <div className="flex-1">
-            <p className="text-white/70 text-sm mb-1">{greeting} 👋</p>
+            <p className="text-white/70 text-sm mb-1">{greeting}</p>
             <h1 className="text-2xl font-bold mb-1">Alex Morgan</h1>
-            <p className="text-white/65 text-sm mb-4">MBA Year 2 · {courses.length} active courses</p>
+            <p className="text-white/65 text-sm mb-4">{t("dashboard.program_label")} · {courses.length} {t("dashboard.courses_active")}</p>
 
             {/* Urgent alert */}
             {urgent.length > 0 && (

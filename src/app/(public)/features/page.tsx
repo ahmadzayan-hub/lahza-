@@ -23,7 +23,7 @@ export default function FeaturesPage() {
       <section className="bg-gradient-to-br from-brand-950 to-teal-900 text-white py-20 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">Everything Your MBA Needs</h1>
         <p className="text-xl text-white/70 max-w-2xl mx-auto">
-          Tweenz AI combines the power of large language models with Moodle-style academic management — built exclusively for MBA students.
+          LearnIQ combines the power of large language models with Moodle-style academic management — built exclusively for MBA students.
         </p>
       </section>
 

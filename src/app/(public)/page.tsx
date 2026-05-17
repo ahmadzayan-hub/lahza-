@@ -81,7 +81,7 @@ export default function HomePage() {
               <div className="w-3 h-3 rounded-full bg-red-500" />
               <div className="w-3 h-3 rounded-full bg-amber-500" />
               <div className="w-3 h-3 rounded-full bg-emerald-500" />
-              <span className="ms-3 text-xs text-slate-400">www.tweenz.ae — Dashboard</span>
+              <span className="ms-3 text-xs text-slate-400">www.learniq.ae — Dashboard</span>
             </div>
             <div className="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
@@ -279,7 +279,7 @@ export default function HomePage() {
             Ready to organize your MBA with AI?
           </h2>
           <p className="text-lg text-white/70 mb-8">
-            Join thousands of MBA students who use Tweenz AI to study smarter, manage deadlines, and improve their grades.
+            Join thousands of MBA students who use LearnIQ to study smarter, manage deadlines, and improve their grades.
           </p>
           <Link href="/signup">
             <button className="inline-flex items-center gap-2 bg-white text-brand-700 hover:bg-brand-50 font-semibold px-8 py-4 rounded-xl text-base transition shadow-lg">
