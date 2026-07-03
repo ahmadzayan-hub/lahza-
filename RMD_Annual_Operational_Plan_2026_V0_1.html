@@ -536,6 +536,28 @@ main{padding:28px 36px;max-width:1480px;margin:0 auto}
 .chart-wrap h4{font-size:13px;color:var(--navy);font-weight:800;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px}
 .chart-box{position:relative;height:300px}
 
+/* CSS fallback bar chart (used when Chart.js CDN is unavailable) */
+.fb-chart{
+  display:flex;align-items:flex-end;gap:14px;height:100%;
+  padding:8px 4px 0;overflow-x:auto;
+}
+.fb-col{flex:1;min-width:60px;display:flex;flex-direction:column;align-items:center;height:100%}
+.fb-val{font-size:10px;font-weight:800;color:var(--navy);margin-bottom:4px;white-space:nowrap;text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.fb-bar-wrap{flex:1;width:100%;max-width:56px;display:flex;align-items:flex-end;justify-content:center}
+.fb-bar{
+  width:100%;border-radius:8px 8px 0 0;
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.35),
+    inset 0 -3px 5px rgba(0,0,0,.18),
+    0 4px 10px rgba(11,14,92,.18);
+  transition:transform .2s;
+}
+.fb-bar:hover{transform:translateY(-3px)}
+.fb-lbl{
+  font-size:10px;color:var(--dark-grey);margin-top:8px;text-align:center;line-height:1.3;
+  max-width:80px;font-weight:600;
+}
+
 /* ============ TAB 5: RISKS / HEATMAP (3D) ============ */
 .heatmap{
   display:grid;grid-template-columns:130px repeat(3,1fr);gap:8px;
@@ -1074,7 +1096,7 @@ main{padding:28px 36px;max-width:1480px;margin:0 auto}
   <div class="modal">
     <div class="modal-head">
       <h3 id="modalTitle">KPI Detail</h3>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
   </div>
@@ -1225,7 +1247,10 @@ function openKpiModal(id){
 function closeModal(){document.getElementById("modal").classList.remove("active")}
 
 function fmtAED(v){
-  if(v>=1000000) return "AED "+(v/1000000).toFixed(v>=10000000?1:2)+"M";
+  if(v>=1000000){
+    const s=(v/1000000).toFixed(2).replace(/\.?0+$/,"");
+    return "AED "+s+"M";
+  }
   if(v>=1000) return "AED "+(v/1000).toFixed(0)+"K";
   return "AED "+v;
 }
@@ -1295,10 +1320,15 @@ function buildBudgetChart(){
   PROJECTS.forEach(p=>{ map[p.cat]=(map[p.cat]||0)+p.b26; });
   const labels=Object.keys(map);
   const data=labels.map(l=>+(map[l]/1000000).toFixed(2));
-  const ctx = document.getElementById("budgetChart").getContext("2d");
-
-  // 3D-styled gradient bars
   const colours = ["#171C8F","#025EE1","#00B0B9","#00B154","#FFB800","#EE0032","#53565A","#7A7DC8","#39C0C7","#FF6F40"];
+
+  if(typeof Chart === "undefined"){
+    renderFallbackChart(labels, data, colours);
+    return;
+  }
+
+  const canvas=document.getElementById("budgetChart");
+  const ctx = canvas.getContext("2d");
   const gradients = labels.map((_,i)=>{
     const g = ctx.createLinearGradient(0,0,0,260);
     g.addColorStop(0, colours[i%colours.length]);
@@ -1306,28 +1336,51 @@ function buildBudgetChart(){
     return g;
   });
 
-  new Chart(ctx, {
-    type:"bar",
-    data:{labels, datasets:[{
-      label:"Approved 2026 (AED M)",
-      data,
-      backgroundColor: gradients,
-      borderRadius:8,
-      borderSkipped:false,
-      maxBarThickness:46
-    }]},
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{label:c=>"AED "+c.parsed.y+" M"}}
-      },
-      scales:{
-        x:{ticks:{font:{size:10},color:"#53565A",maxRotation:35},grid:{display:false}},
-        y:{beginAtZero:true,ticks:{color:"#53565A",font:{size:11},callback:v=>"AED "+v+"M"},grid:{color:"rgba(23,28,143,.08)"}}
+  try{
+    new Chart(ctx, {
+      type:"bar",
+      data:{labels, datasets:[{
+        label:"Approved 2026 (AED M)",
+        data,
+        backgroundColor: gradients,
+        borderRadius:8,
+        borderSkipped:false,
+        maxBarThickness:46
+      }]},
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{
+          legend:{display:false},
+          tooltip:{callbacks:{label:c=>"AED "+c.parsed.y+" M"}}
+        },
+        scales:{
+          x:{ticks:{font:{size:10},color:"#53565A",maxRotation:35},grid:{display:false}},
+          y:{beginAtZero:true,ticks:{color:"#53565A",font:{size:11},callback:v=>"AED "+v+"M"},grid:{color:"rgba(23,28,143,.08)"}}
+        }
       }
-    }
-  });
+    });
+  }catch(e){
+    renderFallbackChart(labels, data, colours);
+  }
+}
+
+function renderFallbackChart(labels, data, colours){
+  const box = document.querySelector(".chart-box");
+  if(!box) return;
+  const max = Math.max(...data, 1);
+  const bars = labels.map((lbl,i)=>{
+    const val = data[i];
+    const pct = Math.max(2, (val/max)*100);
+    const c1 = colours[i%colours.length];
+    const c2 = shade(c1, -25);
+    return `
+      <div class="fb-col" title="${lbl}: AED ${val}M">
+        <div class="fb-val">AED ${val}M</div>
+        <div class="fb-bar-wrap"><div class="fb-bar" style="height:${pct}%;background:linear-gradient(180deg, ${c1}, ${c2})"></div></div>
+        <div class="fb-lbl">${lbl}</div>
+      </div>`;
+  }).join("");
+  box.innerHTML = `<div class="fb-chart">${bars}</div>`;
 }
 function shade(hex,pct){
   const num=parseInt(hex.replace("#",""),16);
