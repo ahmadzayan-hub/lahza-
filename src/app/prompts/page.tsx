@@ -30,7 +30,7 @@ export default async function PromptsPage() {
               <summary className="cursor-pointer text-sm font-semibold">
                 {k} {db ? <span className="badge badge-pass ml-2">DB override</span> : <span className="badge badge-warn ml-2">default</span>}
               </summary>
-              <pre className="mt-2 whitespace-pre-wrap text-xs text-gray-700">{body}</pre>
+              <pre className="mt-2 whitespace-pre-wrap text-xs text-ink/80">{body}</pre>
             </details>
           );
         })}

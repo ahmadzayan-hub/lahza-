@@ -1,5 +1,5 @@
 import { fetchKpis, fetchRows, formatAed, formatRelative } from "@/lib/data";
-import { DemoBanner, Kpi, PageHeader, SectionTitle, OrderStatusPill, TempPill } from "@/components/ui";
+import { DemoBanner, Kpi, PageHeader, SectionTitle, OrderStatusPill, TempPill, OwnerGreeting } from "@/components/ui";
 import {
   RevenueAreaChart, StackedStatusChart, FunnelBarChart, TopProductsChart, PlatformPie,
 } from "@/components/LazyCharts";
@@ -42,12 +42,14 @@ export default async function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl">
       <PageHeader
-        title="Beyond Style UAE — Control Tower"
-        subtitle="Live conversion, payment, delivery & margin. Demo data updates every reload."
+        eyebrow={undefined}
+        title="Control Tower"
+        subtitle="Live conversion, payment, delivery & margin — one glance."
         action={
           <Link href="/intake" className="btn btn-accent">+ New Conversation</Link>
         }
       />
+      <div className="mb-6 -mt-3"><OwnerGreeting /></div>
       <DemoBanner demoMode={demoMode} />
 
       {/* Hero KPIs */}
@@ -79,19 +81,19 @@ export default async function Dashboard() {
             Needs your attention
           </SectionTitle>
           {attention.length === 0 ? (
-            <p className="text-sm text-gray-500">Inbox is clear — enjoy a quiet moment 🤍</p>
+            <p className="text-sm text-smoke">Inbox is clear — enjoy a quiet moment 🤍</p>
           ) : (
             <ul className="flex flex-col gap-2">
               {attention.map((a) => (
                 <li key={a.id}>
-                  <Link href={a.href} className="flex items-start gap-2 rounded-lg p-2 hover:bg-gray-50">
+                  <Link href={a.href} className="flex items-start gap-2 rounded-lg p-2 hover:bg-sand/60">
                     <span className={clsx(
                       "mt-1 inline-block h-2 w-2 shrink-0 rounded-full",
                       a.severity === "high" ? "bg-red-500" : a.severity === "medium" ? "bg-amber-500" : "bg-sky-500"
                     )} />
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-sm font-medium">{a.title}</div>
-                      <div className="truncate text-xs text-gray-500">{a.detail}</div>
+                      <div className="truncate text-xs text-smoke">{a.detail}</div>
                     </div>
                   </Link>
                 </li>
@@ -142,8 +144,8 @@ export default async function Dashboard() {
                   <td>{o.customer_name as string}</td>
                   <td>{formatAed(Number(o.total_amount))}</td>
                   <td><OrderStatusPill status={o.order_status as string} /></td>
-                  <td><span className="text-xs text-gray-500">{(o.payment_status as string).replace(/_/g, " ")}</span></td>
-                  <td className="text-xs text-gray-500">{formatRelative(o.created_at)}</td>
+                  <td><span className="text-xs text-smoke">{(o.payment_status as string).replace(/_/g, " ")}</span></td>
+                  <td className="text-xs text-smoke">{formatRelative(o.created_at)}</td>
                 </tr>
               ))}
             </tbody>
@@ -155,10 +157,10 @@ export default async function Dashboard() {
           </SectionTitle>
           <ul className="flex flex-col gap-3">
             {(reviewsRes.rows as Array<Record<string, unknown>>).slice(0, 4).map((r) => (
-              <li key={r.id as string} className="border-l-2 border-pink-300 pl-3">
-                <div className="text-xs text-gray-500">
+              <li key={r.id as string} className="border-l-2 border-rose-300 pl-3">
+                <div className="text-xs text-smoke">
                   {"★".repeat(Number(r.rating) || 0)}{" "}
-                  <span className="text-gray-400">·</span>{" "}
+                  <span className="text-smoke/70">·</span>{" "}
                   {r.customer_name as string}
                 </div>
                 <p className="mt-0.5 text-sm">{r.feedback as string}</p>
@@ -175,17 +177,17 @@ export default async function Dashboard() {
         </SectionTitle>
         <ul className="flex flex-col">
           {conversations.slice(0, 6).map((c) => (
-            <li key={c.id as string} className="flex items-start gap-3 border-t border-gray-100 py-2 first:border-t-0">
+            <li key={c.id as string} className="flex items-start gap-3 border-t border-mist/60 py-2 first:border-t-0">
               <TempPill temp={c.lead_temperature as string} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
                   <div className="truncate text-sm font-medium">
-                    {(c as Record<string, unknown>).customer_name as string} · <span className="text-gray-500">{c.platform as string}</span>
+                    {(c as Record<string, unknown>).customer_name as string} · <span className="text-smoke">{c.platform as string}</span>
                   </div>
-                  <span className="shrink-0 text-xs text-gray-400">{formatRelative(c.created_at)}</span>
+                  <span className="shrink-0 text-xs text-smoke/70">{formatRelative(c.created_at)}</span>
                 </div>
                 <p className={clsx(
-                  "truncate text-sm text-gray-700",
+                  "truncate text-sm text-ink/80",
                   c.message_language === "ar" && "rtl"
                 )}>{c.message_text as string}</p>
               </div>

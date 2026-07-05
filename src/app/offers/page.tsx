@@ -31,7 +31,7 @@ export default async function OffersPage() {
           {active.map((o) => (
             <OfferCard key={o.id as string} o={o} />
           ))}
-          {active.length === 0 && <p className="text-sm text-gray-500">No active offers. The agent can&apos;t quote prices until one is loaded.</p>}
+          {active.length === 0 && <p className="text-sm text-smoke">No active offers. The agent can&apos;t quote prices until one is loaded.</p>}
         </div>
       </div>
 
@@ -41,7 +41,7 @@ export default async function OffersPage() {
           {expired.map((o) => (
             <OfferCard key={o.id as string} o={o} muted />
           ))}
-          {expired.length === 0 && <p className="text-sm text-gray-500">No past offers.</p>}
+          {expired.length === 0 && <p className="text-sm text-smoke">No past offers.</p>}
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@ export default async function OffersPage() {
 
 function OfferCard({ o, muted }: { o: Record<string, unknown>; muted?: boolean }) {
   return (
-    <div className={clsx("rounded-2xl border p-3", muted ? "border-gray-200 bg-gray-50 text-gray-600" : "border-pink-200 bg-pink-50/60")}>
+    <div className={clsx("rounded-2xl border p-3", muted ? "border-mist bg-sand/40 text-smoke" : "border-rose-200 bg-rose-50/60")}>
       <div className="flex items-center justify-between gap-2">
         <span className="font-medium">{o.name as string}</span>
         <span className="text-sm font-semibold">{formatAed(Number(o.price))}</span>
@@ -72,5 +72,5 @@ function OfferCard({ o, muted }: { o: Record<string, unknown>; muted?: boolean }
 }
 
 function Item({ label, v }: { label: string; v: string }) {
-  return <div className="rounded-lg bg-white/60 px-2 py-1"><div className="text-[10px] uppercase tracking-wide text-gray-400">{label}</div><div>{v}</div></div>;
+  return <div className="rounded-lg bg-white/60 px-2 py-1"><div className="text-[10px] uppercase tracking-wide text-smoke/70">{label}</div><div>{v}</div></div>;
 }

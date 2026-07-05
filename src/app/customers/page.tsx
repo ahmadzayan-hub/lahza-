@@ -79,7 +79,7 @@ export default async function CustomersPage() {
                   <td>{c.segment as string}</td>
                   <td>{s.orders}</td>
                   <td>{formatAed(s.totalAed)}</td>
-                  <td className="text-xs text-gray-500">{s.lastOrderAt ? formatRelative(s.lastOrderAt) : "—"}</td>
+                  <td className="text-xs text-smoke">{s.lastOrderAt ? formatRelative(s.lastOrderAt) : "—"}</td>
                 </tr>
                 );
               })}

@@ -31,7 +31,7 @@ export default async function SettingsPage() {
           <Row k="Owner approval matrix" v="14 actions blocked from auto-approval" />
           <Row k="Mock fallback" v="Safe placeholder when no API key is set" />
         </dl>
-        <p className="mt-2 text-xs text-gray-500">
+        <p className="mt-2 text-xs text-smoke">
           Change provider by setting <code>AI_PROVIDER</code> (one of: <code>openai</code>, <code>anthropic</code>, <code>gemini</code>, <code>groq</code>, <code>together</code>, <code>openai_compatible</code>) and the matching API key on the host.
         </p>
       </div>
@@ -39,7 +39,7 @@ export default async function SettingsPage() {
       <div className="card mb-4">
         <SectionTitle>System settings</SectionTitle>
         {settingsRes.rows.length === 0 ? (
-          <p className="text-sm text-gray-500">No settings rows yet.</p>
+          <p className="text-sm text-smoke">No settings rows yet.</p>
         ) : (
           <table className="tbl">
             <thead><tr><th>Key</th><th>Value</th><th>Updated</th></tr></thead>
@@ -48,7 +48,7 @@ export default async function SettingsPage() {
                 <tr key={s.key as string}>
                   <td className="font-mono text-xs">{s.key as string}</td>
                   <td>{prettyValue(s.key as string, s.value)}</td>
-                  <td className="text-xs text-gray-500">{formatDate(s.updated_at as string)}</td>
+                  <td className="text-xs text-smoke">{formatDate(s.updated_at as string)}</td>
                 </tr>
               ))}
             </tbody>
@@ -64,9 +64,9 @@ export default async function SettingsPage() {
             {productsRes.rows.map((p) => (
               <tr key={p.id as string}>
                 <td className="font-medium">{p.name as string}</td>
-                <td className="text-xs text-gray-500">{(p.category as string).replace(/_/g, " ")}</td>
+                <td className="text-xs text-smoke">{(p.category as string).replace(/_/g, " ")}</td>
                 <td>{formatAed(Number(p.default_price))}</td>
-                <td className="text-xs text-gray-500">{(p.claim_notes as string) ?? "—"}</td>
+                <td className="text-xs text-smoke">{(p.claim_notes as string) ?? "—"}</td>
                 <td>{p.active ? "yes" : "no"}</td>
               </tr>
             ))}
@@ -78,7 +78,7 @@ export default async function SettingsPage() {
 }
 
 function Row({ k, v }: { k: string; v: string }) {
-  return (<div className="flex gap-2"><dt className="w-44 shrink-0 text-gray-500">{k}</dt><dd>{v}</dd></div>);
+  return (<div className="flex gap-2"><dt className="w-44 shrink-0 text-smoke">{k}</dt><dd>{v}</dd></div>);
 }
 
 function prettyValue(key: string, value: unknown): string {

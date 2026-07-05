@@ -1,7 +1,19 @@
 import type { Metadata, Viewport } from "next";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import { fetchRows, fetchKpis } from "@/lib/data";
+
+const sans = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+const display = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 async function getNavBadges() {
   try {
@@ -36,7 +48,7 @@ export const metadata: Metadata = {
     locale: "en_AE",
   },
   twitter: { card: "summary_large_image" },
-  robots: { index: false, follow: false }, // internal ops tool
+  robots: { index: false, follow: false },
 };
 
 export const viewport: Viewport = {
@@ -44,7 +56,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fef3f9" },
+    { media: "(prefers-color-scheme: light)", color: "#fbf1f6" },
     { media: "(prefers-color-scheme: dark)",  color: "#1f2937" },
   ],
 };
@@ -52,17 +64,18 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const badges = await getNavBadges();
   return (
-    <html lang="en" dir="ltr">
-      <body>
+    <html lang="en" dir="ltr" className={`${sans.variable} ${display.variable}`}>
+      <body className="font-sans">
+        <a href="#main" className="skip-link">Skip to content</a>
         <div className="flex min-h-screen">
-          <aside className="hidden w-64 shrink-0 border-r border-gray-200 bg-white md:block">
+          <aside className="hidden w-64 shrink-0 border-r border-mist bg-chalk/60 backdrop-blur md:block">
             <Nav badges={badges} />
           </aside>
-          <main className="flex-1 p-4 md:p-8">
+          <main id="main" className="flex-1 p-4 md:p-8">
             <div className="md:hidden mb-3">
               <Nav mobile badges={badges} />
             </div>
-            {children}
+            <div className="enter">{children}</div>
           </main>
         </div>
       </body>

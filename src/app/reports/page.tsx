@@ -100,19 +100,19 @@ export default async function ReportsPage() {
             <Stat k="Complaints" v={metrics.todayComplaints} />
           </dl>
           <h3 className="h2 mt-3 mb-1">Narrative — English</h3>
-          <pre className="whitespace-pre-wrap rounded-xl bg-gray-50 p-3 text-sm">{narrative.en}</pre>
+          <pre className="whitespace-pre-wrap rounded-xl bg-sand/40 p-3 text-sm">{narrative.en}</pre>
           <h3 className="h2 mt-3 mb-1">السرد — العربية</h3>
-          <pre className="rtl whitespace-pre-wrap rounded-xl bg-gray-50 p-3 text-sm" dir="rtl">{narrative.ar}</pre>
-          <p className="mt-2 text-xs text-gray-500">
+          <pre className="rtl whitespace-pre-wrap rounded-xl bg-sand/40 p-3 text-sm" dir="rtl">{narrative.ar}</pre>
+          <p className="mt-2 text-xs text-smoke">
             Wire your AI provider (Settings) to polish this narrative every evening from the day&apos;s conversations.
           </p>
         </div>
         <div className="card">
           <SectionTitle>Weekly improvement loop</SectionTitle>
-          <ul className="list-disc pl-5 text-sm text-gray-700">
+          <ul className="list-disc pl-5 text-sm text-ink/80">
             {WEEKLY_SECTIONS.map((s) => <li key={s}>{s}</li>)}
           </ul>
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-2 text-xs text-smoke">
             Run every Sunday. The VAT-ready CSV above feeds the monthly tax report.
           </p>
         </div>
@@ -123,8 +123,8 @@ export default async function ReportsPage() {
 
 function Stat({ k, v }: { k: string; v: string | number }) {
   return (
-    <div className="rounded-lg bg-gray-50 px-3 py-2">
-      <div className="text-[10px] uppercase tracking-wide text-gray-400">{k}</div>
+    <div className="rounded-lg bg-sand/40 px-3 py-2">
+      <div className="text-[10px] uppercase tracking-wide text-smoke/70">{k}</div>
       <div className="text-sm font-semibold">{v}</div>
     </div>
   );

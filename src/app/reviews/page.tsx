@@ -33,11 +33,11 @@ export default async function ReviewsPage() {
       <div className="card mb-4">
         <SectionTitle>Shareable testimonials</SectionTitle>
         {testimonials.length === 0 ? (
-          <p className="text-sm text-gray-500">No share-approved testimonials yet.</p>
+          <p className="text-sm text-smoke">No share-approved testimonials yet.</p>
         ) : (
           <div className="grid gap-3 md:grid-cols-2">
             {testimonials.map((t) => (
-              <div key={t.id as string} className="rounded-2xl border border-pink-200 bg-pink-50/60 p-3 text-sm">
+              <div key={t.id as string} className="rounded-2xl border border-rose-200 bg-rose-50/60 p-3 text-sm">
                 <div className="text-xs text-amber-700">{"★".repeat(Number(t.rating) || 0)}</div>
                 <p className="mt-1 text-gray-800">“{t.feedback}”</p>
               </div>
@@ -59,7 +59,7 @@ export default async function ReviewsPage() {
                   <td className="max-w-[28rem] truncate">{r.feedback as string}</td>
                   <td>{r.permission_to_share ? "✓" : "—"}</td>
                   <td>{r.story_mention ? "✓" : "—"}</td>
-                  <td className="text-xs text-gray-500">{formatRelative(r.created_at as string)}</td>
+                  <td className="text-xs text-smoke">{formatRelative(r.created_at as string)}</td>
                 </tr>
               ))}
             </tbody>

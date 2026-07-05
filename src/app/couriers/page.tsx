@@ -52,13 +52,13 @@ export default async function CouriersPage() {
         <SectionTitle>Courier roster</SectionTitle>
         <div className="grid gap-3 md:grid-cols-3">
           {couriers.map((c) => (
-            <div key={c.id as string} className="rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm">
+            <div key={c.id as string} className="rounded-xl border border-mist bg-sand/40 p-3 text-sm">
               <div className="flex items-center justify-between">
                 <span className="font-medium">{c.name as string}</span>
                 <span className="badge badge-neutral">{(c.service_type as string).replace(/_/g, " ")}</span>
               </div>
-              <div className="mt-1 text-xs text-gray-600">{c.notes as string}</div>
-              <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
+              <div className="mt-1 text-xs text-smoke">{c.notes as string}</div>
+              <div className="mt-2 flex items-center justify-between text-xs text-smoke">
                 <span>Default: <strong className="text-gray-900">{formatAed(Number(c.default_cost))}</strong></span>
                 <span>{c.vat_included ? "VAT incl." : "VAT excl."}</span>
               </div>
@@ -71,7 +71,7 @@ export default async function CouriersPage() {
       <div className="card mb-4">
         <SectionTitle>Active deliveries</SectionTitle>
         {activeWithOrders.length === 0 ? (
-          <p className="text-sm text-gray-500">No deliveries in flight right now.</p>
+          <p className="text-sm text-smoke">No deliveries in flight right now.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="tbl">
@@ -82,7 +82,7 @@ export default async function CouriersPage() {
                     <td className="truncate">{(order?.product_summary as string) ?? "—"}</td>
                     <td>{(order?.customer_name as string) ?? "—"}</td>
                     <td>{(order?.delivery_area as string) ?? "—"}</td>
-                    <td className="text-xs text-gray-500">{window.label}</td>
+                    <td className="text-xs text-smoke">{window.label}</td>
                     <td>{(delivery.courier_name as string) ?? "—"}</td>
                     <td><CourierStatusPill status={delivery.delivery_status as string} /></td>
                   </tr>
@@ -98,9 +98,9 @@ export default async function CouriersPage() {
         <SectionTitle>Expected delivery windows by emirate</SectionTitle>
         <div className="grid gap-2 text-sm md:grid-cols-4">
           {Object.entries(EMIRATE_BUFFERS).map(([emirate, b]) => (
-            <div key={emirate} className="rounded-lg bg-gray-50 px-3 py-2">
+            <div key={emirate} className="rounded-lg bg-sand/40 px-3 py-2">
               <div className="font-medium capitalize">{emirate}</div>
-              <div className="text-xs text-gray-500">{b.minDays}–{b.maxDays} day{b.maxDays > 1 ? "s" : ""}{emirate.toLowerCase() === "dubai" ? "" : " · courier confirm"}</div>
+              <div className="text-xs text-smoke">{b.minDays}–{b.maxDays} day{b.maxDays > 1 ? "s" : ""}{emirate.toLowerCase() === "dubai" ? "" : " · courier confirm"}</div>
             </div>
           ))}
         </div>

@@ -46,10 +46,10 @@ export default async function AuditPage() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <div>
-                      <span className="text-gray-600">{r.entity as string} · </span>
+                      <span className="text-smoke">{r.entity as string} · </span>
                       <span className="font-mono text-xs">{(r.entity_id as string)}</span>
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-smoke">
                       {(r.user_id as string) ?? "system"} · {formatDate(r.created_at as string)}
                     </div>
                   </div>

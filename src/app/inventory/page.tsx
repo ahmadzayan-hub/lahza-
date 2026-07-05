@@ -69,11 +69,11 @@ export default async function InventoryPage() {
                   return (
                   <tr key={r.id as string}>
                     <td className="font-medium">{r.product_name as string}</td>
-                    <td>{r.colour as string} <span className="text-xs text-gray-400">{(r.finish as string).replace("_", "-")}</span></td>
+                    <td>{r.colour as string} <span className="text-xs text-smoke/70">{(r.finish as string).replace("_", "-")}</span></td>
                     <td>{Number(r.quantity_available)}</td>
                     <td>{v.daysToStockout ?? "—"}</td>
                     <td className="font-medium">{v.suggestedReorderQty}</td>
-                    <td className="text-xs text-gray-500">{(r.supplier_source as string) ?? "—"}</td>
+                    <td className="text-xs text-smoke">{(r.supplier_source as string) ?? "—"}</td>
                   </tr>
                   );
                 })}
@@ -93,16 +93,16 @@ export default async function InventoryPage() {
             {list.map((r) => {
               const v = velocityById.get(r.id as string)!;
               return (
-              <div key={r.id as string} className="rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm">
+              <div key={r.id as string} className="rounded-xl border border-mist bg-sand/40 p-3 text-sm">
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <span className="font-medium">{r.colour as string}</span>
                   <span className={clsx("badge", STATUS_BADGE[v.status])}>{v.status}</span>
                 </div>
-                <div className="text-xs text-gray-500">{(r.finish as string).replace("_", "-")} · {v.label}</div>
+                <div className="text-xs text-smoke">{(r.finish as string).replace("_", "-")} · {v.label}</div>
                 <div className="mt-2 grid grid-cols-3 gap-2 text-center text-xs">
-                  <div><div className="font-semibold">{Number(r.quantity_available)}</div><div className="text-gray-500">Avail.</div></div>
-                  <div><div className="font-semibold">{Number(r.quantity_reserved)}</div><div className="text-gray-500">Reserved</div></div>
-                  <div><div className="font-semibold">{Number(r.quantity_delivered)}</div><div className="text-gray-500">Delivered</div></div>
+                  <div><div className="font-semibold">{Number(r.quantity_available)}</div><div className="text-smoke">Avail.</div></div>
+                  <div><div className="font-semibold">{Number(r.quantity_reserved)}</div><div className="text-smoke">Reserved</div></div>
+                  <div><div className="font-semibold">{Number(r.quantity_delivered)}</div><div className="text-smoke">Delivered</div></div>
                 </div>
               </div>
               );

@@ -48,7 +48,7 @@ export default async function PaymentsPage() {
       <div className="card mb-4">
         <SectionTitle>Verify these now ({verify.length})</SectionTitle>
         {verify.length === 0 ? (
-          <p className="text-sm text-gray-500">Nothing waiting on you. 🤍</p>
+          <p className="text-sm text-smoke">Nothing waiting on you. 🤍</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="tbl">
@@ -60,7 +60,7 @@ export default async function PaymentsPage() {
                     <td className="font-mono text-xs">{p.reference as string}</td>
                     <td>{p.payment_method as string}</td>
                     <td>{formatAed(Number(p.amount_expected))}</td>
-                    <td className="text-xs text-gray-500">{formatRelative(p.created_at as string)}</td>
+                    <td className="text-xs text-smoke">{formatRelative(p.created_at as string)}</td>
                     <td><button className="btn btn-primary btn-sm">Verify &amp; activate</button></td>
                   </tr>
                 ))}
@@ -74,7 +74,7 @@ export default async function PaymentsPage() {
       <div className="card mb-4">
         <SectionTitle>Outstanding payment links ({sent.length})</SectionTitle>
         {sent.length === 0 ? (
-          <p className="text-sm text-gray-500">No outstanding links.</p>
+          <p className="text-sm text-smoke">No outstanding links.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="tbl">
@@ -85,7 +85,7 @@ export default async function PaymentsPage() {
                     <td>{p.customer_name as string}</td>
                     <td className="truncate text-xs text-blue-700"><a href={p.payment_link as string} className="hover:underline">{p.payment_link as string}</a></td>
                     <td>{formatAed(Number(p.amount_expected))}</td>
-                    <td className="text-xs text-gray-500">{formatRelative(p.created_at as string)}</td>
+                    <td className="text-xs text-smoke">{formatRelative(p.created_at as string)}</td>
                     <td><PaymentStatusPill status={p.status as string} /></td>
                   </tr>
                 ))}
@@ -99,7 +99,7 @@ export default async function PaymentsPage() {
       <div className="card mb-4">
         <SectionTitle>Disputes ({disputes.length})</SectionTitle>
         {disputes.length === 0 ? (
-          <p className="text-sm text-gray-500">No disputes — keep it clean. 🤍</p>
+          <p className="text-sm text-smoke">No disputes — keep it clean. 🤍</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="tbl">
@@ -115,10 +115,10 @@ export default async function PaymentsPage() {
                         {d.status as string}
                       </span>
                     </td>
-                    <td className="max-w-[24rem] text-xs text-gray-700">
+                    <td className="max-w-[24rem] text-xs text-ink/80">
                       {RESOLUTION_TEMPLATES[d.reason as DisputeReason]?.en ?? "—"}
                     </td>
-                    <td className="text-xs text-gray-500">{formatRelative(d.created_at as string)}</td>
+                    <td className="text-xs text-smoke">{formatRelative(d.created_at as string)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -141,7 +141,7 @@ export default async function PaymentsPage() {
                   <td>{p.payment_method as string}</td>
                   <td>{formatAed(Number(p.amount_received))}</td>
                   <td>{formatAed(Number(p.vat_amount))}</td>
-                  <td className="text-xs text-gray-500">{formatRelative(p.created_at as string)}</td>
+                  <td className="text-xs text-smoke">{formatRelative(p.created_at as string)}</td>
                 </tr>
               ))}
             </tbody>

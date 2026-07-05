@@ -60,7 +60,7 @@ export default function LoginPage() {
         </button>
         {msg && <p className="text-sm text-red-700">{msg}</p>}
 
-        <div className="flex items-center gap-2 py-1 text-xs text-gray-400">
+        <div className="flex items-center gap-2 py-1 text-xs text-smoke/70">
           <span className="h-px flex-1 bg-gray-200" />
           <span>or</span>
           <span className="h-px flex-1 bg-gray-200" />
@@ -69,7 +69,7 @@ export default function LoginPage() {
         <Link href="/" className="btn btn-accent justify-center">
           Enter as demo owner
         </Link>
-        <p className="text-center text-xs text-gray-500">
+        <p className="text-center text-xs text-smoke">
           Demo mode uses seeded data — no Supabase required. Connect a real Supabase
           project to enable production sign-in.
         </p>

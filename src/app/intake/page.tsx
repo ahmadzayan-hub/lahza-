@@ -82,7 +82,7 @@ export default function IntakePage() {
   return (
     <div className="mx-auto max-w-5xl">
       <h1 className="mb-1 text-xl font-semibold">New Conversation</h1>
-      <p className="mb-4 text-sm text-gray-500">
+      <p className="mb-4 text-sm text-smoke">
         Paste the customer message and known facts. The agent drafts a reply — you approve before sending.
       </p>
 
@@ -177,7 +177,7 @@ export default function IntakePage() {
           {result ? (
             <AnalysisPanel result={result} />
           ) : (
-            <div className="card text-sm text-gray-500">
+            <div className="card text-sm text-smoke">
               The structured analysis, guardrail checks, and a ready-to-send reply will appear here after you analyze.
             </div>
           )}

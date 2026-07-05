@@ -53,7 +53,7 @@ export default function AnalysisPanel({ result }: { result: Result }) {
               ⚠ {analysis.risk_or_caution.join(" · ")}
             </div>
           )}
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-2 text-xs text-smoke">
             {result.provider} / {result.model}
           </p>
         </div>
@@ -67,7 +67,7 @@ export default function AnalysisPanel({ result }: { result: Result }) {
             {guardrails.findings.map((f, i) => (
               <li key={i} className="flex items-start gap-2">
                 <StatusBadge status={f.status} />
-                <span className="text-gray-700">
+                <span className="text-ink/80">
                   <span className="font-medium">{f.code}</span>: {f.message}
                 </span>
               </li>
@@ -90,8 +90,8 @@ export default function AnalysisPanel({ result }: { result: Result }) {
             {copied ? "Copied" : "Copy"}
           </button>
         </div>
-        <p className="whitespace-pre-wrap rounded-lg bg-gray-50 p-3 text-sm">{reply}</p>
-        <p className="mt-2 text-xs text-gray-500">Internal note: {analysis.internal_sales_note}</p>
+        <p className="whitespace-pre-wrap rounded-lg bg-sand/40 p-3 text-sm">{reply}</p>
+        <p className="mt-2 text-xs text-smoke">Internal note: {analysis.internal_sales_note}</p>
 
         <div className="mt-3 flex items-center gap-2">
           <button
@@ -115,7 +115,7 @@ export default function AnalysisPanel({ result }: { result: Result }) {
 function Row({ k, v }: { k: string; v: string }) {
   return (
     <div className="flex gap-2">
-      <dt className="w-28 shrink-0 text-gray-500">{k}</dt>
+      <dt className="w-28 shrink-0 text-smoke">{k}</dt>
       <dd className="text-gray-900">{v}</dd>
     </div>
   );

@@ -1,15 +1,16 @@
 import clsx from "clsx";
 
 export function PageHeader({
-  title, subtitle, action,
-}: { title: string; subtitle?: string; action?: React.ReactNode }) {
+  title, subtitle, action, eyebrow,
+}: { title: string; subtitle?: string; action?: React.ReactNode; eyebrow?: string }) {
   return (
-    <div className="mb-4 flex items-end justify-between gap-4">
-      <div>
-        <h1 className="h1">{title}</h1>
-        {subtitle && <p className="muted mt-0.5">{subtitle}</p>}
+    <div className="mb-6 flex items-end justify-between gap-4">
+      <div className="min-w-0">
+        {eyebrow && <div className="mb-1 h2">{eyebrow}</div>}
+        <h1 className="h1 truncate">{title}</h1>
+        {subtitle && <p className="muted mt-1 max-w-2xl">{subtitle}</p>}
       </div>
-      {action && <div>{action}</div>}
+      {action && <div className="shrink-0">{action}</div>}
     </div>
   );
 }
@@ -17,35 +18,45 @@ export function PageHeader({
 export function DemoBanner({ demoMode }: { demoMode: boolean }) {
   if (!demoMode) return null;
   return (
-    <div className="mb-4 flex items-start gap-3 rounded-2xl border border-pink-200 bg-pink-50/70 p-3 text-sm">
-      <span className="badge badge-vip">DEMO</span>
-      <div className="flex-1 text-pink-900">
-        <strong>Demo mode</strong> — these are sample customers, orders, payments &amp; reviews so you can
-        explore every feature instantly. Connect Supabase (see <code>README</code>) to switch to live data, or just keep
-        playing.
+    <div className="mb-4 flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm">
+      <span className="badge badge-vip mt-0.5">DEMO</span>
+      <div className="flex-1 text-rose-800">
+        <strong>Demo mode</strong> — sample customers, orders, payments &amp; reviews so you can
+        explore every feature instantly. Connect Supabase (see <code>README</code>) to switch to
+        live data.
       </div>
     </div>
   );
 }
 
 export function Kpi({
-  label, value, hint, trend,
-}: { label: string; value: string | number; hint?: string; trend?: { up?: boolean; text: string } }) {
+  label, value, hint, trend, tone = "default",
+}: {
+  label: string;
+  value: string | number;
+  hint?: string;
+  trend?: { up?: boolean; text: string };
+  tone?: "default" | "accent";
+}) {
   return (
-    <div className="card">
+    <div className={clsx("card card-hover", tone === "accent" && "border-rose-200 bg-rose-50")}>
       <div className="flex items-baseline justify-between gap-2">
-        <div className="text-2xl font-semibold tracking-tight">{value}</div>
+        <div className={clsx("font-display text-2xl font-semibold tracking-tight", tone === "accent" && "text-rose-700")}>
+          {value}
+        </div>
         {trend && (
-          <span className={clsx("text-xs font-medium", trend.up ? "text-green-700" : "text-red-700")}>
+          <span className={clsx("text-xs font-medium", trend.up ? "text-emerald-700" : "text-red-700")}>
             {trend.up ? "▲" : "▼"} {trend.text}
           </span>
         )}
       </div>
-      <div className="mt-0.5 text-xs text-gray-500">{label}</div>
-      {hint && <div className="mt-1 text-[11px] text-gray-400">{hint}</div>}
+      <div className="mt-0.5 text-xs text-smoke">{label}</div>
+      {hint && <div className="mt-1 text-[11px] text-smoke/70">{hint}</div>}
     </div>
   );
 }
+
+// --- Status pill maps (single source of truth) ---
 
 const STAGE_LABEL: Record<string, string> = {
   cold_lead: "Cold", information_lead: "Info", price_lead: "Price",
@@ -71,8 +82,7 @@ const COURIER_STATUS_BADGE: Record<string, string> = {
 };
 
 export function StagePill({ stage }: { stage: string }) {
-  const label = STAGE_LABEL[stage] ?? stage;
-  return <span className="badge badge-neutral">{label}</span>;
+  return <span className="badge badge-neutral">{STAGE_LABEL[stage] ?? stage}</span>;
 }
 
 export function TempPill({ temp }: { temp: string }) {
@@ -92,18 +102,37 @@ export function CourierStatusPill({ status }: { status: string }) {
 
 export function SectionTitle({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) {
   return (
-    <div className="mb-2 flex items-center justify-between">
+    <div className="mb-2 flex items-center justify-between gap-2">
       <h2 className="h2">{children}</h2>
       {action}
     </div>
   );
 }
 
-export function EmptyState({ title, hint }: { title: string; hint?: string }) {
+export function EmptyState({ title, hint, icon }: { title: string; hint?: string; icon?: string }) {
   return (
-    <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-center text-sm text-gray-500">
-      <div className="font-medium text-gray-700">{title}</div>
+    <div className="rounded-2xl border border-dashed border-mist bg-chalk/50 p-6 text-center text-sm text-smoke">
+      {icon && <div className="mb-2 text-2xl">{icon}</div>}
+      <div className="font-medium text-ink">{title}</div>
       {hint && <div className="mt-1">{hint}</div>}
+    </div>
+  );
+}
+
+/**
+ * Owner greeting for the dashboard hero. Time-of-day aware (UAE / GST).
+ */
+export function OwnerGreeting({ name = "Owner" }: { name?: string }) {
+  const hour = new Date().getUTCHours() + 4; // UTC+4 = UAE
+  const local = ((hour % 24) + 24) % 24;
+  const salute =
+    local < 5  ? "Working late" :
+    local < 12 ? "Good morning" :
+    local < 17 ? "Good afternoon" :
+                 "Good evening";
+  return (
+    <div className="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-smoke">
+      {salute}, {name}
     </div>
   );
 }

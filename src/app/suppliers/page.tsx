@@ -39,12 +39,12 @@ export default async function SuppliersPage() {
           {sorted.map((s) => {
             const risk = riskBadge(Number(s.risk_score) || 0);
             return (
-              <div key={s.id as string} className="rounded-2xl border border-gray-200 bg-white p-3">
+              <div key={s.id as string} className="rounded-2xl border border-mist bg-white p-3">
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <span className="font-medium">{s.name as string}</span>
                   <span className={clsx("badge", risk.cls)}>{risk.label}</span>
                 </div>
-                <div className="text-xs text-gray-500">{(s.country as string)} · {(s.platform as string)} · MOQ {s.moq as number}</div>
+                <div className="text-xs text-smoke">{(s.country as string)} · {(s.platform as string)} · MOQ {s.moq as number}</div>
                 <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
                   <Cell label="Unit cost" v={formatAed(Number(s.unit_cost))} />
                   <Cell label="Shipping" v={formatAed(Number(s.shipping_cost))} />
@@ -53,7 +53,7 @@ export default async function SuppliersPage() {
                   <Cell label="Real video" v={(s.real_video_received as boolean) ? "yes" : "missing"} highlight={!s.real_video_received} />
                   <Cell label="Material proof" v={s.material_proof as string} highlight={(s.material_proof as string) === "missing"} />
                 </div>
-                {s.notes ? <p className="mt-2 text-xs italic text-gray-500">{s.notes as string}</p> : null}
+                {s.notes ? <p className="mt-2 text-xs italic text-smoke">{s.notes as string}</p> : null}
               </div>
             );
           })}
@@ -65,8 +65,8 @@ export default async function SuppliersPage() {
 
 function Cell({ label, v, highlight }: { label: string; v: string; highlight?: boolean }) {
   return (
-    <div className={clsx("rounded-lg bg-gray-50 px-2 py-1", highlight && "bg-red-50 text-red-700")}>
-      <div className="text-[10px] uppercase tracking-wide text-gray-400">{label}</div>
+    <div className={clsx("rounded-lg bg-sand/40 px-2 py-1", highlight && "bg-red-50 text-red-700")}>
+      <div className="text-[10px] uppercase tracking-wide text-smoke/70">{label}</div>
       <div>{v}</div>
     </div>
   );

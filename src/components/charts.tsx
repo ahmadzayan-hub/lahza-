@@ -4,9 +4,10 @@ import {
   BarChart, Bar, Cell, PieChart, Pie, Legend,
 } from "recharts";
 
-const BRAND = "#111827"; // gray-900
-const ACCENT = "#ec4899"; // pink-500
-const SOFT = "#f9a8d4";   // pink-300
+// Match tailwind tokens: ink = hsl(220 15% 15%), rose-500 = hsl(340 70% 58%), rose-200 = hsl(340 70% 85%)
+const BRAND = "#20242b";
+const ACCENT = "#e15a94";
+const SOFT = "#f0b7d0";
 
 export function RevenueAreaChart({ data }: { data: { day: string; aed: number }[] }) {
   return (

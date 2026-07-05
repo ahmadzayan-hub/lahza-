@@ -58,31 +58,31 @@ export default async function OrdersPage() {
       <div className="flex gap-3 overflow-x-auto pb-2">
         {STAGES.map((s) => (
           <div key={s.key} className="kanban">
-            <div className="flex items-center justify-between px-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
+            <div className="flex items-center justify-between px-1 text-xs font-semibold uppercase tracking-wide text-smoke">
               <span>{s.label}</span>
-              <span className="text-gray-400">{(byStage[s.key] ?? []).length}</span>
+              <span className="text-smoke/70">{(byStage[s.key] ?? []).length}</span>
             </div>
             <div className="flex flex-col gap-2">
               {(byStage[s.key] ?? []).slice(0, 8).map((o) => (
                 <article key={o.id as string} className="card-tight">
                   <div className="mb-1 flex items-center justify-between gap-2 text-xs">
                     <span className="truncate font-medium">{o.product_summary as string}</span>
-                    <span className="shrink-0 text-gray-500">{formatAed(Number(o.total_amount))}</span>
+                    <span className="shrink-0 text-smoke">{formatAed(Number(o.total_amount))}</span>
                   </div>
-                  <div className="mb-2 text-xs text-gray-500">{o.customer_name as string} · {o.delivery_area as string}</div>
+                  <div className="mb-2 text-xs text-smoke">{o.customer_name as string} · {o.delivery_area as string}</div>
                   <div className="flex flex-wrap gap-1">
                     <PaymentStatusPill status={o.payment_status as string} />
                     <CourierStatusPill status={o.courier_status as string} />
                   </div>
-                  <div className="mt-1 text-[11px] text-gray-400">{formatRelative(o.created_at as string)}</div>
+                  <div className="mt-1 text-[11px] text-smoke/70">{formatRelative(o.created_at as string)}</div>
                   {o.locked_by_dispute ? <div className="mt-1 text-[11px] text-red-700">🔒 Locked — open dispute</div> : null}
                 </article>
               ))}
               {(byStage[s.key] ?? []).length > 8 && (
-                <div className="px-1 text-[11px] text-gray-400">+{(byStage[s.key] ?? []).length - 8} more</div>
+                <div className="px-1 text-[11px] text-smoke/70">+{(byStage[s.key] ?? []).length - 8} more</div>
               )}
               {(byStage[s.key] ?? []).length === 0 && (
-                <div className="rounded-lg border border-dashed border-gray-200 p-3 text-center text-[11px] text-gray-400">
+                <div className="rounded-lg border border-dashed border-mist p-3 text-center text-[11px] text-smoke/70">
                   Empty
                 </div>
               )}
@@ -107,13 +107,13 @@ export default async function OrdersPage() {
                 <tr key={o.id as string}>
                   <td className="font-medium">{o.product_summary as string}</td>
                   <td>{o.customer_name as string}</td>
-                  <td>{(o.delivery_city as string)} <span className="text-xs text-gray-400">{o.delivery_area as string}</span></td>
+                  <td>{(o.delivery_city as string)} <span className="text-xs text-smoke/70">{o.delivery_area as string}</span></td>
                   <td>{formatAed(Number(o.total_amount))}</td>
                   <td><OrderStatusPill status={o.order_status as string} /></td>
                   <td><PaymentStatusPill status={o.payment_status as string} /></td>
                   <td><CourierStatusPill status={o.courier_status as string} /></td>
-                  <td className="text-xs text-gray-500">{(o.expected_delivery_date as string) ?? "—"}</td>
-                  <td className="text-xs text-gray-500">{formatRelative(o.created_at as string)}</td>
+                  <td className="text-xs text-smoke">{(o.expected_delivery_date as string) ?? "—"}</td>
+                  <td className="text-xs text-smoke">{formatRelative(o.created_at as string)}</td>
                 </tr>
               ))}
             </tbody>

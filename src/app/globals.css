@@ -4,70 +4,120 @@
 
 :root {
   color-scheme: light;
-  --brand: 24 24 27;       /* zinc-900 */
-  --accent: 244 114 182;   /* pink-400 — soft fashion accent */
-  --pearl: 250 245 240;    /* warm off-white */
-  --sand: 245 240 235;
+  --page-bg: hsl(30 30% 97%);
+  --brand: hsl(340 70% 58%);
 }
 
+html { -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
+
 body {
-  @apply bg-[color:var(--pearl)] text-gray-900 antialiased;
+  @apply text-ink antialiased;
+  background:
+    radial-gradient(1000px 500px at 100% -10%, hsl(340 80% 97% / 0.7), transparent 60%),
+    radial-gradient(800px 400px at -10% 110%, hsl(38 60% 92% / 0.6), transparent 60%),
+    var(--page-bg);
   font-feature-settings: "ss01", "cv11";
+  min-height: 100vh;
 }
 
 /* ---- Cards ---- */
-.card { @apply rounded-2xl border border-gray-200 bg-white p-4 shadow-sm; }
-.card-tight { @apply rounded-xl border border-gray-200 bg-white p-3 shadow-sm; }
-.card-accent { @apply rounded-2xl border border-pink-200 bg-pink-50 p-4 shadow-sm; }
+.card {
+  @apply rounded-2xl border border-mist bg-chalk p-4 shadow-card transition;
+}
+.card-tight {
+  @apply rounded-xl border border-mist bg-chalk p-3 shadow-card;
+}
+.card-accent {
+  @apply rounded-2xl border border-rose-200 bg-rose-50 p-4 shadow-card;
+}
+.card-hover {
+  @apply hover:-translate-y-0.5 hover:shadow-cardHover;
+}
 
 /* ---- Badges / pills ---- */
-.badge { @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium; }
-.badge-pass { @apply bg-green-100 text-green-800; }
-.badge-warn { @apply bg-amber-100 text-amber-900; }
-.badge-fail { @apply bg-red-100 text-red-800; }
-.badge-info { @apply bg-blue-100 text-blue-800; }
+.badge {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium leading-4;
+}
+.badge-pass    { @apply bg-emerald-100 text-emerald-800; }
+.badge-warn    { @apply bg-amber-100 text-amber-900; }
+.badge-fail    { @apply bg-red-100 text-red-800; }
+.badge-info    { @apply bg-sky-100 text-sky-800; }
 .badge-neutral { @apply bg-gray-100 text-gray-700; }
-.badge-vip { @apply bg-gradient-to-r from-pink-500 to-rose-500 text-white; }
-.badge-hot { @apply bg-red-100 text-red-700; }
-.badge-warm { @apply bg-amber-100 text-amber-800; }
-.badge-cold { @apply bg-sky-100 text-sky-800; }
+.badge-vip     { @apply bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-sm; }
+.badge-hot     { @apply bg-red-100 text-red-700; }
+.badge-warm    { @apply bg-amber-100 text-amber-800; }
+.badge-cold    { @apply bg-sky-100 text-sky-800; }
 .badge-dot::before {
   content: "";
   @apply mr-1 inline-block h-1.5 w-1.5 rounded-full bg-current;
 }
 
 /* ---- Buttons ---- */
-.btn { @apply inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition; }
-.btn-primary { @apply bg-gray-900 text-white hover:bg-gray-700; }
-.btn-accent { @apply bg-pink-500 text-white hover:bg-pink-600; }
-.btn-ghost { @apply border border-gray-300 bg-white hover:bg-gray-100; }
-.btn-soft { @apply bg-gray-100 hover:bg-gray-200 text-gray-900; }
-.btn-sm { @apply px-2 py-1 text-xs; }
+.btn {
+  @apply inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium leading-5 transition
+         focus-visible:outline-none focus-visible:shadow-ring;
+}
+.btn-primary { @apply bg-ink text-white hover:bg-ink/85 active:bg-ink; }
+.btn-accent  { @apply bg-rose-500 text-white hover:bg-rose-600 active:bg-rose-700; }
+.btn-ghost   { @apply border border-mist bg-chalk hover:bg-sand; }
+.btn-soft    { @apply bg-sand/70 hover:bg-sand text-ink; }
+.btn-sm      { @apply px-2.5 py-1.5 text-xs; }
 
 /* ---- Inputs ---- */
-.input { @apply w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-900 focus:outline-none; }
-.label { @apply block text-xs font-medium text-gray-600 mb-1; }
+.input {
+  @apply w-full rounded-xl border border-mist bg-chalk px-3 py-2 text-sm text-ink
+         placeholder:text-gray-400
+         focus:border-rose-400 focus:outline-none focus:shadow-ring transition;
+}
+.label { @apply block text-xs font-medium text-smoke mb-1; }
 
 /* ---- Section headers ---- */
-.h1 { @apply text-2xl font-semibold tracking-tight; }
-.h2 { @apply text-sm font-semibold uppercase tracking-wide text-gray-500; }
-.muted { @apply text-sm text-gray-500; }
+.h1 { @apply font-display text-3xl font-semibold tracking-tight text-ink; }
+.h2 { @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-smoke; }
+.muted { @apply text-sm text-smoke; }
 
-/* ---- Table polish ---- */
+/* ---- Tables ---- */
 .tbl { @apply w-full text-sm; }
-.tbl thead tr { @apply border-b border-gray-200 text-left text-xs uppercase tracking-wide text-gray-500; }
-.tbl tbody tr { @apply border-b border-gray-100 hover:bg-gray-50; }
+.tbl thead tr {
+  @apply border-b border-mist text-left text-[11px] uppercase tracking-wide text-smoke;
+}
+.tbl tbody tr { @apply border-b border-mist/60 transition hover:bg-sand/40; }
 .tbl th, .tbl td { @apply px-3 py-2 align-top; }
 
 /* ---- Kanban column ---- */
-.kanban { @apply flex min-w-[260px] flex-col gap-2 rounded-2xl bg-white/60 p-3; }
+.kanban {
+  @apply flex min-w-[260px] flex-col gap-2 rounded-2xl bg-chalk/60 p-3 backdrop-blur;
+}
 
-/* ---- RTL helper ---- */
+/* ---- Focus ring helper ---- */
+.focus-ring:focus-visible {
+  @apply outline-none shadow-ring;
+}
+
+/* ---- RTL helpers ---- */
 .rtl { direction: rtl; text-align: right; }
 .ltr { direction: ltr; }
 
-/* ---- Recharts axis tweak ---- */
-.recharts-text { fill: #6b7280; font-size: 11px; }
-.recharts-cartesian-axis-tick-line { stroke: #e5e7eb; }
-.recharts-cartesian-grid-horizontal line { stroke: #f3f4f6; }
+/* ---- Recharts polish ---- */
+.recharts-text { fill: hsl(220 10% 40%); font-size: 11px; }
+.recharts-cartesian-axis-tick-line { stroke: hsl(220 15% 90%); }
+.recharts-cartesian-grid-horizontal line { stroke: hsl(220 15% 94%); }
+
+/* ---- Nav active-line accent (subtle) ---- */
+.nav-active-line::before {
+  content: "";
+  @apply absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-rose-500;
+}
+
+/* ---- Skip-link ---- */
+.skip-link {
+  @apply absolute left-2 top-2 -translate-y-20 rounded-lg bg-ink px-3 py-2 text-xs text-white transition
+         focus-visible:translate-y-0 focus-visible:outline-none;
+}
+
+/* ---- Utility: subtle grid line dividers ---- */
+.hairline { @apply border-t border-mist/60; }
+
+/* ---- Animation entrance ---- */
+.enter { @apply animate-fadeInUp; }

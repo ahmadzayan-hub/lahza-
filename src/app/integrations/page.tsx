@@ -62,7 +62,7 @@ export default function IntegrationsPage({
           NotebookLM (Google)
         </SectionTitle>
 
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-smoke">
           Authorise the console to access NotebookLM via Google OAuth 2.0. Used to read your
           notebook sources from Google Drive and enrich customer research. We request offline
           access so the connection survives without re-prompting.
@@ -83,7 +83,7 @@ export default function IntegrationsPage({
         </dl>
 
         {!status.configured && (
-          <p className="mt-3 rounded-lg bg-gray-50 p-2 text-xs text-gray-500">
+          <p className="mt-3 rounded-lg bg-sand/40 p-2 text-xs text-smoke">
             Set <code>GOOGLE_OAUTH_CLIENT_ID</code>, <code>GOOGLE_OAUTH_CLIENT_SECRET</code> and
             (optionally) <code>GOOGLE_OAUTH_REDIRECT_URI</code> on the host, then reload. See
             <code> .env.example</code>.
@@ -120,7 +120,7 @@ export default function IntegrationsPage({
 function Row({ k, v }: { k: string; v: string }) {
   return (
     <div className="flex gap-2">
-      <dt className="w-44 shrink-0 text-gray-500">{k}</dt>
+      <dt className="w-44 shrink-0 text-smoke">{k}</dt>
       <dd className="break-words">{v}</dd>
     </div>
   );
