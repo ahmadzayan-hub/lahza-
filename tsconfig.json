@@ -16,6 +16,14 @@
     "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
+      "@/lib/types": ["packages/shared/src/types.ts"],
+      "@/lib/env": ["packages/shared/src/env.ts"],
+      "@/lib/token-estimator": ["packages/shared/src/token-estimator.ts"],
+      "@/lib/safe-fetch": ["packages/shared/src/safe-fetch.ts"],
+      "@/lib/draft-store": ["packages/shared/src/draft-store.ts"],
+      "@/lib/local-history": ["packages/shared/src/local-history.ts"],
+      "@/lib/prompt-methods": ["packages/shared/src/prompt-methods.ts"],
+      "@/lib/quality-score": ["packages/shared/src/quality-score.ts"],
       "@/*": ["src/*"],
       "@/utils/*": ["utils/*"]
     },

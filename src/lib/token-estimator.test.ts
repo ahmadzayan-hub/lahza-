@@ -5,7 +5,7 @@ import {
   fitFor,
   formatTokens,
   MODEL_LIMITS
-} from "./token-estimator";
+} from "@/lib/token-estimator";
 
 describe("estimateTokens", () => {
   it("returns 0 for empty input", () => {

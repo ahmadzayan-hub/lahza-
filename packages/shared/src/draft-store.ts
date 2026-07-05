@@ -7,7 +7,7 @@
  * back next month doesn't see a stale half-thought as their first impression.
  */
 
-import type { TargetModel } from "@/lib/types";
+import type { TargetModel } from "./types";
 
 const KEY = "po_draft_v1";
 const DRAFT_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days

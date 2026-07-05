@@ -2,6 +2,7 @@
   "name": "prompt-orchestrator",
   "version": "0.18.0",
   "private": true,
+  "workspaces": ["packages/*", "learniq"],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

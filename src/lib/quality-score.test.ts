@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { scorePrompt } from "./quality-score";
+import { scorePrompt } from "@/lib/quality-score";
 
 describe("scorePrompt", () => {
   it("scores empty string as zero", () => {

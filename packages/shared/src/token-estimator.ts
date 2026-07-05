@@ -17,7 +17,7 @@
  * so the UI shows uncertainty honestly.
  */
 
-import type { TargetModel } from "@/lib/types";
+import type { TargetModel } from "./types";
 
 export interface TokenEstimate {
   low: number;
