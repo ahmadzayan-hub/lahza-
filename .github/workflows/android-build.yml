@@ -1,0 +1,124 @@
+name: Android Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mobile/**"
+      - "public/**"
+      - ".github/workflows/android-build.yml"
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: "Build type"
+        required: true
+        default: "debug"
+        type: choice
+        options: [debug, release, bundle]
+
+env:
+  JAVA_VERSION: "17"
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install mobile dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - name: Sync Capacitor
+        working-directory: mobile
+        run: npx cap sync android
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('mobile/android/**/*.gradle*', 'mobile/android/gradle-wrapper.properties') }}
+          restore-keys: gradle-
+
+      - name: Make gradlew executable
+        run: chmod +x mobile/android/gradlew
+
+      # ── Debug build ──────────────────────────────────────────────────────────
+      - name: Build debug APK
+        if: github.event.inputs.build_type == 'debug' || github.event_name == 'push'
+        working-directory: mobile/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload debug APK
+        if: github.event.inputs.build_type == 'debug' || github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: zaian-studio-debug-${{ github.sha }}
+          path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+      # ── Release build ────────────────────────────────────────────────────────
+      - name: Decode keystore
+        if: github.event.inputs.build_type == 'release' && secrets.KEYSTORE_BASE64 != ''
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > mobile/android/zaian-studio.keystore
+
+      - name: Build release APK
+        if: github.event.inputs.build_type == 'release'
+        working-directory: mobile/android
+        run: |
+          ./gradlew assembleRelease --no-daemon \
+            -PKEYSTORE_PATH=zaian-studio.keystore \
+            -PKEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" \
+            -PKEY_ALIAS="${{ secrets.KEY_ALIAS }}" \
+            -PKEY_PASSWORD="${{ secrets.KEY_PASSWORD }}"
+
+      - name: Upload release APK
+        if: github.event.inputs.build_type == 'release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: zaian-studio-release-${{ github.sha }}
+          path: mobile/android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 30
+
+      # ── App Bundle (Play Store) ──────────────────────────────────────────────
+      - name: Build App Bundle
+        if: github.event.inputs.build_type == 'bundle'
+        working-directory: mobile/android
+        run: |
+          ./gradlew bundleRelease --no-daemon \
+            -PKEYSTORE_PATH=zaian-studio.keystore \
+            -PKEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}" \
+            -PKEY_ALIAS="${{ secrets.KEY_ALIAS }}" \
+            -PKEY_PASSWORD="${{ secrets.KEY_PASSWORD }}"
+
+      - name: Upload App Bundle
+        if: github.event.inputs.build_type == 'bundle'
+        uses: actions/upload-artifact@v4
+        with:
+          name: zaian-studio-bundle-${{ github.sha }}
+          path: mobile/android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 30

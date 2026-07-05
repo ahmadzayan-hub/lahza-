@@ -8,7 +8,9 @@
     "android:open":  "npx cap open android",
     "android:sync":  "npx cap sync android",
     "android:run":   "npx cap run android",
-    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:build":         "cd android && ./gradlew assembleRelease",
+    "android:build:debug":   "cd android && ./gradlew assembleDebug",
+    "android:bundle":        "cd android && ./gradlew bundleRelease",
 
     "ios:init":      "npx cap add ios",
     "ios:open":      "npx cap open ios",

@@ -17,7 +17,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
  *               npm run ios:open       (Xcode)
  */
 
-const PRODUCTION_URL = "https://desktop-tutorial-kappa-five.vercel.app";
+const PRODUCTION_URL = process.env.CAPACITOR_SERVER_URL ?? "https://desktop-tutorial-kappa-five.vercel.app";
 
 const config: CapacitorConfig = {
   appId: "com.zaian.studio",
@@ -30,7 +30,10 @@ const config: CapacitorConfig = {
     iosScheme: "https"
   },
   android: {
-    backgroundColor: "#0b1120"
+    backgroundColor: "#0b1120",
+    allowMixedContent: false,
+    captureInput: true,
+    webContentsDebuggingEnabled: false
   },
   ios: {
     backgroundColor: "#0b1120",
