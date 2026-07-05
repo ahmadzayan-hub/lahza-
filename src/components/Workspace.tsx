@@ -15,6 +15,7 @@ import MethodSelector from "@/components/MethodSelector";
 import MethodCompare from "@/components/MethodCompare";
 import QualityScoreCard from "@/components/QualityScore";
 import ExportButton from "@/components/ExportButton";
+import { SparkIcon } from "@/components/Icons";
 import { buildPromptByMethod, type PromptMethodId } from "@/lib/prompt-methods";
 import { scorePrompt } from "@/lib/quality-score";
 import { saveLocalSession } from "@/lib/local-history";
@@ -554,19 +555,6 @@ function IntentBadge({ intent }: { intent: string }) {
   );
 }
 
-function SparkIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M12 2 L13.5 9 L21 12 L13.5 15 L12 22 L10.5 15 L3 12 L10.5 9 Z" fill="url(#sg)"/>
-      <defs>
-        <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#6366f1"/>
-          <stop offset="100%" stopColor="#8b5cf6"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
 
 function PinButton({
   finalText,

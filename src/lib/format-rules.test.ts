@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { postFormatForModel } from "./formatter";
+import { postFormatForModel } from "@/lib/format-rules";
 
 describe("postFormatForModel", () => {
   it("wraps Claude prompts in <task> when no XML tags present", () => {

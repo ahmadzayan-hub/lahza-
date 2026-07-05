@@ -2,9 +2,6 @@ import { generateJson } from "@/lib/llm/dispatch";
 import { GAP_ANALYSIS, QUESTION_GENERATION } from "@/lib/llm/prompts";
 import { ruleBasedGaps, type Gap } from "@/lib/gap-rules";
 
-// Re-export so existing call sites and tests keep working.
-export { ruleBasedGaps, type Gap } from "@/lib/gap-rules";
-
 export interface ClarificationQuestion {
   slot: string;
   question: string;

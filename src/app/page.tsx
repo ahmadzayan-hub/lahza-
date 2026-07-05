@@ -2,7 +2,7 @@
 
 import { useT } from "@/lib/i18n/I18nProvider";
 import HeroIllustration from "@/components/HeroIllustration";
-import { PenIcon, ChatIcon, SparkleIcon } from "@/components/StepIcons";
+import { PenIcon, ChatIcon, SparkleIcon } from "@/components/Icons";
 import Logo from "@/components/Logo";
 
 export default function HomePage() {

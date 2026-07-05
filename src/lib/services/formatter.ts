@@ -3,9 +3,6 @@ import { PROMPT_RECONSTRUCTION, MODEL_FORMAT_HINTS } from "@/lib/llm/prompts";
 import type { TargetModel } from "@/lib/types";
 import { renderSkeleton, type RenderInput } from "./template";
 
-// Re-export the pure rule from its new home so existing callers keep working.
-export { postFormatForModel } from "@/lib/format-rules";
-
 export interface FormatResult {
   final_prompt: string;
   rationale: string;

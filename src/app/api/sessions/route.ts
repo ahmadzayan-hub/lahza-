@@ -4,7 +4,8 @@ import { getServerSupabase } from "@/lib/supabase/server";
 import { requireUserOrg } from "@/lib/services/auth";
 import { detectIntent } from "@/lib/services/orchestration";
 import { findGaps, generateQuestions } from "@/lib/services/clarification";
-import { reconstructPrompt, postFormatForModel } from "@/lib/services/formatter";
+import { reconstructPrompt } from "@/lib/services/formatter";
+import { postFormatForModel } from "@/lib/format-rules";
 import { handleError } from "@/lib/api-helpers";
 import type { TargetModel } from "@/lib/types";
 

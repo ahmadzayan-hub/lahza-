@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ruleBasedGaps } from "./clarification";
+import { ruleBasedGaps } from "@/lib/gap-rules";
 
 describe("ruleBasedGaps", () => {
   it("flags all four gaps for a vague prompt", () => {

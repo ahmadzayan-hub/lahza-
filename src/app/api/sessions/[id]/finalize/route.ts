@@ -2,7 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { getServerSupabase } from "@/lib/supabase/server";
 import { requireUserOrg } from "@/lib/services/auth";
-import { reconstructPrompt, postFormatForModel } from "@/lib/services/formatter";
+import { reconstructPrompt } from "@/lib/services/formatter";
+import { postFormatForModel } from "@/lib/format-rules";
 import { handleError } from "@/lib/api-helpers";
 import type { Template, TargetModel } from "@/lib/types";
 
