@@ -19,7 +19,7 @@ export default async function ReviewsPage() {
     <div className="mx-auto max-w-7xl">
       <PageHeader
         title="Reviews"
-        subtitle="After-sale feedback &amp; the repeat-purchase loop. Only share with explicit permission — never lift a review without consent."
+        subtitle="After-sale feedback &amp; the repeat-purchase loop. Only share with explicit permission. never lift a review without consent."
       />
       <DemoBanner demoMode={demoMode} />
 
@@ -57,8 +57,8 @@ export default async function ReviewsPage() {
                   <td>{"★".repeat(Number(r.rating) || 0)}</td>
                   <td>{r.customer_name as string}</td>
                   <td className="max-w-[28rem] truncate">{r.feedback as string}</td>
-                  <td>{r.permission_to_share ? "✓" : "—"}</td>
-                  <td>{r.story_mention ? "✓" : "—"}</td>
+                  <td>{r.permission_to_share ? "✓" : "."}</td>
+                  <td>{r.story_mention ? "✓" : "."}</td>
                   <td className="text-xs text-smoke">{formatRelative(r.created_at as string)}</td>
                 </tr>
               ))}

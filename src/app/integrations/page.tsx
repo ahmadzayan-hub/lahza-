@@ -9,7 +9,7 @@ export const metadata = { title: "Integrations" };
 const STATUS_BANNER: Record<string, { tone: "ok" | "warn" | "err"; text: string }> = {
   connected: { tone: "ok", text: "NotebookLM connected. The console can now act on your Google account." },
   disconnected: { tone: "warn", text: "NotebookLM disconnected. Tokens were revoked and cleared." },
-  denied: { tone: "warn", text: "Authorisation was cancelled — no access was granted." },
+  denied: { tone: "warn", text: "Authorisation was cancelled. no access was granted." },
   state_mismatch: { tone: "err", text: "Security check failed (state mismatch). Please try connecting again." },
   exchange_failed: { tone: "err", text: "Could not exchange the authorisation code. Check the client secret and redirect URI." },
   not_configured: { tone: "err", text: "NotebookLM OAuth is not configured on the server. Set the GOOGLE_OAUTH_* env vars." },
@@ -28,7 +28,7 @@ export default function IntegrationsPage({
     <div className="mx-auto max-w-3xl">
       <PageHeader
         title="Integrations"
-        subtitle="Connect external accounts the console can act on. OAuth tokens are encrypted and stored httpOnly — never exposed to the browser."
+        subtitle="Connect external accounts the console can act on. OAuth tokens are encrypted and stored httpOnly. never exposed to the browser."
       />
 
       {banner && (

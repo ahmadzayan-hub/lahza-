@@ -52,7 +52,7 @@ export default async function OrdersPage() {
       </div>
 
       {/* Kanban board */}
-      <SectionTitle action={<Link href="/inbox" className="muted text-xs underline">Customer Inbox →</Link>}>
+      <SectionTitle action={<Link href="/inbox" className="muted text-xs underline">Customer Inbox</Link>}>
         Order pipeline
       </SectionTitle>
       <div className="flex gap-3 overflow-x-auto pb-2">
@@ -75,7 +75,7 @@ export default async function OrdersPage() {
                     <CourierStatusPill status={o.courier_status as string} />
                   </div>
                   <div className="mt-1 text-[11px] text-smoke/70">{formatRelative(o.created_at as string)}</div>
-                  {o.locked_by_dispute ? <div className="mt-1 text-[11px] text-red-700">🔒 Locked — open dispute</div> : null}
+                  {o.locked_by_dispute ? <div className="mt-1 text-[11px] text-red-700">🔒 Locked. open dispute</div> : null}
                 </article>
               ))}
               {(byStage[s.key] ?? []).length > 8 && (
@@ -112,7 +112,7 @@ export default async function OrdersPage() {
                   <td><OrderStatusPill status={o.order_status as string} /></td>
                   <td><PaymentStatusPill status={o.payment_status as string} /></td>
                   <td><CourierStatusPill status={o.courier_status as string} /></td>
-                  <td className="text-xs text-smoke">{(o.expected_delivery_date as string) ?? "—"}</td>
+                  <td className="text-xs text-smoke">{(o.expected_delivery_date as string) ?? "."}</td>
                   <td className="text-xs text-smoke">{formatRelative(o.created_at as string)}</td>
                 </tr>
               ))}

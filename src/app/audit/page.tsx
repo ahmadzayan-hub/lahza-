@@ -30,7 +30,7 @@ export default async function AuditPage() {
     <div className="mx-auto max-w-5xl">
       <PageHeader
         title="Audit Log"
-        subtitle="Every owner approval, payment confirmation, and policy change — for accountability and weekly review."
+        subtitle="Every owner approval, payment confirmation, and policy change. for accountability and weekly review."
       />
       <DemoBanner demoMode={demoMode} />
 

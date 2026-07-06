@@ -16,7 +16,7 @@ export default async function InboxPage() {
     <div className="mx-auto max-w-7xl">
       <PageHeader
         title="Customer Inbox"
-        subtitle="Every captured DM, WhatsApp, comment — with stage, temperature, and an AI-drafted reply you approve."
+        subtitle="Every captured DM, WhatsApp, comment. with stage, temperature, and an AI-drafted reply you approve."
       />
       <DemoBanner demoMode={convsRes.demoMode} />
       <InboxClient

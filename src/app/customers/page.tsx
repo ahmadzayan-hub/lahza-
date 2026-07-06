@@ -39,12 +39,12 @@ export default async function CustomersPage() {
 
   return (
     <div className="mx-auto max-w-7xl">
-      <PageHeader title="Customers" subtitle="Sales-relevant records only — no sensitive profiling, ever." />
+      <PageHeader title="Customers" subtitle="Sales-relevant records only. no sensitive profiling, ever." />
       <DemoBanner demoMode={customersRes.demoMode} />
 
       <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
         <Kpi label="All customers" value={customers.length} />
-        <Kpi label="VIP" value={vipCount} hint="3+ purchases — owner deliveries" />
+        <Kpi label="VIP" value={vipCount} hint="3+ purchases. owner deliveries" />
         <Kpi label="Repeat" value={repeatCount} hint="2+ purchases" />
         <Kpi label="Arabic-speaking" value={`${arabicShare}%`} hint="Includes mixed-language" />
       </div>
@@ -73,13 +73,13 @@ export default async function CustomersPage() {
                       {!c.vip && Number(c.purchase_count) >= 2 ? <span className="badge badge-info">repeat</span> : null}
                     </div>
                   </td>
-                  <td className="rtl">{(c.name_arabic_verified as string) ?? "—"}</td>
+                  <td className="rtl">{(c.name_arabic_verified as string) ?? "."}</td>
                   <td>{c.platform as string}</td>
                   <td><span className={clsx("badge", c.language === "ar" ? "badge-info" : c.language === "mixed" ? "badge-warn" : "badge-neutral")}>{c.language as string}</span></td>
                   <td>{c.segment as string}</td>
                   <td>{s.orders}</td>
                   <td>{formatAed(s.totalAed)}</td>
-                  <td className="text-xs text-smoke">{s.lastOrderAt ? formatRelative(s.lastOrderAt) : "—"}</td>
+                  <td className="text-xs text-smoke">{s.lastOrderAt ? formatRelative(s.lastOrderAt) : "."}</td>
                 </tr>
                 );
               })}

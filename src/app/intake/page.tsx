@@ -83,7 +83,7 @@ export default function IntakePage() {
     <div className="mx-auto max-w-5xl">
       <h1 className="mb-1 text-xl font-semibold">New Conversation</h1>
       <p className="mb-4 text-sm text-smoke">
-        Paste the customer message and known facts. The agent drafts a reply — you approve before sending.
+        Paste the customer message and known facts. The agent drafts a reply. you approve before sending.
       </p>
 
       <div className="grid gap-4 lg:grid-cols-2">

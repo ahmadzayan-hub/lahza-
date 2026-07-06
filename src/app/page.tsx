@@ -44,7 +44,7 @@ export default async function Dashboard() {
       <PageHeader
         eyebrow={undefined}
         title="Control Tower"
-        subtitle="Live conversion, payment, delivery & margin — one glance."
+        subtitle="Live conversion, payment, delivery & margin. one glance."
         action={
           <Link href="/intake" className="btn btn-accent">+ New Conversation</Link>
         }
@@ -65,7 +65,7 @@ export default async function Dashboard() {
         <Kpi label="New today" value={kpis.newToday} />
         <Kpi label="Price inquiries" value={kpis.priceInquiries} />
         <Kpi label="Delivered" value={kpis.deliveredOrders} />
-        <Kpi label="Lead → payment" value={`${kpis.leadToPayment}%`} />
+        <Kpi label="Lead: payment" value={`${kpis.leadToPayment}%`} />
       </div>
 
       {/* Revenue + Attention queue */}
@@ -77,11 +77,11 @@ export default async function Dashboard() {
           <RevenueAreaChart data={revenueSeries} />
         </div>
         <div className="card">
-          <SectionTitle action={<Link className="muted text-xs underline" href="/inbox">Open inbox →</Link>}>
+          <SectionTitle action={<Link className="muted text-xs underline" href="/inbox">Open inbox</Link>}>
             Needs your attention
           </SectionTitle>
           {attention.length === 0 ? (
-            <p className="text-sm text-smoke">Inbox is clear — enjoy a quiet moment 🤍</p>
+            <p className="text-sm text-smoke">Inbox is clear. enjoy a quiet moment 🤍</p>
           ) : (
             <ul className="flex flex-col gap-2">
               {attention.map((a) => (
@@ -118,7 +118,7 @@ export default async function Dashboard() {
       {/* Top products + Platform mix */}
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
         <div className="card lg:col-span-2">
-          <SectionTitle action={<Link href="/inventory" className="muted text-xs underline">Inventory →</Link>}>
+          <SectionTitle action={<Link href="/inventory" className="muted text-xs underline">Inventory</Link>}>
             Top products (paid orders)
           </SectionTitle>
           <TopProductsChart data={top} />
@@ -132,7 +132,7 @@ export default async function Dashboard() {
       {/* Recent activity */}
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
         <div className="card lg:col-span-2">
-          <SectionTitle action={<Link href="/orders" className="muted text-xs underline">All orders →</Link>}>
+          <SectionTitle action={<Link href="/orders" className="muted text-xs underline">All orders</Link>}>
             Latest orders
           </SectionTitle>
           <table className="tbl">
@@ -152,7 +152,7 @@ export default async function Dashboard() {
           </table>
         </div>
         <div className="card">
-          <SectionTitle action={<Link href="/reviews" className="muted text-xs underline">All →</Link>}>
+          <SectionTitle action={<Link href="/reviews" className="muted text-xs underline">All</Link>}>
             Recent reviews
           </SectionTitle>
           <ul className="flex flex-col gap-3">
@@ -172,7 +172,7 @@ export default async function Dashboard() {
 
       {/* Latest conversations */}
       <div className="mt-4 card">
-        <SectionTitle action={<Link href="/inbox" className="muted text-xs underline">Open inbox →</Link>}>
+        <SectionTitle action={<Link href="/inbox" className="muted text-xs underline">Open inbox</Link>}>
           Latest conversations
         </SectionTitle>
         <ul className="flex flex-col">

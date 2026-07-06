@@ -49,7 +49,7 @@ export default async function ReportsPage() {
     <div className="mx-auto max-w-7xl">
       <PageHeader
         title="Reports &amp; Reviews"
-        subtitle="The improvement loop. Use the daily review every evening and the weekly review every week — without it, the system repeats mistakes faster."
+        subtitle="The improvement loop. Use the daily review every evening and the weekly review every week. without it, the system repeats mistakes faster."
         action={<VatExportButton csv={csv} />}
       />
       <DemoBanner demoMode={demoMode} />
@@ -58,7 +58,7 @@ export default async function ReportsPage() {
         <Kpi label="Revenue 30d" value={formatAed(kpis.revenueAed30d)} />
         <Kpi label="Revenue 7d" value={formatAed(kpis.revenueAed7d)} />
         <Kpi label="Paid orders" value={kpis.paidOrders} />
-        <Kpi label="Lead → payment" value={`${kpis.leadToPayment}%`} />
+        <Kpi label="Lead: payment" value={`${kpis.leadToPayment}%`} />
         <Kpi label="Open disputes" value={kpis.openDisputes} />
       </div>
 
@@ -99,9 +99,9 @@ export default async function ReportsPage() {
             <Stat k="Conversion" v={`${metrics.conversionPercent}%`} />
             <Stat k="Complaints" v={metrics.todayComplaints} />
           </dl>
-          <h3 className="h2 mt-3 mb-1">Narrative — English</h3>
+          <h3 className="h2 mt-3 mb-1">Narrative. English</h3>
           <pre className="whitespace-pre-wrap rounded-xl bg-sand/40 p-3 text-sm">{narrative.en}</pre>
-          <h3 className="h2 mt-3 mb-1">السرد — العربية</h3>
+          <h3 className="h2 mt-3 mb-1">السرد. العربية</h3>
           <pre className="rtl whitespace-pre-wrap rounded-xl bg-sand/40 p-3 text-sm" dir="rtl">{narrative.ar}</pre>
           <p className="mt-2 text-xs text-smoke">
             Wire your AI provider (Settings) to polish this narrative every evening from the day&apos;s conversations.

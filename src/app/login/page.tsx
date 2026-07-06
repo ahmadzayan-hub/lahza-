@@ -30,7 +30,7 @@ export default function LoginPage() {
     <div className="mx-auto mt-12 max-w-md md:mt-20">
       <div className="mb-6 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">Beyond Style UAE</h1>
-        <p className="muted">Order Control Console — owner / operator sign in.</p>
+        <p className="muted">Order Control Console. owner / operator sign in.</p>
       </div>
 
       <div className="card flex flex-col gap-3">
@@ -70,7 +70,7 @@ export default function LoginPage() {
           Enter as demo owner
         </Link>
         <p className="text-center text-xs text-smoke">
-          Demo mode uses seeded data — no Supabase required. Connect a real Supabase
+          Demo mode uses seeded data. no Supabase required. Connect a real Supabase
           project to enable production sign-in.
         </p>
       </div>

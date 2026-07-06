@@ -1,8 +1,8 @@
 {
-  "name": "beyond-style-uae",
+  "name": "wasl",
   "version": "0.1.0",
   "private": true,
-  "description": "Beyond Style UAE — Customer Conversion & Order Control Agent (human-approved sales operating console)",
+  "description": "Wasl — bilingual social-commerce operations console for UAE brands. AI drafts, owner approves, the system tracks.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
