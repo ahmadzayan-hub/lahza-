@@ -66,6 +66,10 @@ export default function Header() {
           <a href="/login" className="btn-ghost text-xs px-2.5 py-1.5 border border-slate-200 dark:border-slate-700 rounded-lg">
             {t("nav.signin")}
           </a>
+          <a href="/download" className="btn-ghost text-xs px-2.5 py-1.5 border border-brand-200 dark:border-brand-700 rounded-lg text-brand-700 dark:text-brand-300 hidden lg:flex items-center gap-1.5">
+            <span aria-hidden="true">📱</span>
+            <span>{t("nav.download")}</span>
+          </a>
         </div>
 
         {/* Mobile controls */}
@@ -115,12 +119,15 @@ export default function Header() {
               </a>
             ))}
           </div>
-          <div className="px-4 pb-3 flex gap-2">
+          <div className="px-4 pb-3 flex gap-2 flex-wrap">
             <a href="/workspace" className="btn-primary text-xs px-4 py-2 flex-1 justify-center">
               ✨ {ar ? "ابدأ الآن" : "Start Now"}
             </a>
             <a href="/login" className="btn-ghost text-xs border border-slate-200 dark:border-slate-700 px-3 py-2">
               {t("nav.signin")}
+            </a>
+            <a href="/download" className="btn-ghost text-xs border border-brand-200 dark:border-brand-700 text-brand-700 dark:text-brand-300 px-3 py-2 flex items-center gap-1">
+              📱 {t("nav.download")}
             </a>
           </div>
         </nav>

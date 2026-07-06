@@ -2,34 +2,36 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { I18nProvider } from "@/lib/i18n/I18nProvider";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.learniq.ae";
-const TITLE = "LearnIQ — MBA Learning OS | نظام تعلم الماجستير الذكي";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://zaian.studio";
+const TITLE = "ZAIan Studio — منصة هندسة الموجّهات | Prompt Engineering Platform";
 const DESCRIPTION =
-  "LearnIQ is a bilingual AI academic operating system for MBA and university students. Manage courses, lectures, study packs, grades, deadlines, and AI tutor chat in one platform. From UAE, free to the world. | نظام تشغيل أكاديمي ذكي ثنائي اللغة لطلاب الماجستير والجامعات، من الإمارات إلى العالم.";
+  "ZAIan Studio is a bilingual Arabic–English prompt engineering platform. 11 professional methods, meta-AI analysis, 10-dimension quality scoring. Free to use, built in the UAE. | زيان ستوديو — منصة هندسة الموجّهات ثنائية اللغة. أحد عشر أسلوباً احترافياً، تحليل متعدد النماذج، وتقييم دقيق عبر عشرة محاور. مجاني، صُنع في الإمارات.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
-  title: { default: TITLE, template: "%s · LearnIQ" },
+  title: { default: TITLE, template: "%s · ZAIan Studio" },
   description: DESCRIPTION,
-  applicationName: "LearnIQ",
+  applicationName: "ZAIan Studio",
   manifest: "/manifest.webmanifest",
-  appleWebApp: { capable: true, title: "LearnIQ", statusBarStyle: "default" },
+  appleWebApp: { capable: true, title: "ZAIan Studio", statusBarStyle: "black-translucent" },
   icons: { icon: "/icon.svg", apple: "/apple-icon.png" },
-  authors: [{ name: "LearnIQ", url: APP_URL }],
+  authors: [{ name: "ZAIan Studio", url: APP_URL }],
   keywords: [
-    "LearnIQ", "MBA study app", "AI tutor", "study packs", "Moodle companion",
-    "bilingual education", "Arabic learning", "UAE EdTech", "online MBA",
-    "academic AI", "study flashcards", "grade tracker", "exam readiness",
-    "منصة تعليمية", "تعلم ذكي", "ماجستير", "طلاب الجامعة"
+    "ZAIan Studio", "prompt engineering", "prompt methods", "AI prompts",
+    "Arabic AI", "bilingual AI", "UAE AI", "chain of thought", "role prompting",
+    "meta prompting", "prompt quality", "prompt scoring", "Arabic prompts",
+    "هندسة الموجّهات", "موجّهات الذكاء الاصطناعي", "زيان ستوديو",
+    "ذكاء اصطناعي عربي", "منصة الموجّهات", "تحسين الموجّهات"
   ],
   openGraph: {
     type: "website",
     title: TITLE,
     description: DESCRIPTION,
     url: APP_URL,
-    siteName: "LearnIQ",
+    siteName: "ZAIan Studio",
     locale: "en_US",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "LearnIQ MBA Learning OS" }]
+    alternateLocale: "ar_AE",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ZAIan Studio — Prompt Engineering Platform" }]
   },
   twitter: {
     card: "summary_large_image",
@@ -37,12 +39,18 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     images: ["/og-image.png"]
   },
-  robots: { index: true, follow: true },
-  alternates: { canonical: APP_URL },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
+  alternates: {
+    canonical: APP_URL,
+    languages: { "en": `${APP_URL}`, "ar": `${APP_URL}?lang=ar` },
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2563eb",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#6366f1" },
+    { media: "(prefers-color-scheme: dark)",  color: "#0f0f23" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -54,7 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Sora — unique geometric Latin; Cairo — premium humanist Arabic */}
+        {/* Sora — geometric Latin; Cairo — humanist Arabic */}
         <link
           href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
@@ -79,19 +87,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              name: "LearnIQ MBA Learning OS",
-              alternateName: ["LearnIQ", "منصة LearnIQ التعليمية"],
+              name: "ZAIan Studio",
+              alternateName: ["زيان ستوديو", "Prompt Intelligence Platform", "منصة هندسة الموجّهات"],
               description: DESCRIPTION,
               url: APP_URL,
-              applicationCategory: "EducationApplication",
+              applicationCategory: "ProductivityApplication",
               operatingSystem: "Any",
               countryOfOrigin: { "@type": "Country", name: "United Arab Emirates" },
-              offers: [
-                { "@type": "Offer", name: "Free Plan", price: "0", priceCurrency: "USD" },
-                { "@type": "Offer", name: "Student Plan", price: "12", priceCurrency: "USD" },
-              ],
+              offers: { "@type": "Offer", price: "0", priceCurrency: "USD", description: "Free to use" },
               inLanguage: ["en", "ar"],
-              audience: { "@type": "Audience", audienceType: "MBA and university students" }
+              featureList: [
+                "11 Prompt Engineering Methods",
+                "Meta-AI Analysis",
+                "10-Dimension Quality Scoring",
+                "Arabic and English Support",
+                "Voice Input",
+                "Prompt Library",
+                "Android App"
+              ],
+              audience: { "@type": "Audience", audienceType: "Professionals, developers, content creators, Arabic speakers" },
+              downloadUrl: `${APP_URL}/download`,
+              screenshot: `${APP_URL}/og-image.png`
             })
           }}
         />
