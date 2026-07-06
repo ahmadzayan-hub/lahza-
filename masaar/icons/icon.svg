@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0FBFC4"/>
+      <stop offset=".55" stop-color="#0A6B6E"/>
+      <stop offset="1" stop-color="#053F42"/>
+    </linearGradient>
+    <linearGradient id="rails" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF7E6"/>
+      <stop offset="1" stop-color="#FDE7B2"/>
+    </linearGradient>
+    <radialGradient id="spark" cx=".5" cy=".5" r=".6">
+      <stop offset="0" stop-color="#FFD16A"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <g transform="translate(48,64)">
+    <path d="M40 320 Q40 96 152 96 Q208 96 208 176 L208 320 M208 176 Q208 96 264 96 Q376 96 376 320"
+          fill="none" stroke="url(#rails)" stroke-width="42"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M96 320 L96 176 M160 320 L160 176 M208 320 L208 176 M256 320 L256 176 M320 320 L320 176"
+          stroke="rgba(255,255,255,.18)" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="208" cy="24" r="30" fill="url(#spark)"/>
+    <circle cx="208" cy="24" r="50" fill="none" stroke="#F59E0B" stroke-opacity=".35" stroke-width="10"/>
+  </g>
+</svg>

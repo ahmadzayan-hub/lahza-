@@ -1,0 +1,27 @@
+{
+  "name": "Masaar — Rail Asset Performance Platform",
+  "short_name": "Masaar",
+  "description": "Plan, monitor and improve rail maintenance performance. Bilingual Arabic and English, works offline, installable.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "masaar-rail-app",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0A6B6E",
+  "theme_color": "#0A6B6E",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["productivity", "business", "utilities"],
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Dashboard", "short_name": "KPIs", "url": "./index.html#dashboard", "description": "Monthly KPI view" },
+    { "name": "Projects", "short_name": "Projects", "url": "./index.html#projects", "description": "Project portfolio" },
+    { "name": "Risks", "short_name": "Risks", "url": "./index.html#risks", "description": "Risk register" },
+    { "name": "Security", "short_name": "Security", "url": "./index.html#security", "description": "Threat model and gaps" },
+    { "name": "Agent", "short_name": "Agent", "url": "./index.html#agent", "description": "AI operations assistant" }
+  ],
+  "prefer_related_applications": false
+}

@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Give AI crawlers explicit permission for AIO
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://masaar.app/sitemap.xml
