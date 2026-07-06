@@ -23,6 +23,7 @@ export default function Header() {
           <a href="/workspace" className="btn-ghost">{t("nav.workspace")}</a>
           <a href="/templates" className="btn-ghost">{t("nav.templates")}</a>
           <a href="/history" className="btn-ghost">{t("nav.history")}</a>
+          <a href="/install" className="btn-ghost">{t("nav.install")}</a>
           <a href="/login" className="btn-ghost">{t("nav.signin")}</a>
           <ThemeToggle />
           <button
@@ -65,6 +66,7 @@ export default function Header() {
             <a href="/workspace" className="btn-ghost justify-start">{t("nav.workspace")}</a>
             <a href="/templates" className="btn-ghost justify-start">{t("nav.templates")}</a>
             <a href="/history" className="btn-ghost justify-start">{t("nav.history")}</a>
+            <a href="/install" className="btn-ghost justify-start">{t("nav.install")}</a>
             <a href="/login" className="btn-ghost justify-start">{t("nav.signin")}</a>
           </div>
         </nav>

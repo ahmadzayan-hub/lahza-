@@ -1,103 +1,46 @@
-# Prismly · منشور
+# Draftly · صياغة
 
-> **Refract any idea into the perfect prompt.**
+> **Every idea deserves a proper draft.**
 
-Prismly is a 100% free, multilingual (EN/AR), offline-ready SaaS that
-turns vague ideas into structured, model-aware prompts. A prism takes
-one raw input and refracts it into a spectrum — Prismly takes one rough
-thought and refracts it into CONTEXT / TASK / CONSTRAINTS / FORMAT /
-SUCCESS sections tuned for ChatGPT, Claude, Copilot or Gemini.
+Draftly is a free, bilingual (English + Arabic), offline-ready SaaS that
+turns rough thoughts into structured, model-aware prompts for ChatGPT,
+Claude, Copilot or Gemini. Type it, speak it, or attach a file — Draftly
+handles the rest.
 
-Built on **Next.js + Supabase + Ollama + Vercel** — zero hosting,
-database or AI fees.
+Built on **Next.js + Supabase + Ollama + Vercel**. Zero hosting, database
+or AI fees.
 
 ## Features
 
-- Raw prompt intake with intent detection
-- Rule + LLM gap analysis → clarification questions
-- Multi-step Q&A session state
-- Final prompt reconstruction with rationale
-- Model-specific formatting for ChatGPT, Claude, Copilot, generic
-- Prompt history + versioning
-- Multi-tenant orgs with Postgres Row-Level Security
-- Chrome (Manifest V3) browser extension that injects into ChatGPT, Claude,
-  Copilot, and Gemini
-
-## Folder structure
-
-```
-.
-├── extension/                  Chrome MV3 extension
-│   ├── manifest.json
-│   ├── background.js           service worker
-│   ├── content.js / content.css inject Enhance button
-│   ├── popup.html / popup.js / popup.css
-│   └── options.html / options.js
-├── supabase/
-│   ├── migrations/0001_init.sql full schema + RLS
-│   └── seed.sql                public templates
-├── src/
-│   ├── app/                    Next.js App Router
-│   │   ├── layout.tsx, page.tsx, globals.css
-│   │   ├── login/page.tsx
-│   │   ├── workspace/page.tsx
-│   │   ├── templates/page.tsx
-│   │   ├── history/page.tsx
-│   │   └── api/
-│   │       ├── health/
-│   │       ├── orgs/
-│   │       ├── templates/[id]/
-│   │       ├── sessions/[id]/answers/
-│   │       ├── sessions/[id]/finalize/
-│   │       └── extension/enhance/
-│   ├── components/
-│   │   └── Workspace.tsx
-│   └── lib/
-│       ├── env.ts, types.ts
-│       ├── supabase/{server,browser}.ts
-│       ├── llm/{ollama,prompts}.ts
-│       └── services/{orchestration,clarification,template,formatter,auth}.ts
-├── package.json, tsconfig.json, next.config.mjs
-├── tailwind.config.ts, postcss.config.mjs
-└── docs/
-    ├── API.md
-    └── DEPLOY.md
-```
+- Eight prompt engineering methods (CRAFT, Task, Role, Zero-shot,
+  Few-shot, Chain of thought, Structured, Critique and improve) with an
+  automatic recommender.
+- Prompt quality score from 0 to 100 across ten dimensions.
+- Side-by-side comparison of five methods on the same idea.
+- Voice dictation (English and Arabic) with persistent listening.
+- Attach any file — images, PDFs, audio, video, CSV, code.
+- Local history and pinned personal library (localStorage, no auth).
+- Full English + Arabic UI with proper RTL layout and native MSA copy.
+- Distinctive typography: Space Grotesk, IBM Plex Sans Arabic, JetBrains Mono.
+- Light and dark themes.
+- Installable Progressive Web App for Android, iOS, and desktop.
+- Search-engine and AI-answer-engine optimised: robots.txt, sitemap.xml,
+  llms.txt, JSON-LD structured data, hreflang.
 
 ## Quick start
 
 ```bash
-# 1. Install
 npm install
-
-# 2. Configure
 cp .env.example .env.local
-# Fill in NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY,
-# SUPABASE_SERVICE_ROLE_KEY, and OLLAMA_BASE_URL.
-
-# 3. Run Ollama (in another terminal)
-ollama pull llama3
-ollama pull mistral
-ollama pull phi3
-ollama serve
-
-# 4. Apply Supabase schema
-#   psql "$SUPABASE_DB_URL" -f supabase/migrations/0001_init.sql
-# (or paste it into the Supabase SQL editor)
-
-# 5. Start the app
 npm run dev
-# open http://localhost:3000
 ```
 
-## Browser extension
+Open http://localhost:3000. The local engine works with no backend keys.
+Set `OPENAI_API_KEY` in Vercel to enable cloud-quality reconstruction.
 
-```bash
-# Chrome → chrome://extensions → Developer mode → "Load unpacked"
-# select the ./extension folder.
-# Then open the extension Options page and set:
-#   API base URL = your Vercel/localhost URL
-#   API key      = the EXTENSION_API_KEY value from .env.local
-```
+## Docs
 
-See [docs/API.md](docs/API.md) and [docs/DEPLOY.md](docs/DEPLOY.md).
+- `docs/API.md` — API reference
+- `docs/DEPLOY.md` — deployment guide
+- `docs/MOBILE.md` — installable app + Capacitor
+- `docs/RELEASE_READINESS.md` — release checklist

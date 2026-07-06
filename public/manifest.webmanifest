@@ -1,13 +1,13 @@
 {
-  "name": "Prismly",
-  "short_name": "Prismly",
-  "description": "Refract any idea into the perfect prompt — multilingual, voice + file aware.",
+  "name": "Draftly · صياغة",
+  "short_name": "Draftly",
+  "description": "Every idea deserves a proper draft. Draftly turns rough thoughts into structured, model-aware prompts for ChatGPT, Claude, Copilot and Gemini. Free, offline-ready, bilingual (English and Arabic).",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0f172a",
-  "theme_color": "#6366f1",
+  "background_color": "#0f766e",
+  "theme_color": "#0f766e",
   "lang": "en",
   "dir": "auto",
   "icons": [
@@ -15,5 +15,21 @@
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
   ],
-  "categories": ["productivity", "utilities", "education"]
+  "categories": ["productivity", "utilities", "education"],
+  "shortcuts": [
+    {
+      "name": "Workspace",
+      "short_name": "Workspace",
+      "description": "Draft a new prompt",
+      "url": "/workspace",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Templates",
+      "short_name": "Templates",
+      "description": "Start from a template",
+      "url": "/templates",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    }
+  ]
 }

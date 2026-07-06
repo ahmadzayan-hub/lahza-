@@ -6,13 +6,17 @@
 html.dark { color-scheme: dark; }
 
 html, body { @apply h-full antialiased; }
-/* RTL switches to the dedicated Arabic typeface */
-html[dir="rtl"] body { font-family: var(--font-arabic), "Tajawal", system-ui, sans-serif; }
-/* Monospaced output blocks use the developer-friendly mono face */
-pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace; }
+/* RTL uses the dedicated Arabic typeface */
+html[dir="rtl"] body {
+  font-family: var(--font-arabic), "Tajawal", system-ui, sans-serif;
+}
+/* Code/output blocks use the mono face */
+pre, code {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
 
 textarea, input, select {
-  @apply rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition;
+  @apply rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent transition;
 }
 .dark textarea, .dark input, .dark select {
   @apply bg-slate-900 border-slate-700 text-slate-100;
@@ -24,22 +28,23 @@ button {
 
 .btn-primary {
   @apply text-white px-4 py-2 disabled:opacity-50 relative overflow-hidden;
-  background-image: linear-gradient(135deg, #6366f1, #8b5cf6 50%, #ec4899);
-  background-size: 200% 200%;
+  background-image: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #f59e0b 130%);
+  background-size: 180% 180%;
   background-position: 0% 50%;
-  box-shadow: 0 6px 20px -8px rgba(99, 102, 241, 0.6);
-  transition: background-position 600ms ease, transform 150ms ease, filter 150ms ease;
+  box-shadow: 0 6px 20px -8px rgba(13, 148, 136, 0.55);
+  transition: background-position 500ms ease, transform 150ms ease, filter 150ms ease;
 }
 .btn-primary:hover:not(:disabled) {
   background-position: 100% 50%;
   transform: translateY(-1px);
 }
 .btn-primary:active:not(:disabled) { transform: translateY(0); }
+
 .btn-ghost { @apply bg-transparent text-slate-700 px-3 py-2 hover:bg-slate-100; }
 .dark .btn-ghost { @apply text-slate-200 hover:bg-slate-800; }
 
 .card {
-  @apply rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition;
+  @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition;
 }
 .dark .card { @apply border-slate-800 bg-slate-900; }
 
@@ -51,52 +56,21 @@ button {
 .end-2 { inset-inline-end: 0.5rem; }
 .end-3 { inset-inline-end: 0.75rem; }
 
-
-/* --- Motion --- */
-@keyframes po-fade-in {
+/* Subtle motion */
+@keyframes dr-fade-in {
   from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.card { animation: po-fade-in 280ms ease-out both; }
+.card { animation: dr-fade-in 240ms ease-out both; }
 
-@keyframes po-spectrum {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.po-spectrum {
-  background-image: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #3b82f6, #8b5cf6, #ec4899, #ef4444);
-  background-size: 200% 100%;
-  animation: po-spectrum 6s linear infinite;
-}
-
-@keyframes po-shimmer {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
-}
-.po-shimmer::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
-  animation: po-shimmer 2.5s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes po-float {
+@keyframes dr-float {
   0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
+  50%      { transform: translateY(-4px); }
 }
-.po-float { animation: po-float 4s ease-in-out infinite; }
+.dr-float { animation: dr-float 5s ease-in-out infinite; }
 
-@keyframes po-pulse-soft {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.35); }
-  50%      { box-shadow: 0 0 0 14px rgba(99,102,241,0); }
-}
-.po-pulse-soft { animation: po-pulse-soft 2s ease-in-out infinite; }
-
-/* Honour user motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .card, .po-spectrum, .po-shimmer::after, .po-float, .po-pulse-soft, .btn-primary {
+  .card, .dr-float, .btn-primary {
     animation: none !important;
     transition: none !important;
   }

@@ -1,0 +1,43 @@
+# Draftly
+
+> A free, bilingual (English + Arabic) prompt engineering tool.
+> Draftly turns rough ideas into structured, model aware prompts
+> for ChatGPT, Claude, Copilot and Gemini. Offline ready, works
+> without a backend.
+
+## What Draftly does
+
+Draftly takes a raw idea (typed, spoken, or attached as a file)
+and reshapes it into a polished prompt using one of eight prompt
+engineering methods: CRAFT, Task, Role, Zero shot, Few shot, Chain
+of thought, Structured, or Critique and improve. Every result is
+scored on ten quality dimensions and can be exported or pinned to
+a personal library. All processing can run locally in the browser
+if the user has no backend configured.
+
+## Who it is for
+
+- Students drafting assignments and study prompts
+- Business professionals writing executive summaries and reports
+- Developers structuring code review and refactor prompts
+- Arabic speakers who want their prompts written in native MSA
+- Anyone who wants better answers from ChatGPT, Claude, Copilot, or Gemini
+
+## Key features
+
+- Eight prompt methods with automatic recommendation
+- Quality score from 0 to 100 across ten dimensions
+- Side by side comparison of the same idea in five methods
+- Voice dictation, file attachments (images, PDF, code, CSV)
+- Local session history and personal pinned library
+- Full Arabic + English UI with proper RTL layout
+- Dark and light themes
+- Installable Progressive Web App for Android, iOS, and desktop
+
+## Where to start
+
+- Home: /
+- Workspace: /workspace
+- Templates: /templates
+- History: /history
+- Install: /install
