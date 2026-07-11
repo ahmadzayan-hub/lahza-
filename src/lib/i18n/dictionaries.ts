@@ -143,7 +143,7 @@ export const dict = {
     "pricing.popular": "Most Popular",
 
     "auth.login.title": "Welcome back",
-    "auth.login.subtitle": "Sign in to your LearnIQ account",
+    "auth.login.subtitle": "Sign in to your ZAIan Studio account",
     "auth.login.email": "Email address",
     "auth.login.password": "Password",
     "auth.login.forgot": "Forgot password?",
@@ -496,8 +496,8 @@ export const dict = {
     "moodle.wizard.step7": "Confirm and import",
     "moodle.wizard.note": "We do not connect to Moodle without your explicit authorization.",
 
-    "pwa.install.title": "Install LearnIQ on your device",
-    "pwa.install.body": "Add LearnIQ to your home screen to use it like an app from your phone.",
+    "pwa.install.title": "Install ZAIan Studio on your device",
+    "pwa.install.body": "Add ZAIan Studio to your home screen to use it like a native app.",
     "pwa.install.button": "Install app",
     "pwa.install.ios": "On iPhone: tap the Share button, then tap Add to Home Screen.",
     "pwa.install.android": "Tap the menu button, then Add to Home Screen.",
@@ -505,7 +505,7 @@ export const dict = {
     "legal.privacy": "Privacy Policy",
     "legal.terms": "Terms of Use",
     "legal.cookie": "Cookie Notice",
-    "legal.copyright": "© {year} LearnIQ. All rights reserved.",
+    "legal.copyright": "© {year} ZAIan Studio. All rights reserved.",
     "legal.country": "Operated from the United Arab Emirates",
 
     "error.generic": "Something went wrong. Please try again.",
@@ -682,7 +682,7 @@ export const dict = {
     "pricing.popular": "الأكثر شيوعاً",
 
     "auth.login.title": "مرحباً بعودتك",
-    "auth.login.subtitle": "سجّل الدخول إلى حساب LearnIQ",
+    "auth.login.subtitle": "سجّل الدخول إلى حساب زيان ستوديو",
     "auth.login.email": "البريد الإلكتروني",
     "auth.login.password": "كلمة المرور",
     "auth.login.forgot": "نسيت كلمة المرور؟",
@@ -1035,8 +1035,8 @@ export const dict = {
     "moodle.wizard.step7": "التأكيد والاستيراد",
     "moodle.wizard.note": "لا نتصل بـ Moodle دون تفويضك الصريح.",
 
-    "pwa.install.title": "ثبّت LearnIQ على جهازك",
-    "pwa.install.body": "أضف LearnIQ إلى شاشتك الرئيسية لاستخدامه كتطبيق من هاتفك.",
+    "pwa.install.title": "ثبّت زيان ستوديو على جهازك",
+    "pwa.install.body": "أضف زيان ستوديو إلى شاشتك الرئيسية لاستخدامه كتطبيق متكامل.",
     "pwa.install.button": "تثبيت التطبيق",
     "pwa.install.ios": "على iPhone: اضغط زر المشاركة ثم إضافة إلى الشاشة الرئيسية.",
     "pwa.install.android": "اضغط زر القائمة ثم إضافة إلى الشاشة الرئيسية.",
@@ -1044,7 +1044,7 @@ export const dict = {
     "legal.privacy": "سياسة الخصوصية",
     "legal.terms": "شروط الاستخدام",
     "legal.cookie": "إشعار ملفات تعريف الارتباط",
-    "legal.copyright": "© {year} LearnIQ. جميع الحقوق محفوظة.",
+    "legal.copyright": "© {year} زيان ستوديو. جميع الحقوق محفوظة.",
     "legal.country": "تعمل من الإمارات العربية المتحدة",
 
     "error.generic": "حدث خطأ ما. حاول مرة أخرى.",

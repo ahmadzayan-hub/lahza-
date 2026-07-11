@@ -1,5 +1,5 @@
 {
-  "name": "prompt-orchestrator",
+  "name": "zaian-studio",
   "version": "0.18.0",
   "private": true,
   "workspaces": ["packages/*", "learniq"],
