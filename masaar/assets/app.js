@@ -562,8 +562,29 @@ const appApi = {
   onLoopReport: (text) => pushMsg('system', 'Loop: ' + text)
 };
 
+// ---- Canonical + hreflang injection (avoids hardcoding a domain) ----
+function injectCanonical(){
+  const origin = location.origin + location.pathname.replace(/index\.html$/, '');
+  const set = (rel, hreflang, href) => {
+    const el = document.createElement('link');
+    el.rel = rel;
+    if (hreflang) el.hreflang = hreflang;
+    el.href = href;
+    document.head.appendChild(el);
+  };
+  set('canonical', null, origin);
+  set('alternate', 'en', origin + '?lang=en');
+  set('alternate', 'ar', origin + '?lang=ar');
+  set('alternate', 'x-default', origin);
+  const og = document.createElement('meta');
+  og.setAttribute('property', 'og:url');
+  og.content = origin;
+  document.head.appendChild(og);
+}
+
 // ---- Boot ----
 async function boot(){
+  injectCanonical();
   agent = new Agent(appApi);
   agent.loadMemory();
   renderApp();

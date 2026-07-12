@@ -14,4 +14,5 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://masaar.app/sitemap.xml
+# Set the Sitemap line to your production URL after deploying, e.g.:
+# Sitemap: https://your-vercel-project.vercel.app/sitemap.xml

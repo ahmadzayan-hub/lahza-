@@ -2,6 +2,10 @@
 
 Rail Asset Performance Platform. Bilingual (Arabic + English), mobile-first PWA, offline-capable, single-folder deploy.
 
+**Repo:** https://github.com/ahmadzayan-hub/desktop-tutorial
+**Branch:** [`claude/masaar-launch`](https://github.com/ahmadzayan-hub/desktop-tutorial/tree/claude/masaar-launch/masaar)
+**Folder:** `masaar/` — self-contained. No files outside this folder belong to the project.
+
 ## What it is
 
 Masaar takes an annual rail-maintenance plan and turns it into a live decision surface. Users type the monthly numbers, the app computes status, flags gaps, and a built-in operations assistant proposes what to do next. Nothing operational is fabricated: KPI values start empty until a person enters them.
@@ -52,7 +56,29 @@ Open http://localhost:8080. On the phone, use the "Install app" button that appe
 
 ## Deploy on Vercel
 
-The `masaar/` folder is a self-contained static project. Point a Vercel project at the folder (Root Directory = `masaar`). No build command is needed; Vercel serves the static files with the headers declared in `vercel.json`.
+The `masaar/` folder is a self-contained static project. Two ways to keep it isolated from the other apps in this repo:
+
+**A. Point a Vercel project at the subfolder (recommended)**
+1. New Project → Import `ahmadzayan-hub/desktop-tutorial`
+2. Project Settings → **Root Directory** = `masaar`
+3. Framework Preset: *Other*
+4. Build Command: *(leave empty)* — Output Directory: `.`
+5. Set Production Branch to `claude/masaar-launch` if you want the app to track this branch, or merge to `main` and use `main`.
+
+Vercel serves the static files with the headers declared in `masaar/vercel.json` (CSP, HSTS, referrer, framing).
+
+**B. Separate repo**
+If you want a completely isolated repo, extract just the folder:
+```
+git clone --depth 1 --branch claude/masaar-launch https://github.com/ahmadzayan-hub/desktop-tutorial masaar-src
+cp -r masaar-src/masaar masaar-standalone
+cd masaar-standalone && git init && git add . && git commit -m "Init"
+```
+Then push to a new GitHub repo and connect that to Vercel.
+
+## Isolation from the rest of the repo
+
+Every path in the app is relative to `masaar/` — `./assets/...`, `./icons/...`, `./manifest.webmanifest`, `./sw.js`. Nothing outside `masaar/` is referenced. The branch `claude/masaar-launch` only adds files under `masaar/`; it does not touch any other project.
 
 ## Security posture
 

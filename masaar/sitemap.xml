@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Replace SITE_ORIGIN below with your deployed origin, e.g.
+  https://masaar-<hash>.vercel.app
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://masaar.app/</loc>
+    <loc>SITE_ORIGIN/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://masaar.app/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://masaar.app/?lang=ar"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://masaar.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="SITE_ORIGIN/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="SITE_ORIGIN/?lang=ar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="SITE_ORIGIN/"/>
   </url>
-  <url><loc>https://masaar.app/#dashboard</loc><priority>0.9</priority></url>
-  <url><loc>https://masaar.app/#projects</loc><priority>0.9</priority></url>
-  <url><loc>https://masaar.app/#risks</loc><priority>0.9</priority></url>
-  <url><loc>https://masaar.app/#security</loc><priority>0.9</priority></url>
-  <url><loc>https://masaar.app/#agent</loc><priority>0.9</priority></url>
+  <url><loc>SITE_ORIGIN/#dashboard</loc><priority>0.9</priority></url>
+  <url><loc>SITE_ORIGIN/#projects</loc><priority>0.9</priority></url>
+  <url><loc>SITE_ORIGIN/#risks</loc><priority>0.9</priority></url>
+  <url><loc>SITE_ORIGIN/#security</loc><priority>0.9</priority></url>
+  <url><loc>SITE_ORIGIN/#agent</loc><priority>0.9</priority></url>
 </urlset>

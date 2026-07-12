@@ -11,18 +11,15 @@
   <meta name="description" content="Masaar is a bilingual, offline-first platform that turns an annual rail maintenance plan into a live decision surface. Enter your monthly numbers, see status compute, and let an assistant propose the next action."/>
   <meta name="keywords" content="rail maintenance, asset performance, KPI dashboard, MTTR, MTBF, reliability, RTL, Arabic, PWA, offline, threat model, security"/>
   <meta name="author" content="Masaar"/>
-  <link rel="canonical" href="https://masaar.app/"/>
-  <link rel="alternate" hreflang="en" href="https://masaar.app/?lang=en"/>
-  <link rel="alternate" hreflang="ar" href="https://masaar.app/?lang=ar"/>
-  <link rel="alternate" hreflang="x-default" href="https://masaar.app/"/>
+  <!-- Canonical URLs are rewritten to the real origin at runtime by app.js.
+       Do not hardcode a domain here; the deploy fills it in. -->
 
   <!-- Open Graph -->
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="Masaar"/>
   <meta property="og:title" content="Masaar — Rail Asset Performance Platform"/>
   <meta property="og:description" content="Plan, monitor, and improve rail maintenance performance. Bilingual Arabic and English, works offline, installable."/>
-  <meta property="og:image" content="https://masaar.app/icons/icon.svg"/>
-  <meta property="og:url" content="https://masaar.app/"/>
+  <meta property="og:image" content="./icons/icon.svg"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:locale:alternate" content="ar_AE"/>
 
@@ -30,7 +27,7 @@
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="Masaar — Rail Asset Performance Platform"/>
   <meta name="twitter:description" content="From operational plan to informed decisions. Bilingual, offline-first."/>
-  <meta name="twitter:image" content="https://masaar.app/icons/icon.svg"/>
+  <meta name="twitter:image" content="./icons/icon.svg"/>
 
   <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest"/>
@@ -53,7 +50,7 @@
         "alternateName": "مسار",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Any",
-        "url": "https://masaar.app/",
+        "url": "/",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
         "description": "Bilingual, offline-first platform for planning and monitoring rail maintenance performance, with a built-in operations assistant.",
         "featureList": [
@@ -69,7 +66,7 @@
       {
         "@type": "WebApplication",
         "name": "Masaar",
-        "url": "https://masaar.app/",
+        "url": "/",
         "browserRequirements": "Modern browser with service worker support",
         "inLanguage": ["en", "ar"]
       },
