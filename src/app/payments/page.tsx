@@ -116,7 +116,7 @@ export default async function PaymentsPage() {
                       </span>
                     </td>
                     <td className="max-w-[24rem] text-xs text-ink/80">
-                      {RESOLUTION_TEMPLATES[d.reason as DisputeReason]?.en ?? "."}
+                      {RESOLUTION_TEMPLATES[d.reason as DisputeReason]?.en ?? "-"}
                     </td>
                     <td className="text-xs text-smoke">{formatRelative(d.created_at as string)}</td>
                   </tr>

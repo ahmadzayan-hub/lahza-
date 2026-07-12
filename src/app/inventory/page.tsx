@@ -71,9 +71,9 @@ export default async function InventoryPage() {
                     <td className="font-medium">{r.product_name as string}</td>
                     <td>{r.colour as string} <span className="text-xs text-smoke/70">{(r.finish as string).replace("_", "-")}</span></td>
                     <td>{Number(r.quantity_available)}</td>
-                    <td>{v.daysToStockout ?? "."}</td>
+                    <td>{v.daysToStockout ?? "-"}</td>
                     <td className="font-medium">{v.suggestedReorderQty}</td>
-                    <td className="text-xs text-smoke">{(r.supplier_source as string) ?? "."}</td>
+                    <td className="text-xs text-smoke">{(r.supplier_source as string) ?? "-"}</td>
                   </tr>
                   );
                 })}

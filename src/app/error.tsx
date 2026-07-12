@@ -6,8 +6,8 @@ export default function Error({
 }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <div className="mx-auto max-w-md py-16 text-center">
-      <div className="text-5xl">⚠</div>
-      <h1 className="mt-4 text-2xl font-semibold">Something went sideways</h1>
+      <div className="text-5xl" aria-hidden>!</div>
+      <h1 className="mt-4 font-display text-2xl font-semibold">Something broke</h1>
       <p className="muted mt-1">{error.message || "An unexpected error occurred."}</p>
       {error.digest && <p className="mt-2 text-xs text-smoke/70">trace: {error.digest}</p>}
       <div className="mt-6 flex justify-center gap-2">

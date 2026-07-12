@@ -73,7 +73,7 @@ export default async function CustomersPage() {
                       {!c.vip && Number(c.purchase_count) >= 2 ? <span className="badge badge-info">repeat</span> : null}
                     </div>
                   </td>
-                  <td className="rtl">{(c.name_arabic_verified as string) ?? "."}</td>
+                  <td className="rtl">{(c.name_arabic_verified as string) ?? "-"}</td>
                   <td>{c.platform as string}</td>
                   <td><span className={clsx("badge", c.language === "ar" ? "badge-info" : c.language === "mixed" ? "badge-warn" : "badge-neutral")}>{c.language as string}</span></td>
                   <td>{c.segment as string}</td>

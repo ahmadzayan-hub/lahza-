@@ -66,7 +66,7 @@ export default async function SettingsPage() {
                 <td className="font-medium">{p.name as string}</td>
                 <td className="text-xs text-smoke">{(p.category as string).replace(/_/g, " ")}</td>
                 <td>{formatAed(Number(p.default_price))}</td>
-                <td className="text-xs text-smoke">{(p.claim_notes as string) ?? "."}</td>
+                <td className="text-xs text-smoke">{(p.claim_notes as string) ?? "-"}</td>
                 <td>{p.active ? "yes" : "no"}</td>
               </tr>
             ))}
@@ -84,7 +84,7 @@ function Row({ k, v }: { k: string; v: string }) {
 function prettyValue(key: string, value: unknown): string {
   if (typeof value === "number" && /aed|threshold/i.test(key)) return formatAed(value);
   if (typeof value === "number" && /rate|percent/.test(key)) return `${value}%`;
-  if (value == null) return ".";
+  if (value == null) return "-";
   if (typeof value === "string") return value;
   return JSON.stringify(value);
 }

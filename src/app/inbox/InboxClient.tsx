@@ -191,8 +191,8 @@ export default function InboxClient({
                 <h3 className="h2 mb-2">Customer record</h3>
                 {customer ? (
                   <dl className="grid grid-cols-1 gap-1 text-sm">
-                    <Row k="Display name" v={(customer.name_display as string) ?? "."} />
-                    <Row k="Arabic verified" v={(customer.name_arabic_verified as string) ?? "."} />
+                    <Row k="Display name" v={(customer.name_display as string) ?? "-"} />
+                    <Row k="Arabic verified" v={(customer.name_arabic_verified as string) ?? "-"} />
                     <Row k="Language" v={customer.language as string} />
                     <Row k="Segment" v={customer.segment as string} />
                     <Row k="Purchases" v={String(customer.purchase_count ?? 0)} />
