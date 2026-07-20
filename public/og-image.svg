@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f23"/>
+      <stop offset="50%" stop-color="#1a1040"/>
+      <stop offset="100%" stop-color="#0e0c2e"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="glow1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="f1" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="80"/>
+    </filter>
+    <filter id="f2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="60"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Glow blobs -->
+  <ellipse cx="600" cy="80" rx="400" ry="250" fill="#6366f1" opacity="0.35" filter="url(#f1)"/>
+  <ellipse cx="1050" cy="520" rx="250" ry="200" fill="#ec4899" opacity="0.25" filter="url(#f2)"/>
+
+  <!-- Logo mark -->
+  <rect x="524" y="68" width="152" height="152" rx="34" fill="url(#brand)"/>
+  <path d="M558 120 L578 144 L558 168" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.95"/>
+  <rect x="582" y="166" width="62" height="8" rx="4" fill="white" opacity="0.6"/>
+  <path d="M628 88 L634 108 L654 114 L634 120 L628 140 L622 120 L602 114 L622 108 Z" fill="white" opacity="0.95"/>
+
+  <!-- ZAIan Studio wordmark -->
+  <text x="600" y="284" font-family="system-ui, sans-serif" font-size="88" font-weight="900" text-anchor="middle" letter-spacing="-3" fill="url(#brand)">ZAI</text>
+  <text x="730" y="284" font-family="system-ui, sans-serif" font-size="88" font-weight="900" letter-spacing="-3" fill="white">an</text>
+  <text x="820" y="284" font-family="system-ui, sans-serif" font-size="48" font-weight="300" fill="#8b93c8"> Studio</text>
+
+  <!-- English tagline -->
+  <text x="600" y="338" font-family="system-ui, sans-serif" font-size="24" font-weight="600" text-anchor="middle" letter-spacing="5" fill="#a5b4fc" text-transform="uppercase">PROMPT INTELLIGENCE PLATFORM</text>
+
+  <!-- Arabic tagline -->
+  <text x="600" y="382" font-family="system-ui, Arial, sans-serif" font-size="30" font-weight="700" text-anchor="middle" fill="#c7d2fe" direction="rtl">منصة هندسة الموجّهات ثنائية اللغة</text>
+
+  <!-- Feature pills -->
+  <rect x="120" y="432" width="220" height="48" rx="24" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-opacity="0.4" stroke-width="1.5"/>
+  <text x="230" y="463" font-family="system-ui, sans-serif" font-size="18" font-weight="600" text-anchor="middle" fill="#a5b4fc">11 Prompt Methods</text>
+
+  <rect x="360" y="432" width="220" height="48" rx="24" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-opacity="0.4" stroke-width="1.5"/>
+  <text x="470" y="463" font-family="system-ui, sans-serif" font-size="18" font-weight="600" text-anchor="middle" fill="#a5b4fc">Meta-AI Analysis</text>
+
+  <rect x="600" y="432" width="220" height="48" rx="24" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-opacity="0.4" stroke-width="1.5"/>
+  <text x="710" y="463" font-family="system-ui, sans-serif" font-size="18" font-weight="600" text-anchor="middle" fill="#a5b4fc">10-Dim Scoring</text>
+
+  <rect x="840" y="432" width="240" height="48" rx="24" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-opacity="0.4" stroke-width="1.5"/>
+  <text x="960" y="463" font-family="system-ui, sans-serif" font-size="18" font-weight="600" text-anchor="middle" fill="#a5b4fc">🇦🇪 Made in UAE</text>
+
+  <!-- Domain -->
+  <text x="1152" y="606" font-family="system-ui, sans-serif" font-size="22" font-weight="500" text-anchor="end" fill="#4b547a">zaian.studio</text>
+</svg>

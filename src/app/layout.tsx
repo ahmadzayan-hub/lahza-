@@ -31,13 +31,13 @@ export const metadata: Metadata = {
     siteName: "ZAIan Studio",
     locale: "en_US",
     alternateLocale: "ar_AE",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ZAIan Studio — Prompt Engineering Platform" }]
+    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "ZAIan Studio — Prompt Engineering Platform" }]
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: ["/og-image.png"]
+    images: ["/og-image.svg"]
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
   alternates: {
@@ -107,7 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               ],
               audience: { "@type": "Audience", audienceType: "Professionals, developers, content creators, Arabic speakers" },
               downloadUrl: `${APP_URL}/download`,
-              screenshot: `${APP_URL}/og-image.png`
+              screenshot: `${APP_URL}/og-image.svg`
             })
           }}
         />

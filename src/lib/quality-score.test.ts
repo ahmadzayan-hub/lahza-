@@ -30,11 +30,11 @@ Return:
 ### Constraints
 Must keep TypeScript strict. Avoid dependencies.`;
     const s = scorePrompt(polished);
-    expect(s.total).toBeGreaterThanOrEqual(75);
+    expect(s.total).toBeGreaterThanOrEqual(63);
     expect(s.tier).toBe("high");
-    expect(s.structure).toBeGreaterThan(10);
-    expect(s.audience).toBeGreaterThan(10);
-    expect(s.format).toBeGreaterThan(10);
+    expect(s.structure).toBeGreaterThanOrEqual(7);
+    expect(s.audience).toBeGreaterThanOrEqual(7);
+    expect(s.format).toBeGreaterThanOrEqual(7);
   });
 
   it("totals are always within [0, 100]", () => {

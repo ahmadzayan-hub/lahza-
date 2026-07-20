@@ -163,7 +163,7 @@ export function suggestForDraft(
     gaps.push({ id: "anti-hallucination", weight: 14 });
 
   // Length-based suggestions
-  if (wc > 220) gaps.push({ id: "tighten", weight: 12 });
+  if (wc > 220) gaps.push({ id: "tighten", weight: wc > 250 ? 22 : 12 });
   if (wc < 12)  gaps.push({ id: "expand",  weight: 10 });
 
   gaps.sort((a, b) => b.weight - a.weight);

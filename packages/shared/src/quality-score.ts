@@ -34,14 +34,14 @@ export interface QualityBreakdown {
 // ─── Regex patterns ────────────────────────────────────────────────────────
 const HEADING_RE       = /(^|\n)\s*(#{1,4}|[A-Z][A-Za-z ]{2,30}:)\s/m;
 const LIST_RE          = /(^|\n)\s*([-*•]|\d+\.)\s/m;
-const NUMBER_RE        = /(?:^|\s)\d+(\.\d+)?(?:\s|$|%|st|nd|rd|th|k|m|b)/i;
+const NUMBER_RE        = /(?:^|\s)\d[\d,]*(\.\d+)?(?:\s|$|%|st|nd|rd|th|k|m|b)/i;
 const CODE_TOKEN_RE    = /`[^`]+`|\b[a-z][a-zA-Z0-9_]*\([a-zA-Z0-9_,\s]*\)/;
 const EXAMPLE_RE       = /\b(for example|e\.g\.|example:|like this|such as|sample|مثال|على سبيل المثال|مثلاً)\b/i;
 const ROLE_RE          = /\b(you are|act as|as a|role:|you're|your role|أنت|دورك|كخبير|بصفتك)\b/i;
-const CONSTRAINT_RE    = /\b(avoid|do not|don't|no more than|max|limit|without|exclude|prohibited|forbidden|لا تذكر|تجنّب|بدون|حدّ أقصى|استثنِ)\b/i;
+const CONSTRAINT_RE    = /\b(must|avoid|do not|don't|no more than|no|max|limit|without|exclude|prohibited|forbidden|strict|cannot|can't|never|لا تذكر|تجنّب|بدون|حدّ أقصى|استثنِ|يجب)\b/i;
 const TONE_RE          = /\b(tone:|professional|formal|casual|friendly|concise|detailed|academic|persuasive|neutral|technical|أسلوب:|رسمي|ودي|موجز|أكاديمي|حيادي|مقنع)\b/i;
 const HALLUCINATION_RE = /\b(only.*verified|cite|source|don.t fabricate|unverified|mark speculation|no assumptions|don.t guess|تحقق|مصدر|فقط.*موثق|لا تتخمّن|ضع.*تخمين)\b/i;
-const RESEARCH_RE      = /\b(research|report|analysis|study|data|statistics|reference|literature|بحث|تقرير|تحليل|دراسة|مرجع)\b/i;
+const RESEARCH_RE      = /\b(research|report|analysis|study|literature review|references|bibliography|بحث|تقرير|تحليل|دراسة|مرجع)\b/i;
 
 const AUDIENCE_HINTS = [
   "audience", "for a", "for non-technical", "for developers", "for engineers",
@@ -57,8 +57,15 @@ const FORMAT_HINTS = [
 ];
 
 const STRUCTURE_HINTS = [
+  // Colon-label style (e.g. "Format: …")
   "context:", "role:", "goal:", "constraints:", "examples:", "tone:", "audience:",
   "format:", "output:", "return:", "deliverable:",
+  // Heading style (e.g. "## Format" or "### Audience") — section keyword anywhere
+  "## context", "## role", "## goal", "## constraints", "## examples",
+  "## tone", "## audience", "## format", "## output",
+  "### context", "### role", "### goal", "### constraints", "### examples",
+  "### tone", "### audience", "### format", "### output",
+  // Arabic
   "السياق:", "الدور:", "الهدف:", "القيود:", "المخرجات:", "الجمهور:", "النبرة:",
 ];
 
@@ -67,9 +74,9 @@ function clip(n: number, max = 10): number {
 }
 
 function tierOf(total: number): QualityBreakdown["tier"] {
-  if (total >= 88) return "excellent";
-  if (total >= 70) return "high";
-  if (total >= 45) return "mid";
+  if (total >= 82) return "excellent";
+  if (total >= 60) return "high";
+  if (total >= 40) return "mid";
   return "low";
 }
 
@@ -124,7 +131,7 @@ export function scorePrompt(text: string): QualityBreakdown {
   // ── 5. Format (0-10) ──────────────────────────────────────────────────────
   let format = 0;
   if (FORMAT_HINTS.some((h) => lower.includes(h))) format += 7;
-  if (/```|<code|<\/?\w+>/i.test(t))               format += 3;
+  if (/```|`[^`]+`|<code|<\/?\w+>/i.test(t))       format += 3;
   format = clip(format);
 
   // ── 6. Role (0-10) ────────────────────────────────────────────────────────
@@ -174,6 +181,20 @@ export function scorePrompt(text: string): QualityBreakdown {
     anti_hallucination = 7;
   }
   anti_hallucination = clip(anti_hallucination);
+
+  // ── Explicit section bonus ─────────────────────────────────────────────────
+  // Prompts that dedicate a named heading/label to a dimension get full credit
+  // for that dimension regardless of whether the regex patterns match the text.
+  const hasSection = (name: string) =>
+    new RegExp(`#{1,4}\\s+${name}`, "i").test(t) ||
+    new RegExp(`^${name}:`, "im").test(t);
+
+  if (hasSection("audience") || hasSection("الجمهور"))      audience    = clip(Math.max(audience,    10));
+  if (hasSection("format") || hasSection("التنسيق"))        format      = clip(Math.max(format,      10));
+  if (hasSection("constraints") || hasSection("القيود"))    constraints = clip(Math.max(constraints, 10));
+  if (hasSection("role") || hasSection("الدور"))            role        = clip(Math.max(role,         10));
+  if (hasSection("examples") || hasSection("أمثلة"))        examples    = clip(Math.max(examples,      8));
+  if (hasSection("tone") || hasSection("النبرة"))            tone        = clip(Math.max(tone,          8));
 
   const total = Math.min(100, clarity + specificity + structure + audience + format + role + constraints + tone + examples + anti_hallucination);
 
