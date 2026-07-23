@@ -18,7 +18,6 @@ export function Footer() {
     { to: "/delivery", key: "nav.delivery" },
     { to: "/faq", key: "nav.faq" },
     { to: "/contact", key: "nav.contact" },
-    { to: "/console", key: "nav.admin" },
   ];
   const legal = [
     { to: "/privacy", key: "legal.privacy.title" },

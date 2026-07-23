@@ -42,3 +42,10 @@ test('المناسبة بتفرض الموضوع على الاتنين', async (
   assert.deepStrictEqual(r.themesShown, ['عيد جوازنا', 'عيد جوازنا']);
   assert.match(captured, /عيد جوازنا/);
 });
+
+test('سطر مرقّم واحد + تمهيد: الاقتراح هو المرقّم مش التمهيد', async () => {
+  llm.complete = async () => 'طبعاً، دي اقتراحات حلوة ليك:\n١- وحشتيني يا قلبي\n';
+  const result = await require('../generateSuggestion').generateSuggestions({ slot: 'morning' });
+  assert.strictEqual(result.items[0].text, 'وحشتيني يا قلبي');
+  assert.ok(!result.items[0].text.includes('اقتراحات'), 'التمهيد ما يطلعش كاقتراح');
+});

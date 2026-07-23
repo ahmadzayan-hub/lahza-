@@ -58,7 +58,7 @@ function buildReport() {
     s === 'morning' ? 'الصباحية' : s === 'evening' ? 'المسائية' : s === 'occasion' ? 'المناسبات' : s;
 
   const lines = [];
-  lines.push('📊 *ملخّص المساعد*');
+  lines.push('📊 ملخّص المساعد');
   lines.push('');
   lines.push(`✅ نسبة القبول: ${acceptRate}% (اخترت ${accepted} من ${total})`);
 

@@ -13,11 +13,23 @@ class Store(context: Context) {
     @Synchronized
     fun read(): AppData {
         if (!file.exists()) return defaultData()
-        return runCatching { json.decodeFromString<AppData>(file.readText()) }.getOrElse { defaultData() }
+        return runCatching { json.decodeFromString<AppData>(file.readText()) }.getOrElse {
+            // ملف تالف ≠ مسح التعلّم بصمت: بنحجره جنباً ونبدأ نظيف.
+            runCatching { file.renameTo(File(file.parentFile, "store.json.corrupt-${System.currentTimeMillis()}")) }
+            defaultData()
+        }
     }
 
     @Synchronized
-    fun write(data: AppData) = file.writeText(json.encodeToString(data))
+    fun write(data: AppData) {
+        // كتابة ذرّية: ملف مؤقّت ثم rename، عشان انقطاع الكتابة ما يبوّظش المخزن.
+        val tmp = File(file.parentFile, "store.json.tmp")
+        tmp.writeText(json.encodeToString(data))
+        if (!tmp.renameTo(file)) {
+            file.delete()
+            tmp.renameTo(file)
+        }
+    }
 
     private fun defaultData(): AppData {
         val weights = AppConstants.THEMES.associateWith { 1.0 }.toMutableMap()

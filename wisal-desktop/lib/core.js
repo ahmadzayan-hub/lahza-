@@ -5,6 +5,11 @@
 const fs = require('fs');
 const path = require('path');
 
+// safeStorage متاح في عملية main بتاعة Electron بس؛ برّاها بنشتغل من غيره.
+let safeStorage = null;
+try { safeStorage = require('electron').safeStorage; } catch (e) { safeStorage = null; }
+function canEncrypt() { return !!(safeStorage && safeStorage.isEncryptionAvailable()); }
+
 let DATA_DIR = '.';
 function init(dir) {
   DATA_DIR = dir;
@@ -13,10 +18,22 @@ function init(dir) {
 
 function fileFor(name) { return path.join(DATA_DIR, name); }
 function readJson(name, def) {
-  try { return JSON.parse(fs.readFileSync(fileFor(name), 'utf8')); } catch (e) { return def; }
+  const file = fileFor(name);
+  if (!fs.existsSync(file)) return def;
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (e) {
+    // ملف تالف ≠ نمسح تعلّم المستخدم بصمت: بنحجره جنباً ونبدأ نظيف.
+    try { fs.renameSync(file, `${file}.corrupt-${Date.now()}`); } catch (e2) { /* ignore */ }
+    return def;
+  }
 }
 function writeJson(name, obj) {
-  try { fs.writeFileSync(fileFor(name), JSON.stringify(obj, null, 2)); } catch (e) { /* ignore */ }
+  // كتابة ذرّية + رمي الخطأ عشان الواجهة تعرف إن الحفظ فشل بدل ✅ كاذبة.
+  const file = fileFor(name);
+  const tmp = `${file}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(obj, null, 2));
+  fs.renameSync(tmp, file);
 }
 
 // ---------- الإعدادات ----------
@@ -25,8 +42,25 @@ const DEFAULT_SETTINGS = {
   humor: false, emoji: true, messageLength: 'short',
   theme: 'light', selectedRecipientId: '', onboarded: false,
 };
-function getSettings() { return Object.assign({}, DEFAULT_SETTINGS, readJson('settings.json', {})); }
-function setSettings(patch) { const s = Object.assign(getSettings(), patch || {}); writeJson('settings.json', s); return s; }
+function getSettings() {
+  const s = Object.assign({}, DEFAULT_SETTINGS, readJson('settings.json', {}));
+  if (s.groqKeyEnc && canEncrypt()) {
+    try { s.groqKey = safeStorage.decryptString(Buffer.from(s.groqKeyEnc, 'base64')); }
+    catch (e) { s.groqKey = ''; }
+  }
+  return s;
+}
+function setSettings(patch) {
+  const s = Object.assign(getSettings(), patch || {});
+  const persisted = Object.assign({}, s);
+  if (persisted.groqKey && canEncrypt()) {
+    // المفتاح يتخزّن مشفّر عبر مخزن مفاتيح النظام؛ النص الصريح ولا يتكتب.
+    persisted.groqKeyEnc = safeStorage.encryptString(persisted.groqKey).toString('base64');
+    persisted.groqKey = '';
+  }
+  writeJson('settings.json', persisted);
+  return s;
+}
 
 // ---------- الأشخاص ----------
 function getPeople() { return readJson('people.json', []); }
@@ -97,7 +131,12 @@ function addStyleExample(text, theme, recipientId) {
   }
   saveStore(s);
 }
-function addFeedback(fb) { const s = getStore(); s.feedback.push(fb); saveStore(s); }
+function addFeedback(fb) {
+  const s = getStore();
+  s.feedback.push(fb);
+  if (s.feedback.length > 500) s.feedback = s.feedback.slice(-500); // سقف للتاريخ
+  saveStore(s);
+}
 function bumpTheme(theme, delta) {
   if (!theme) return; const s = getStore();
   let n = (s.themeWeights[theme] || 1) + delta;
@@ -122,11 +161,19 @@ function markContacted(recipientId) {
 async function groqComplete(messages, temperature) {
   const s = getSettings();
   if (!s.groqKey) throw new Error('no-key');
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: { Authorization: 'Bearer ' + s.groqKey, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: s.model, temperature: temperature || 0.8, max_tokens: 400, messages }),
-  });
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 20000);
+  let res;
+  try {
+    res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + s.groqKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: s.model, temperature: temperature || 0.8, max_tokens: 400, messages }),
+      signal: ctrl.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
   if (!res.ok) throw new Error('groq-' + res.status);
   const j = await res.json();
   const c = j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
@@ -196,11 +243,19 @@ function parseTwo(raw, themes) {
   const nums = lines.map((l) => { const m = l.match(re); return m ? m[1].trim() : null; }).filter(Boolean);
   let a, b;
   if (nums.length >= 2) { a = nums[0]; b = nums[1]; }
-  else {
+  else if (nums.length === 1) {
+    // سطر مرقّم واحد + تمهيد: الاقتراح هو المرقّم، مش التمهيد.
+    a = nums[0];
+    const clean = lines.map((l) => l.replace(/^[١٢12]\s*[-.)]\s*/, '').trim())
+      .filter((l) => l && l !== a);
+    b = clean[clean.length - 1] || null;
+  } else {
     const clean = lines.map((l) => l.replace(/^[١٢12]\s*[-.)]\s*/, '').trim()).filter(Boolean);
-    a = clean[0] || String(raw).trim(); b = clean[1] || a;
+    a = clean[0] || String(raw).trim(); b = clean[1] || null;
   }
-  return [{ text: a, theme: themes[0] || '' }, { text: b, theme: themes[1] || themes[0] || '' }];
+  const items = [{ text: a, theme: themes[0] || '' }];
+  if (b && b !== a) items.push({ text: b, theme: themes[1] || themes[0] || '' });
+  return items;
 }
 
 // بنك احتياطي لو مفيش نت/مفتاح
@@ -229,10 +284,13 @@ async function generate(opts) {
     return { items: parseTwo(raw, themes), themes, offline: false, note: null };
   } catch (e) {
     const hasKey = !!getSettings().groqKey;
-    return {
-      items: fallbackTwo(recipient, intent), themes, offline: true,
-      note: hasKey ? 'النت مش متاح 📴 دي رسائل جاهزة تقدر تعدّلها.' : 'ضيف مفتاح Groq من الإعدادات عشان اقتراحات أذكى ✨',
-    };
+    const msg = String(e && e.message || '');
+    let note;
+    if (!hasKey) note = 'ضيف مفتاح Groq من الإعدادات عشان اقتراحات أذكى ✨';
+    else if (msg === 'groq-401' || msg === 'groq-403') note = 'مفتاح Groq غير صالح 🔑 راجع الإعدادات.';
+    else if (msg === 'groq-429') note = 'وصلنا حد الاستخدام مؤقتاً ⏳ جرّب بعد دقيقة.';
+    else note = 'النت مش متاح 📴 دي رسائل جاهزة تقدر تعدّلها.';
+    return { items: fallbackTwo(recipient, intent), themes, offline: true, note };
   }
 }
 

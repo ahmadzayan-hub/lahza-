@@ -227,7 +227,12 @@ fun SettingsScreen(onBack: () -> Unit, onThemeChanged: () -> Unit = {}) {
 
             Button(
                 onClick = {
-                    settings.groqKey = groqKey.trim()
+                    try {
+                        settings.groqKey = groqKey.trim()
+                    } catch (e: IllegalStateException) {
+                        Toast.makeText(context, "تعذّر حفظ المفتاح بأمان على هذا الجهاز ⚠️", Toast.LENGTH_LONG).show()
+                        return@Button
+                    }
                     settings.myName = myName.trim()
                     settings.humor = humor
                     settings.emoji = emoji

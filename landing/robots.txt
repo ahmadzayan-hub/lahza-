@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ahmadzayan-hub.github.io/desktop-tutorial/sitemap.xml

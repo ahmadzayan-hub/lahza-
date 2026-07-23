@@ -194,7 +194,7 @@ function renderSuggestions() {
     const actions = el('<div class="row tight"></div>');
     const wa = el(`<button class="btn">${isGroup ? '📣 ابعت للجروب' : '📲 ابعت لـ' + esc(whoName(r))}</button>`);
     wa.onclick = () => sendWhatsApp(item.text, r, isGroup);
-    const copy = el('<button class="ghost">📋 نسخ</button>'); copy.onclick = () => { navigator.clipboard.writeText(item.text); toast('اتنسخت ✅'); };
+    const copy = el('<button class="ghost">📋 نسخ</button>'); copy.onclick = async () => { try { await navigator.clipboard.writeText(item.text); toast('اتنسخت ✅'); } catch (e) { toast('تعذّر النسخ ⚠️'); } };
     const pick = el('<button class="ghost">👍 اختار</button>');
     pick.onclick = async () => {
       await call('learn:choose', { text: item.text, theme: item.theme, recipientId: r ? r.id : '', slot: currentSuggestions.slot, themesShown: currentSuggestions.themes });
@@ -342,7 +342,7 @@ async function renderHistory() {
       const card = el(`<div class="list-item"><div class="muted">${esc(f.date)}${who ? ' · ' + esc(who) : ''}</div><div style="margin:6px 0">${esc(f.finalText)}</div><div class="row tight"></div></div>`);
       const acts = $('.row', card);
       const star = el(`<button class="ghost small">${fav ? '⭐' : '☆'}</button>`); star.onclick = async () => { const list = await call('favorite:toggle', { text: f.finalText }); favs.clear(); list.forEach((x) => favs.add(x)); draw(); };
-      const cp = el('<button class="ghost small">📋</button>'); cp.onclick = () => { navigator.clipboard.writeText(f.finalText); toast('اتنسخت ✅'); };
+      const cp = el('<button class="ghost small">📋</button>'); cp.onclick = async () => { try { await navigator.clipboard.writeText(f.finalText); toast('اتنسخت ✅'); } catch (e) { toast('تعذّر النسخ ⚠️'); } };
       const wa = el('<button class="ghost small">📲</button>'); wa.onclick = () => { const r = currentRecipient(); sendWhatsApp(f.finalText, r, false); };
       const del = el('<button class="ghost small">🗑️</button>'); del.onclick = async () => { await call('history:delete', { date: f.date, text: f.finalText }); const idx = all.indexOf(f); if (idx >= 0) all.splice(idx, 1); draw(); };
       acts.append(star, cp, wa, del);

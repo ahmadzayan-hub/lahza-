@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import {
   Upload, ImageUp, Wand2, Crop, CheckCircle2, AlertTriangle, XCircle,
-  Sparkles, Languages, RefreshCw, MessageCircle, CreditCard, Lock, ShieldCheck,
+  Sparkles, Languages, RefreshCw, MessageCircle,
 } from "lucide-react";
 import { useI18n } from "@/i18n/I18nContext";
 import { ProductPreview, type Surface } from "@/components/ProductPreview";
@@ -476,7 +476,7 @@ function Row({ label, value, strong, muted }: { label: string; value: string; st
 }
 
 /* ----------------------------- 7. Payment ----------------------------- */
-export function PaymentStep({ draft, onPay }: { draft: OrderDraft; onPay: (mode: "now" | "link") => void }) {
+export function PaymentStep({ draft, onPay }: { draft: OrderDraft; onPay: () => void }) {
   const { t, lang } = useI18n();
   const { total } = computeTotals(draft);
   return (
@@ -488,18 +488,11 @@ export function PaymentStep({ draft, onPay }: { draft: OrderDraft; onPay: (mode:
         <p className="font-serif text-4xl font-bold text-coffee-900">{formatAed(total, lang)}</p>
         <p className="text-xs text-coffee-400">{t("common.vatIncluded")}</p>
 
-        <button type="button" className="btn btn-primary mt-6 w-full justify-center" onClick={() => onPay("now")}>
-          <CreditCard className="h-4 w-4" /> {t("customize.pay.payNow")}
-        </button>
-        <button type="button" className="btn btn-outline mt-3 w-full justify-center" onClick={() => onPay("link")}>
-          <MessageCircle className="h-4 w-4" /> {t("customize.pay.requestLink")}
+        <button type="button" className="btn btn-primary mt-6 w-full justify-center" onClick={onPay}>
+          <MessageCircle className="h-4 w-4" /> {t("customize.pay.sendWhatsApp")}
         </button>
 
-        <p className="mt-4 text-xs text-coffee-500">{t("customize.pay.methods")}</p>
-        <p className="mt-2 flex items-center justify-center gap-1.5 text-xs text-coffee-400">
-          <Lock className="h-3.5 w-3.5" /> {t("customize.pay.secure")}
-          <ShieldCheck className="ms-2 h-3.5 w-3.5" />
-        </p>
+        <p className="mt-4 text-xs text-coffee-500">{t("customize.pay.note")}</p>
       </div>
     </div>
   );

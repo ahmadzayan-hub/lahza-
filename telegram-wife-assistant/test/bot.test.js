@@ -12,6 +12,7 @@ const store = require('../store');
 llm.complete = async () => '١- الاقتراح الأول\n٢- الاقتراح التاني';
 config.chatId = '555';
 config.dryRun = false;
+config.rateLimitMs = 0; // الاختبارات بتنادي الأوامر ورا بعض
 
 const OWNER = '555';
 const STRANGER = '999';
@@ -86,4 +87,32 @@ test('/reset بيصفّر التعلّم', async () => {
   assert.ok(store.getStyleExamples().length > 0);
   await H.commands.reset(makeCtx(OWNER, '/reset', sink));
   assert.strictEqual(store.getStyleExamples().length, 0);
+});
+
+test('قبل ضبط chatId: كل الأوامر مرفوضة إلا /start', async () => {
+  const prev = config.chatId;
+  config.chatId = '';
+  try {
+    await H.commands.suggest(makeCtx(STRANGER, '/suggest'));
+    assert.strictEqual(sent.length, 0, 'مفيش اقتراح المفروض يتبعت والإعداد ناقص');
+    const sink = [];
+    await H.start(makeCtx(STRANGER, '/start', sink));
+    assert.ok(sink.length > 0, '/start لازم يرد ويطبع الـ id');
+  } finally {
+    config.chatId = prev;
+  }
+});
+
+test('rate limit: الطلب التاني بسرعة بيتمنع', async () => {
+  const prev = config.rateLimitMs;
+  config.rateLimitMs = 60000;
+  try {
+    await H.commands.suggest(makeCtx(OWNER, '/suggest'));
+    const before = sent.filter((s) => s.keyboard).length;
+    await H.commands.suggest(makeCtx(OWNER, '/suggest'));
+    const after = sent.filter((s) => s.keyboard).length;
+    assert.strictEqual(after, before, 'الطلب التاني المفروض يتمنع بالـ rate limit');
+  } finally {
+    config.rateLimitMs = prev;
+  }
 });

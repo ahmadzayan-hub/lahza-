@@ -5,7 +5,7 @@
    - same-origin static assets: stale-while-revalidate
    Hashed build assets are immutable, so this is safe and fast. */
 
-const VERSION = "bcm-v1";
+const VERSION = "lahza-v1";
 const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
 const SHELL_ASSETS = [

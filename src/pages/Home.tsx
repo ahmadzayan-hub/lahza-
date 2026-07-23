@@ -4,8 +4,7 @@ import { useI18n } from "@/i18n/I18nContext";
 import { Seo } from "@/components/Seo";
 import { Section, SectionHeader } from "@/components/Section";
 import { CustomerPaths } from "@/components/CustomerPaths";
-import { TrustBar, StatStrip } from "@/components/TrustBar";
-import { Reviews } from "@/components/Reviews";
+import { TrustBar } from "@/components/TrustBar";
 import { Reveal } from "@/components/Reveal";
 import { ProductPreview } from "@/components/ProductPreview";
 import { GALLERY, SAMPLE_PHOTOS } from "@/lib/catalog";
@@ -84,9 +83,6 @@ export default function Home() {
       {/* ---------------- Trust ---------------- */}
       <Section muted className="!py-12">
         <TrustBar />
-        <div className="mt-10">
-          <StatStrip />
-        </div>
       </Section>
 
       {/* ---------------- Gallery preview ---------------- */}
@@ -123,14 +119,6 @@ export default function Home() {
               <ProductPreview image={null} surface="sleeve" placeholderImage={SAMPLE_PHOTOS[2]} sample />
             </div>
           </Reveal>
-        </div>
-      </Section>
-
-      {/* ---------------- Reviews ---------------- */}
-      <Section>
-        <SectionHeader eyebrow={t("trust.reviews")} title={t("home.reviewsHeading")} />
-        <div className="mt-10">
-          <Reviews />
         </div>
       </Section>
 

@@ -6,7 +6,8 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
 // تخزين مشفّر لمفتاح Groq (Android Keystore + EncryptedSharedPreferences).
-// لو التشفير فشل لأي سبب، بيرجع بأمان للتخزين العادي عشان التطبيق ما يقعش.
+// لو التشفير غير متاح: بنرمي خطأ بدل ما نكتب المفتاح نص صريح بصمت —
+// التخزين غير المشفّر يُقرأ فقط كترحيل من نسخ قديمة، ولا يُكتب أبداً.
 object SecureStore {
     private const val LEGACY_PREFS = "wife_assistant_settings"
     private const val KEY = "groqKey"
@@ -37,12 +38,9 @@ object SecureStore {
 
     fun setGroqKey(context: Context, value: String) {
         val enc = secure(context)
-        if (enc != null) {
-            enc.edit().putString(KEY, value).apply()
-            // نمسح النسخة القديمة غير المشفّرة لو موجودة (ترحيل آمن).
-            legacy(context).edit().remove(KEY).apply()
-        } else {
-            legacy(context).edit().putString(KEY, value).apply()
-        }
+            ?: throw IllegalStateException("التخزين المشفّر غير متاح — لن يُحفظ المفتاح نصاً صريحاً")
+        enc.edit().putString(KEY, value).apply()
+        // نمسح النسخة القديمة غير المشفّرة لو موجودة (ترحيل آمن).
+        legacy(context).edit().remove(KEY).apply()
     }
 }

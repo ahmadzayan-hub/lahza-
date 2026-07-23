@@ -63,6 +63,15 @@ export default function Contact() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  const form = e.currentTarget;
+                  const field = (id: string) =>
+                    (form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`#${id}`)?.value ?? "").trim();
+                  const lines = [
+                    `${field("c-subject") || t("contact.formHeading")}`,
+                    `${field("c-name")} — ${field("c-email")}${field("c-phone") ? " — " + field("c-phone") : ""}`,
+                    field("c-message"),
+                  ].filter(Boolean);
+                  window.open(waLink(lines.join("\n")), "_blank", "noopener");
                   setSent(true);
                 }}
                 className="rounded-2xl border border-coffee-100/70 bg-white p-6 shadow-soft"

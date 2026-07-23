@@ -17,7 +17,7 @@
   --beige: #f1eadf;
   --white: #ffffff;
   --text: #3d372f;
-  --muted: #7a7061;
+  --muted: #6b6252; /* >=4.5:1 on --ivory for WCAG AA body text */
   --radius: 20px;
   --radius-sm: 14px;
   --shadow-card: 0 1px 2px rgba(20, 18, 16, 0.04), 0 12px 32px -12px rgba(20, 18, 16, 0.14);

@@ -13,6 +13,7 @@ const config = require('./config');
 const { setupHandlers, sendSuggestions, Telegraf } = require('./bot');
 const { getTodaysOccasion } = require('./occasions');
 const review = require('./review');
+const store = require('./store');
 
 // تأكيد وجود التوكن.
 if (!process.env.TELEGRAM_BOT_TOKEN) {
@@ -53,10 +54,13 @@ async function runWeeklyReview() {
     const { text } = review.buildReport();
     if (config.dryRun) {
       console.log('\n[dryRun] التقرير الأسبوعي:\n' + text + '\n');
+      store.markWeeklyReviewSent();
       return;
     }
     if (config.chatId) {
-      await bot.telegram.sendMessage(config.chatId, text, { parse_mode: 'Markdown' });
+      // بدون parse_mode: أسماء المواضيع ممكن تكسر Markdown وترمي 400.
+      await bot.telegram.sendMessage(config.chatId, text);
+      store.markWeeklyReviewSent();
     }
   } catch (err) {
     console.error('خطأ في التقرير الأسبوعي:', err.message);

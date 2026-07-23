@@ -44,7 +44,14 @@ function read() {
     // دمج مع الافتراضي عشان أي حقل جديد ما يبوّظش الملفات القديمة.
     return { ...defaultStore(), ...parsed };
   } catch (err) {
-    console.error('⚠️ تعذّر قراءة المخزن، هنبدأ بنسخة جديدة:', err.message);
+    // ملف بايظ ≠ نبدأ من الصفر بصمت: بنحطه جنباً عشان تقدر تستعيده يدوياً.
+    try {
+      const quarantine = `${STORE_PATH}.corrupt-${Date.now()}`;
+      fs.renameSync(STORE_PATH, quarantine);
+      console.error(`⚠️ المخزن تالف — اتنقل إلى ${quarantine} وهنبدأ بنسخة جديدة:`, err.message);
+    } catch (renameErr) {
+      console.error('⚠️ تعذّر قراءة المخزن، هنبدأ بنسخة جديدة:', err.message);
+    }
     return defaultStore();
   }
 }
@@ -52,7 +59,10 @@ function read() {
 // كتابة المخزن على القرص.
 function write(store) {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  fs.writeFileSync(STORE_PATH, JSON.stringify(store, null, 2), 'utf8');
+  // كتابة ذرّية: ملف مؤقّت ثم rename، عشان انقطاع الكهرباء ما يبوّظش المخزن.
+  const tmp = `${STORE_PATH}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(store, null, 2), 'utf8');
+  fs.renameSync(tmp, STORE_PATH);
 }
 
 // تاريخ النهاردة YYYY-MM-DD (مصدره util عشان يبقى موحّد مع باقي المشروع).

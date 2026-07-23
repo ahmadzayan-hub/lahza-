@@ -18,7 +18,6 @@
   ],
   "shortcuts": [
     { "name": "Customise a gift", "short_name": "Customise", "url": "/customize" },
-    { "name": "Corporate & events", "short_name": "Corporate", "url": "/corporate" },
-    { "name": "Operations console", "short_name": "Console", "url": "/console" }
+    { "name": "Corporate & events", "short_name": "Corporate", "url": "/corporate" }
   ]
 }

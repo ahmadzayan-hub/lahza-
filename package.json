@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Lahza — UAE bilingual SaaS commerce platform for personalized coffee gifts, live event coffee stations, and corporate appreciation campaigns.",
+  "description": "Lahza \u2014 UAE bilingual SaaS commerce platform for personalized coffee gifts, live event coffee stations, and corporate appreciation campaigns.",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint . --ext .ts,.tsx"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "lucide-react": "^0.454.0",

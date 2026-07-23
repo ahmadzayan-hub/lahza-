@@ -87,9 +87,14 @@ async function sendSuggestions(bot, { slot, occasion, force = false, target } = 
   const text = formatMessage(result.items, slot, occasion);
 
   if (config.dryRun) {
-    console.log('\n===== [dryRun] مش هيتبعت، ده اللي كان هيوصلك =====');
-    console.log(text);
-    console.log('================================================\n');
+    // ما بنطبعش نص الرسالة في اللوجات (بيتكتب في ملفات PM2) إلا بطلب صريح.
+    if (process.env.DEBUG) {
+      console.log('\n===== [dryRun] مش هيتبعت، ده اللي كان هيوصلك =====');
+      console.log(text);
+      console.log('================================================\n');
+    } else {
+      console.log(`[dryRun] اقتراح ${slot} اتولّد (شغّل DEBUG=1 لعرض النص).`);
+    }
     store.markSlotSentToday(slot);
     return;
   }
@@ -150,16 +155,31 @@ function learnFromIgnore() {
  * @param {Telegraf} bot
  */
 function setupHandlers(bot) {
-  // حارس المالك: قبل ضبط chatId (مرحلة الإعداد) نسمح للكل عشان تجرّب،
-  // وبعد ضبطه نرد على المالك بس — تطبيقاً لقاعدة "يكلّمني أنا فقط".
+  // حارس المالك: مقفول افتراضياً — لو chatId مش مضبوط بنرفض كل الأوامر
+  // (عدا /start اللي بيطبع الـ id بس) عشان محدش غريب يستهلك مفتاح Groq.
   const isOwner = (ctx) => {
-    if (!config.chatId) return true;
+    if (!config.chatId) return false;
     return String(ctx.chat?.id) === String(config.chatId);
+  };
+
+  // حد أدنى بين الطلبات لكل شات (يمنع حرق الحصة بالسبام).
+  const lastCallAt = new Map();
+  const allowRate = (id) => {
+    const limit = config.rateLimitMs ?? 10000;
+    if (!limit) return true;
+    const now = Date.now();
+    if (now - (lastCallAt.get(String(id)) || 0) < limit) return false;
+    lastCallAt.set(String(id), now);
+    return true;
   };
 
   // اقتراح فوري مشترك بين الأوامر (مع التقاط الأخطاء).
   const requestSuggestion = async (ctx, { slot, occasion }) => {
     if (!isOwner(ctx)) return;
+    if (!allowRate(ctx.chat.id)) {
+      await ctx.reply('⏳ استنى شوية بين الطلبات.').catch(() => {});
+      return;
+    }
     try {
       await sendSuggestions(bot, { slot, occasion, force: true, target: ctx.chat.id });
     } catch (err) {
@@ -188,7 +208,8 @@ function setupHandlers(bot) {
   bot.command('stats', (ctx) => {
     if (!isOwner(ctx)) return;
     const { text } = review.buildReport();
-    ctx.reply(text, { parse_mode: 'Markdown' });
+    // بدون parse_mode: أسماء المواضيع ممكن تحتوي رموز Markdown وتكسر الإرسال.
+    ctx.reply(text).catch((err) => console.error('خطأ في إرسال الملخّص:', err.message));
   });
 
   // /reset — يصفّر التعلّم لو حسّيت إن الأسلوب انحرف.
@@ -234,6 +255,7 @@ function setupHandlers(bot) {
   bot.action('regen', async (ctx) => {
     if (!isOwner(ctx)) return ctx.answerCbQuery();
     if (!pending) return ctx.answerCbQuery('مفيش اقتراح حالي');
+    if (!allowRate(ctx.chat.id)) return ctx.answerCbQuery('⏳ استنى شوية بين الطلبات.');
     // نسجّل إن المجموعة الأولى ما عجبتنيش.
     store.addFeedback({
       slot: pending.slot,

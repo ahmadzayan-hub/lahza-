@@ -15,7 +15,8 @@ export type Lang = "en" | "ar";
 export type { Dict };
 
 const DICTS: Record<Lang, Dict> = { en, ar };
-const STORAGE_KEY = "bcm.lang";
+const STORAGE_KEY = "lahza.lang";
+const LEGACY_STORAGE_KEY = "bcm.lang";
 
 type Vars = Record<string, string | number>;
 
@@ -53,7 +54,8 @@ function interpolate(template: string, vars?: Vars): string {
 
 function detectInitialLang(): Lang {
   if (typeof window === "undefined") return "en";
-  const stored = window.localStorage.getItem(STORAGE_KEY);
+  const stored =
+    window.localStorage.getItem(STORAGE_KEY) ?? window.localStorage.getItem(LEGACY_STORAGE_KEY);
   if (stored === "en" || stored === "ar") return stored;
   return navigator.language?.toLowerCase().startsWith("ar") ? "ar" : "en";
 }

@@ -148,6 +148,13 @@ function parseTwo(raw, themes) {
   let second;
   if (numbered.length >= 2) {
     [first, second] = numbered;
+  } else if (numbered.length === 1) {
+    // سطر مرقّم واحد + كلام تمهيدي: الاقتراح هو المرقّم، مش التمهيد.
+    first = numbered[0];
+    const cleaned = lines
+      .map((l) => l.replace(/^\s*[١٢12]\s*[-.)]\s*/, '').trim())
+      .filter((l) => l && l !== first);
+    second = cleaned[cleaned.length - 1] || first;
   } else {
     // احتياطي: أول سطرين غير فاضيين بعد إزالة أي ترقيم.
     const cleaned = lines

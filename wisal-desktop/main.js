@@ -19,6 +19,11 @@ function createWindow() {
       nodeIntegration: false,
     },
   });
+  // مفيش نوافذ منبثقة ولا تنقّل خارج ملفات التطبيق المحلية.
+  win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+  win.webContents.on('will-navigate', (event, target) => {
+    if (!target.startsWith('file://')) event.preventDefault();
+  });
   win.loadFile(path.join(__dirname, 'renderer', 'index.html'));
 }
 
@@ -50,7 +55,14 @@ function registerIpc() {
     'giftIdeas': ({ occasionLabel }) => core.giftIdeas(occasionLabel),
     'favorite:toggle': ({ text }) => core.toggleFavorite(text),
     'history:delete': ({ date, text }) => { core.deleteHistory(date, text); return true; },
-    'openExternal': ({ url }) => { shell.openExternal(url); return true; },
+    'openExternal': ({ url }) => {
+      // بنفتح روابط https بس (والمقصود عملياً wa.me) — مش أي string جاي من الواجهة.
+      let parsed;
+      try { parsed = new URL(String(url)); } catch (e) { return false; }
+      if (parsed.protocol !== 'https:') return false;
+      shell.openExternal(parsed.toString());
+      return true;
+    },
     // التعلّم عند اختيار/تعديل اقتراح
     'learn:choose': ({ text, theme, recipientId, slot, themesShown }) => {
       core.addStyleExample(text, theme, recipientId);

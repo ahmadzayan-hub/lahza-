@@ -29,7 +29,7 @@ export default function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         {/* Console — standalone chrome */}
-        <Route path="/console" element={<Admin />} />
+        {import.meta.env.VITE_ENABLE_CONSOLE === "true" && <Route path="/console" element={<Admin />} />}
 
         {/* Public site */}
         <Route element={<Layout />}>

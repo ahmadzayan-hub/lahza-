@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { useI18n } from "@/i18n/I18nContext";
 
 export type Surface = "cup" | "sleeve" | "box" | "card";
@@ -24,6 +25,7 @@ export function ProductPreview({
   /** Show a small "sample" tag when the placeholder image is a demo photo. */
   sample?: boolean;
 }) {
+  const uid = useId();
   const { t } = useI18n();
   const shown = image ?? placeholderImage ?? null;
   const isSample = !image && !!placeholderImage;
@@ -81,11 +83,11 @@ export function ProductPreview({
               y={surface === "cup" ? 85 : surface === "sleeve" ? 150 : surface === "box" ? 120 : 120}
               width={surface === "cup" ? 240 : surface === "sleeve" ? 260 : surface === "box" ? 210 : 180}
               height={surface === "cup" ? 240 : surface === "sleeve" ? 120 : surface === "box" ? 170 : 160}
-              clipPath={`url(#clip-${surface})`}
+              clipPath={`url(#${uid}-clip-${surface})`}
               preserveAspectRatio="xMidYMid slice"
             />
           ) : (
-            <g clipPath={`url(#clip-${surface})`}>
+            <g clipPath={`url(#${uid}-clip-${surface})`}>
               <rect x="0" y="0" width="400" height="400" fill="#e9dcc8" />
               <text x="200" y="200" textAnchor="middle" className="fill-gold-600" fontSize="13" fontWeight="600">
                 {t("customize.preview.placeholder")}
@@ -98,7 +100,7 @@ export function ProductPreview({
 
           {/* Cup rim + sheen */}
           {surface === "cup" && <circle cx="200" cy="205" r="122" fill="none" stroke="#fff" strokeWidth="12" opacity="0.65" />}
-          <rect x="0" y="0" width="400" height="400" fill="url(#sheen)" pointerEvents="none" />
+          <rect x="0" y="0" width="400" height="400" fill={`url(#${uid}-sheen)`} pointerEvents="none" />
 
           {/* Gift-card message */}
           {surface === "card" && message && (

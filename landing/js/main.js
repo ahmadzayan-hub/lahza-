@@ -4,8 +4,9 @@
       config/site.config.json (single source of truth for links & copy)
    3. Soft scroll-reveal animation (skipped when reduced motion is set)
 
-   The static hrefs in index.html already point at plain wa.me links, so the
-   page keeps working if this script or the config fails to load.            */
+   The static hrefs in index.html carry a baked-in Arabic ?text= prefill, so
+   the page keeps a working prefilled CTA even if this script or the config
+   fails to load; this script swaps the prefill per language.               */
 
 (function () {
   "use strict";
@@ -28,13 +29,34 @@
     });
   }
 
+  var META = {
+    ar: {
+      title: "Beyond Style UAE — مجوهرات مخصصة وخط عربي | Personalized Jewelry UAE",
+      description:
+        "Beyond Style UAE — Personalized jewelry UAE: Arabic calligraphy jewelry Dubai, custom bracelets UAE, baby bracelets, MashaAllah bracelets, personalized necklaces and gift jewelry. اطلبي عبر واتساب مع توصيل داخل الإمارات.",
+      ogLocale: "ar_AE"
+    },
+    en: {
+      title: "Beyond Style UAE — Personalized Jewelry & Arabic Calligraphy Accessories",
+      description:
+        "Personalized name bracelets, Arabic calligraphy necklaces, baby bracelets and gift jewelry in the UAE. Easy WhatsApp ordering and delivery across the Emirates.",
+      ogLocale: "en_AE"
+    }
+  };
+
+  function setMeta(selector, value) {
+    var el = document.querySelector(selector);
+    if (el) el.setAttribute("content", value);
+  }
+
   function setLang(lang) {
     html.setAttribute("lang", lang);
     html.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-    document.title =
-      lang === "ar"
-        ? "Beyond Style UAE — مجوهرات مخصصة وخط عربي | Personalized Jewelry UAE"
-        : "Beyond Style UAE — Personalized Jewelry & Arabic Calligraphy Accessories";
+    document.title = META[lang].title;
+    setMeta('meta[name="description"]', META[lang].description);
+    setMeta('meta[property="og:locale"]', META[lang].ogLocale);
+    var toggleBtn = document.getElementById("langToggle");
+    if (toggleBtn) toggleBtn.setAttribute("aria-pressed", lang === "en" ? "true" : "false");
     applyWhatsAppLinks(lang);
     try {
       localStorage.setItem("bsu-lang", lang);

@@ -9,7 +9,7 @@ export default function NotFound() {
       <Seo title="404" />
       <div className="container-max flex min-h-[50vh] flex-col items-center justify-center py-20 text-center">
         <span className="font-serif text-7xl font-bold text-cream-200">404</span>
-        <p className="mt-4 text-lg text-coffee-600">Sorry, we couldn't find that page.</p>
+        <p className="mt-4 text-lg text-coffee-600">{t("common.notFound")}</p>
         <Link to="/" className="btn btn-primary mt-6">{t("common.backHome")}</Link>
       </div>
     </>

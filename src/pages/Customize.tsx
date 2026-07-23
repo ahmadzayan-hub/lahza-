@@ -1,17 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, CheckCircle2, PartyPopper, MessageCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
 import { useI18n } from "@/i18n/I18nContext";
 import { Seo } from "@/components/Seo";
 import { Stepper } from "@/components/Stepper";
 import { moderateImage } from "@/lib/ai";
 import { makeRef } from "@/lib/id";
+import { waLink } from "@/lib/whatsapp";
+import { GIFT_PACKAGES } from "@/lib/catalog";
+import { formatAed } from "@/lib/format";
+import { computeTotals } from "./customize/totals";
 import { INITIAL_DRAFT, STEP_KEYS, type OrderDraft } from "./customize/types";
 import {
   UploadStep, PreviewStep, MessageStep, PackageStep, DeliveryStep, ReviewStep, PaymentStep,
 } from "./customize/steps";
 
-type Result = { ref: string; mode: "now" | "link" } | null;
+type Result = { ref: string } | null;
 
 // Ephemeral draft persistence: keeps the in-progress design across an accidental
 // refresh so the customer never re-does their work. sessionStorage is per-tab
@@ -29,7 +33,7 @@ function loadDraft(): OrderDraft {
 }
 
 export default function Customize() {
-  const { t, isRtl } = useI18n();
+  const { t, pick, lang, isRtl } = useI18n();
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<OrderDraft>(loadDraft);
   const [error, setError] = useState<string | null>(null);
@@ -102,8 +106,20 @@ export default function Customize() {
     setStep((s) => Math.max(s - 1, 0));
   }
 
-  function pay(mode: "now" | "link") {
-    setResult({ ref: makeRef("BCM"), mode });
+  function sendOrder() {
+    const ref = makeRef("LAHZA");
+    const pkg = GIFT_PACKAGES.find((g) => g.id === draft.packageId);
+    const { total } = computeTotals(draft);
+    const lines = [
+      `${t("customize.title")} — ${ref}`,
+      pkg ? `• ${pick(pkg.name)}` : "",
+      draft.message ? `• "${draft.message}"` : "",
+      `• ${draft.deliverName} — ${draft.deliverPhone}`,
+      `• ${draft.area}, ${draft.emirate} — ${draft.date} (${draft.slot})`,
+      `• ${formatAed(total, lang)}`,
+    ].filter(Boolean);
+    window.open(waLink(lines.join("\n")), "_blank", "noopener");
+    setResult({ ref });
   }
 
   function reset() {
@@ -115,19 +131,18 @@ export default function Customize() {
 
   // ---- Success screen ----
   if (result) {
-    const isNow = result.mode === "now";
     return (
       <div className="container-max py-16">
         <Seo title={t("customize.title")} />
         <div className="mx-auto max-w-lg rounded-3xl border border-gold-500/30 bg-white p-8 text-center shadow-card sm:p-10">
           <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-gold-500/15">
-            {isNow ? <PartyPopper className="h-8 w-8 text-gold-600" /> : <MessageCircle className="h-8 w-8 text-gold-600" />}
+            <MessageCircle className="h-8 w-8 text-gold-600" />
           </span>
           <h1 className="mt-5 font-serif text-2xl font-bold text-coffee-900">
-            {isNow ? t("customize.pay.successTitle") : t("customize.pay.linkSentTitle")}
+            {t("customize.pay.successTitle")}
           </h1>
           <p className="mt-3 text-sm text-coffee-600">
-            {isNow ? t("customize.pay.successSub", { ref: result.ref }) : t("customize.pay.linkSentSub", { ref: result.ref })}
+            {t("customize.pay.successSub", { ref: result.ref })}
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <button type="button" className="btn btn-primary" onClick={reset}>{t("customize.pay.newOrder")}</button>
@@ -163,7 +178,7 @@ export default function Customize() {
         {step === 3 && <PackageStep draft={draft} update={update} />}
         {step === 4 && <DeliveryStep draft={draft} update={update} />}
         {step === 5 && <ReviewStep draft={draft} update={update} onEditDesign={() => setStep(1)} />}
-        {step === 6 && <PaymentStep draft={draft} onPay={pay} />}
+        {step === 6 && <PaymentStep draft={draft} onPay={sendOrder} />}
 
         {error && (
           <p role="alert" className="mt-5 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
