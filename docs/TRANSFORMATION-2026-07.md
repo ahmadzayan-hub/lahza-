@@ -95,9 +95,9 @@ preserved.
 
 ## Launch blockers still requiring the owner (not fixable from the repo)
 
-1. **Lahza WhatsApp/phone number** — `src/lib/brand.ts:22-23` still
-   `971500000000` / `+971 4 000 0000`; every CTA now funnels to WhatsApp, so
-   this single constant is THE launch blocker. Also licence no. + TRN TODOs.
+1. ~~Lahza WhatsApp/phone number~~ — RESOLVED 2026-07-24: owner supplied
+   `wa.me/971555615509`; `src/lib/brand.ts` updated (phone + whatsapp).
+   Remaining from this item: licence no. + TRN TODOs in `brand.ts`.
 2. **wisal-web domain** — confirm `wisal-app.vercel.app` or replace in
    `index.html`, `sitemap.xml`, `robots.txt`.
 3. Real payment rails for Lahza (Telr/PayTabs etc.) if/when in-app payment

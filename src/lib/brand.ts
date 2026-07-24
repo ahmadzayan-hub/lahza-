@@ -19,8 +19,8 @@ export const BRAND = {
   // ---- Contact -----------------------------------------------------------
   email: "hello@lahza.ae",
   supportEmail: "care@lahza.ae",
-  phone: "+971 4 000 0000",
-  whatsapp: "971500000000", // digits only, international format for wa.me
+  phone: "+971 55 561 5509",
+  whatsapp: "971555615509", // digits only, international format for wa.me
   instagram: "lahzacoffee",
 
   // ---- Data / privacy ----------------------------------------------------
