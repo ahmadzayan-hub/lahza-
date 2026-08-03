@@ -40,6 +40,7 @@ export const en = {
     required: "required",
     loading: "Loading…",
     comingSoon: "Coming soon",
+    close: "Close",
     learnMore: "Learn more",
     getStarted: "Get started",
     viewAll: "View all",

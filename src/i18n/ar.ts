@@ -42,6 +42,7 @@ export const ar: Dict = {
     required: "مطلوب",
     loading: "جارٍ التحميل…",
     comingSoon: "قريباً",
+    close: "إغلاق",
     learnMore: "اعرف أكثر",
     getStarted: "ابدأ الآن",
     viewAll: "عرض الكل",
