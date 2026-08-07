@@ -28,10 +28,17 @@ jobs:
             SIZE=$(curl -fsSL --max-time 60 "$1" -o /tmp/check.tgz && stat -c%s /tmp/check.tgz || echo 0)
             [ "$SIZE" = "$(stat -c%s /tmp/landing.tgz)" ]
           }
-          URL=$(curl -sS --max-time 60 -F "file=@/tmp/landing.tgz" https://tmpfiles.org/api/v1/upload | grep -o 'https://tmpfiles.org/[^"]*' | head -1 | sed 's#tmpfiles.org/#tmpfiles.org/dl/#' || true)
-          if ! try_verify "$URL"; then
-            echo "tmpfiles failed, trying litterbox (1h)"
-            URL=$(curl -sS --max-time 60 -F "reqtype=fileupload" -F "time=1h" -F "fileToUpload=@/tmp/landing.tgz" https://litterbox.catbox.moe/resources/internals/api.php || true)
-            try_verify "$URL" || { echo "litterbox failed, trying 0x0.st"; URL=$(curl -sS -A "relay/1.0" --max-time 60 -F "file=@/tmp/landing.tgz" https://0x0.st || true); }
-          fi
-          try_verify "$URL" && echo "VERIFIED_RELAY_URL=$URL" || { echo "ALL_HOSTS_FAILED"; exit 1; }
+          sane() { case "$1" in https://*[!a-zA-Z0-9./_-]*) return 1;; https://*) return 0;; *) return 1;; esac; }
+          for host in tmpfiles litterbox uguu tempsh oxo; do
+            case "$host" in
+              tmpfiles)  URL=$(curl -sS --max-time 60 -F "file=@/tmp/landing.tgz" https://tmpfiles.org/api/v1/upload | grep -o 'https://tmpfiles.org/[^"]*' | head -1 | sed 's#tmpfiles.org/#tmpfiles.org/dl/#' || true);;
+              litterbox) URL=$(curl -sS --max-time 60 -F "reqtype=fileupload" -F "time=1h" -F "fileToUpload=@/tmp/landing.tgz" https://litterbox.catbox.moe/resources/internals/api.php || true);;
+              uguu)      URL=$(curl -sS --max-time 60 -F "files[]=@/tmp/landing.tgz" https://uguu.se/upload | grep -o 'https://[a-z]*\.uguu\.se/[^"]*' | head -1 || true);;
+              tempsh)    URL=$(curl -sS --max-time 60 -T /tmp/landing.tgz https://temp.sh/landing.tgz || true);;
+              oxo)       URL=$(curl -sS -A "relay/1.0" --max-time 60 -F "file=@/tmp/landing.tgz" https://0x0.st || true);;
+            esac
+            URL=$(echo "$URL" | tr -d '[:space:]')
+            if sane "$URL" && try_verify "$URL"; then echo "VERIFIED_RELAY_URL=$URL"; exit 0; fi
+            echo "$host failed"
+          done
+          echo "ALL_HOSTS_FAILED"; exit 1
