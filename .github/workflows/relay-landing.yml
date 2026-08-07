@@ -1,0 +1,31 @@
+name: relay-landing
+# Bundles landing/ and uploads it to a short-lived public relay host so an
+# external static-host build (e.g. Vercel) can fetch full-quality assets.
+# The private repo stays private; the bundle contains only the public
+# marketing page. Prints RELAY_URL and BUNDLE_SHA256 in the job log.
+on: workflow_dispatch
+
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bundle landing
+        run: |
+          tar czf /tmp/landing.tgz -C landing .
+          echo "BUNDLE_SHA256=$(sha256sum /tmp/landing.tgz | cut -d' ' -f1)"
+          ls -la /tmp/landing.tgz
+
+      - name: Upload to relay host
+        run: |
+          URL=$(curl -sS --max-time 60 -F "file=@/tmp/landing.tgz" https://0x0.st || true)
+          if ! echo "$URL" | grep -q '^https://'; then
+            echo "0x0.st failed, trying catbox"
+            URL=$(curl -sS --max-time 60 -F "reqtype=fileupload" -F "fileToUpload=@/tmp/landing.tgz" https://catbox.moe/user/api.php || true)
+          fi
+          if ! echo "$URL" | grep -q '^https://'; then
+            echo "catbox failed, trying tmpfiles"
+            URL=$(curl -sS --max-time 60 -F "file=@/tmp/landing.tgz" https://tmpfiles.org/api/v1/upload | grep -o 'https://tmpfiles.org/[^"]*' | head -1 | sed 's#tmpfiles.org/#tmpfiles.org/dl/#' || true)
+          fi
+          echo "RELAY_URL=$URL"
