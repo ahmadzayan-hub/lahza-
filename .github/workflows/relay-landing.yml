@@ -3,7 +3,11 @@ name: relay-landing
 # external static-host build (e.g. Vercel) can fetch full-quality assets.
 # The private repo stays private; the bundle contains only the public
 # marketing page. Prints RELAY_URL and BUNDLE_SHA256 in the job log.
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/beyond-style-uae-landing-jqzi6a]
+    paths: [".github/workflows/relay-landing.yml"]
 
 jobs:
   relay:
