@@ -38,3 +38,4 @@ jobs:
           echo "UPLOAD_RESPONSE: $RESP"
           URL="$BASE/object/public/relay/landing.tgz"
           try_verify "$URL" && echo "VERIFIED_RELAY_URL=$URL" || { echo "SUPABASE_RELAY_FAILED"; exit 1; }
+# relay attempt: policies made role-agnostic
