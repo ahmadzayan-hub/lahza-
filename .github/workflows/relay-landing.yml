@@ -31,10 +31,10 @@ jobs:
           # Supabase Storage relay (project beyond-style; anon key is public-by-design)
           ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNmdmt5a3NjcGRienlwZmVpYWFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMDQ2OTYsImV4cCI6MjEwMTY4MDY5Nn0.4djYIRLKugda8Xb8AKwzo2w7k3toRUUe_H4SWBD0Tx8"
           BASE="https://cfvkykscpdbzypfeiaaf.supabase.co/storage/v1"
-          curl -fsS -X POST "$BASE/object/relay/landing.tgz" \
+          RESP=$(curl -sS -X POST "$BASE/object/relay/landing.tgz" \
             -H "Authorization: Bearer $ANON" -H "apikey: $ANON" \
             -H "Content-Type: application/gzip" -H "x-upsert: true" \
-            --data-binary @/tmp/landing.tgz
-          echo
+            --data-binary @/tmp/landing.tgz -w "\nHTTP_CODE:%{http_code}")
+          echo "UPLOAD_RESPONSE: $RESP"
           URL="$BASE/object/public/relay/landing.tgz"
           try_verify "$URL" && echo "VERIFIED_RELAY_URL=$URL" || { echo "SUPABASE_RELAY_FAILED"; exit 1; }
