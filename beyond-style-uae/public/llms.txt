@@ -1,0 +1,35 @@
+# Beyond Style UAE
+
+> Elegant fashion accessories and gift-ready pieces, delivered across the United Arab Emirates. Stainless-steel bracelets with gold-tone and silver-tone finishes, Arabic-calligraphy pieces, hamsa and evil-eye charms. Cash on delivery and card payment. Fast WhatsApp ordering.
+
+Beyond Style UAE is an online accessories boutique operated by Beyond Connect General Trading L.L.C (Dubai Trade License No. 1498624). The storefront is bilingual (Arabic and English) and built mobile-first as an installable progressive web app.
+
+## Key facts
+- Location: Dubai, United Arab Emirates. Ships nationwide.
+- Payment: Cash on Delivery (COD) and card (Stripe Checkout).
+- Delivery: Free within Dubai for orders above AED 200; other emirates charged by area.
+- Currency: AED (United Arab Emirates Dirham).
+- Product wording is descriptive and compliant: finishes are called "gold-tone" and "silver-tone" (not solid gold).
+- Ordering channels: website checkout and WhatsApp.
+
+## Catalogue
+- /product/mashallah-bracelet-black — Masha'Allah bracelet, black finish
+- /product/mashallah-bracelet-silver — Masha'Allah bracelet, silver-tone
+- /product/hamsa-charm-bracelet — Hamsa charm bracelet
+- /product/evil-eye-bracelet — Evil-eye bracelet
+- /product/cuban-link-bracelet — Cuban-link bracelet
+- /product/crystal-mesh-bracelet — Crystal-mesh bracelet
+
+## Pages
+- / — Home and shop
+- /about — About the boutique
+- /shipping — Shipping policy
+- /returns — Returns and exchange
+- /payment-methods — Accepted payment methods
+- /contact — Contact and WhatsApp
+- /privacy — Privacy policy
+- /terms — Terms and conditions
+
+## Contact
+- WhatsApp ordering and customer care are available from the site.
+- Business: Beyond Connect General Trading L.L.C, Dubai, UAE.

@@ -32,15 +32,19 @@ and a Telegram bot.
 | `android-wife-assistant/` | Android app | Kotlin + Gradle | Google Play / signed APK |
 | `telegram-wife-assistant/` | Telegram bot | Node.js (PM2 `ecosystem.config.js`) | Any always-on host (VPS/Render/Railway) via PM2 |
 
-## Product line 3 — Beyond Style UAE (landing page)
+## Product line 3 — Beyond Style UAE (بيوند ستايل)
 
-| | |
-| --- | --- |
-| **Path** | `landing/` |
-| **What** | Bilingual (Arabic-first/EN) static landing page for the personalised-jewelry brand; ordering via WhatsApp + a Google order form (no backend) |
-| **Stack** | Pure static HTML/CSS/JS (no build step) |
-| **Deploy** | **GitHub Pages** via `.github/workflows/deploy-landing.yml` (auto-deploys on pushes touching `landing/**`); also hostable on Vercel/Netlify/Cloudflare Pages |
-| **Standalone** | Yes — static files, host anywhere |
+The Beyond Style jewelry/accessories brand is delivered across **two surfaces —
+not duplicates**: a lightweight marketing landing page, and a full e-commerce
+storefront. They share no source code and deploy independently.
+
+| Path | Surface | Stack | Deploy target |
+| --- | --- | --- | --- |
+| `landing/` | Marketing landing page | Static HTML/CSS/JS (no build); ordering via WhatsApp + Google form | **GitHub Pages** via `.github/workflows/deploy-landing.yml`; or any static host |
+| `beyond-style-uae/` | Storefront (`beyond-style-boutique`) | Vite + React + TS + Tailwind; Hono API + Drizzle/MySQL; Stripe; installable PWA, full SEO/AIO, RTL Arabic | Vercel as a **separate project**, Root Directory = `beyond-style-uae` (own `vercel.json`) |
+
+The npm/Vercel project name `beyond-style-boutique` is deliberately distinct from
+`lahza` and `wisal-web` so nothing collides.
 
 `docs/` holds shared threat models (`THREAT_MODEL.md`, `THREAT_MODEL_WISAL.md`).
 
@@ -48,14 +52,16 @@ and a Telegram bot.
 
 There is **no duplicated project or copied application code** in the tree. Lahza
 lives only at the root (`src/`); the three Wisal surfaces are distinct
-implementations (web / Android / bot) of one product; and the Beyond Style UAE
-landing (`landing/`) is a separate static site for a different brand — verified:
-no shared or duplicated source folders across projects.
+implementations (web / Android / bot) of one product; and the two Beyond Style
+surfaces are a static landing (`landing/`) and a separate e-commerce storefront
+(`beyond-style-uae/`) — different code, different stacks, no shared source.
+Verified: no duplicated source folders across projects.
 
-> Two distinct static "landing" folders exist but are **not duplicates**:
-> `wisal-web/` markets the Wisal messaging app (with the APK download), while
-> `landing/` markets the Beyond Style UAE jewelry brand. Different products,
-> different content, different deploy targets.
+> Three static "landing"-style folders exist but are **not duplicates**:
+> `wisal-web/` markets the Wisal messaging app (with the APK download),
+> `landing/` is the Beyond Style marketing page, and `beyond-style-uae/` is the
+> Beyond Style transactional storefront. Different products/surfaces, different
+> content, different deploy targets.
 
 ## Deploy each project separately (no extraction required)
 
@@ -68,6 +74,8 @@ no shared or duplicated source folders across projects.
 - **android-wife-assistant** — open in Android Studio, or `./gradlew assembleRelease`.
 - **landing (Beyond Style UAE)** — already auto-deploys to GitHub Pages via
   `deploy-landing.yml`; or host the `landing/` folder as-is on any static host.
+- **beyond-style-boutique (storefront)** — new Vercel project from this repo,
+  Root Directory `beyond-style-uae` (it has its own `vercel.json`). Independent build.
 
 ## Split a project into its own GitHub repository (history-preserving)
 
