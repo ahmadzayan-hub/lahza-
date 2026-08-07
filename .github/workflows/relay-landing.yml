@@ -23,13 +23,15 @@ jobs:
 
       - name: Upload to relay host
         run: |
-          URL=$(curl -sS --max-time 60 -F "file=@/tmp/landing.tgz" https://0x0.st || true)
-          if ! echo "$URL" | grep -q '^https://'; then
-            echo "0x0.st failed, trying catbox"
-            URL=$(curl -sS --max-time 60 -F "reqtype=fileupload" -F "fileToUpload=@/tmp/landing.tgz" https://catbox.moe/user/api.php || true)
+          try_verify() {
+            # verified download: same byte count as the source bundle
+            SIZE=$(curl -fsSL --max-time 60 "$1" -o /tmp/check.tgz && stat -c%s /tmp/check.tgz || echo 0)
+            [ "$SIZE" = "$(stat -c%s /tmp/landing.tgz)" ]
+          }
+          URL=$(curl -sS --max-time 60 -F "file=@/tmp/landing.tgz" https://tmpfiles.org/api/v1/upload | grep -o 'https://tmpfiles.org/[^"]*' | head -1 | sed 's#tmpfiles.org/#tmpfiles.org/dl/#' || true)
+          if ! try_verify "$URL"; then
+            echo "tmpfiles failed, trying litterbox (1h)"
+            URL=$(curl -sS --max-time 60 -F "reqtype=fileupload" -F "time=1h" -F "fileToUpload=@/tmp/landing.tgz" https://litterbox.catbox.moe/resources/internals/api.php || true)
+            try_verify "$URL" || { echo "litterbox failed, trying 0x0.st"; URL=$(curl -sS -A "relay/1.0" --max-time 60 -F "file=@/tmp/landing.tgz" https://0x0.st || true); }
           fi
-          if ! echo "$URL" | grep -q '^https://'; then
-            echo "catbox failed, trying tmpfiles"
-            URL=$(curl -sS --max-time 60 -F "file=@/tmp/landing.tgz" https://tmpfiles.org/api/v1/upload | grep -o 'https://tmpfiles.org/[^"]*' | head -1 | sed 's#tmpfiles.org/#tmpfiles.org/dl/#' || true)
-          fi
-          echo "RELAY_URL=$URL"
+          try_verify "$URL" && echo "VERIFIED_RELAY_URL=$URL" || { echo "ALL_HOSTS_FAILED"; exit 1; }
