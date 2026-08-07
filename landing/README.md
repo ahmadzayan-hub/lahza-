@@ -1,5 +1,12 @@
 # Beyond Style UAE — Landing Page
 
+> **Live:** <https://beyond-style-ops-vgt1.vercel.app> (Vercel production).
+> Deployed via the relay pipeline: pushes touching
+> [`relay-landing.yml`](../.github/workflows/relay-landing.yml) bundle this
+> folder, stage it in the `beyond-style` Supabase project's public `relay`
+> bucket, and a Vercel build fetches + sha256-verifies the bundle as its
+> static output. (GitHub Pages stays blocked while the repo is private.)
+
 Premium bilingual (Arabic-first / English) landing page that converts Instagram
 and WhatsApp visitors into orders. Pure static HTML/CSS/JS — no build step, no
 backend required: ordering flows through **WhatsApp** and the **Google order
