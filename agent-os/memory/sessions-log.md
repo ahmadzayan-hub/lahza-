@@ -43,6 +43,7 @@
 
 | التاريخ | الميلستون | commit |
 | --- | --- | --- |
+| 2026-09-08 | Add Jekyll deployment workflow for GitHub Pages | `da12c17` |
 | 2026-09-08 | Add GitHub Actions workflow for GitHub Pages deployment | `8d67cec` |
 | 2026-08-07 | Add Beyond Style storefront as a second brand surface (PWA + SEO/AIO) (#60) | `7cd6545` |
 | 2026-08-03 | Performance: lazy broadcast list (LazyColumn) + single-read next-action (#93) | `d8071f5` |
@@ -67,7 +68,6 @@
 | 2026-07-12 | Add Wisal desktop app for Windows (Electron) + CI installer build (#62) | `d27e71a` |
 | 2026-07-12 | CI: prune stale release assets so the download link stays clean (#57) | `411e1e7` |
 | 2026-07-11 | docs: fix broken README links + verify no cross-project conflict (#56) | `2b187b1` |
-| 2026-07-08 | Add privacy policy page for Play Store (wisal-web/privacy) (#53) | `33d8a30` |
 
 > بيتولّد أوتوماتيك بواسطة `agent-os/memory/sync.js` — متعدّلش القسم ده بإيدك.
 
