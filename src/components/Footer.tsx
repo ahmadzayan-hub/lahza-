@@ -9,6 +9,7 @@ export function Footer() {
 
   const explore = [
     { to: "/customize", key: "nav.customize" },
+    { to: "/gift-finder", key: "wizard.navLabel" },
     { to: "/gallery", key: "nav.gallery" },
     { to: "/corporate", key: "nav.corporate" },
     { to: "/pricing", key: "nav.pricing" },
