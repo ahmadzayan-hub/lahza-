@@ -43,6 +43,7 @@
 
 | التاريخ | الميلستون | commit |
 | --- | --- | --- |
+| 2026-10-27 | ci: fix lockfile and add typecheck and build workflow (#4) | `57e8505` |
 | 2026-10-27 | feat: react-router 7, ErrorBoundary, WhatsAppFab, hero image (#3) | `e765a40` |
 | 2026-09-08 | Add Jekyll deployment workflow for GitHub Pages | `da12c17` |
 | 2026-09-08 | Add GitHub Actions workflow for GitHub Pages deployment | `8d67cec` |
@@ -67,7 +68,6 @@
 | 2026-07-14 | Desktop custom icon + Windows download buttons on landing (#64) | `86f8d0c` |
 | 2026-07-13 | feat(media): fill every gallery tile & preview with real imagery (#63) | `156d37b` |
 | 2026-07-12 | Add Wisal desktop app for Windows (Electron) + CI installer build (#62) | `d27e71a` |
-| 2026-07-12 | CI: prune stale release assets so the download link stays clean (#57) | `411e1e7` |
 
 > بيتولّد أوتوماتيك بواسطة `agent-os/memory/sync.js` — متعدّلش القسم ده بإيدك.
 
