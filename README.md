@@ -4,6 +4,8 @@ A premium, **UAE-ready bilingual (EN/AR) SaaS commerce platform** for
 personalised coffee gifts, live event coffee stations, and corporate
 appreciation campaigns, operated by **Beyond Connect General Trading L.L.C**.
 
+<p align="center"><img src="docs/assets/hero.jpg" alt="Concept image (AI-generated). Not a product screenshot." width="100%"><br><sub><em>Concept image (AI-generated). Not a product screenshot.</em></sub></p>
+
 This is the customer-facing storefront + a demo operations console: a Vite +
 React app at the **repository root**, which Vercel and Netlify build directly
 with no subfolder configuration. It is also an installable **PWA** (add to home

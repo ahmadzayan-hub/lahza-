@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Home from "@/pages/Home";
 
 // Route-level code splitting keeps the initial (home) bundle small → better LCP.
@@ -14,7 +15,9 @@ const Faq = lazy(() => import("@/pages/Faq"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Admin = lazy(() => import("@/pages/admin/Admin"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
-import { Privacy, Terms, Refund } from "@/pages/Legal";
+const Privacy = lazy(() => import("@/pages/Legal").then((m) => ({ default: m.Privacy })));
+const Terms = lazy(() => import("@/pages/Legal").then((m) => ({ default: m.Terms })));
+const Refund = lazy(() => import("@/pages/Legal").then((m) => ({ default: m.Refund })));
 
 function Loader() {
   return (
@@ -26,6 +29,7 @@ function Loader() {
 
 export default function App() {
   return (
+    <ErrorBoundary>
     <Suspense fallback={<Loader />}>
       <Routes>
         {/* Console — standalone chrome */}
@@ -49,5 +53,6 @@ export default function App() {
         </Route>
       </Routes>
     </Suspense>
+    </ErrorBoundary>
   );
 }
