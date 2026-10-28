@@ -1,4 +1,13 @@
-# Lahza
+# Lahza · لحظة
+
+<p>
+  <img alt="React" src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=061a23&labelColor=eee" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white" />
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white" />
+  <img alt="PWA" src="https://img.shields.io/badge/PWA-installable-5A0FC8?logo=pwa&logoColor=white" />
+  <img alt="Bilingual" src="https://img.shields.io/badge/EN%20%2F%20AR-RTL%20ready-D3A85A" />
+</p>
 
 A premium, **UAE-ready bilingual (EN/AR) SaaS commerce platform** for
 personalised coffee gifts, live event coffee stations, and corporate
@@ -16,6 +25,12 @@ screen on Android/iOS).
 > for the full project map and how to deploy or split each project separately.
 
 > Mobile-first · conversion-focused · Arabic RTL-quality · UAE-compliance-ready.
+
+## Screenshots
+
+| Home | Smart Gift Finder |
+| --- | --- |
+| ![Lahza home page — hero, three customer paths, and the Gift Finder entry point](docs/screenshots/home.png) | ![Gift Finder result screen recommending a package](docs/screenshots/gift-finder.png) |
 
 ## Stack
 
@@ -43,6 +58,7 @@ npm run preview
 | Area | Where |
 | --- | --- |
 | Home + 3 above-the-fold paths (Personal · Corporate · Bulk) | `src/pages/Home.tsx`, `components/CustomerPaths.tsx` |
+| **Smart Gift Finder** — 2-question quiz that recommends a real package | `src/pages/GiftFinder.tsx` at `/gift-finder`, `lib/giftWizard.ts` |
 | Mobile header with hamburger | `components/Header.tsx` |
 | Non-overlapping WhatsApp FAB | `components/WhatsAppFab.tsx` (icon-only on mobile; `<main>` reserves bottom padding) |
 | Customisation flow (7 steps) | `src/pages/Customize.tsx`, `pages/customize/*` |
@@ -59,6 +75,26 @@ Upload → **image-quality validation** → live preview (cup/sleeve/box/card) �
 gift message (AR/EN) → package → delivery Emirate & date/time → review →
 pay online **or** request a WhatsApp payment link. Personalised-goods
 non-returnable notice + PDPL photo consent are enforced in-flow.
+
+### Smart Gift Finder (`src/pages/GiftFinder.tsx`, `lib/giftWizard.ts`)
+
+A short, interactive quiz at **`/gift-finder`** — linked from the home page,
+footer, and site navigation — that removes the guesswork of choosing between
+the three customer paths:
+
+1. **What are you planning?** — a personal gift, a live event station, or
+   gifts for a team/client list.
+2. A path-specific follow-up: *how should it feel* (personal), *about how
+   many guests* (event), or *about how many people* (bulk).
+3. A result screen with the matched package name, real price, and what's
+   included, plus a one-click CTA — straight into `/customize` with the
+   package pre-selected, or to the Corporate quote form.
+
+The recommendation logic (`lib/giftWizard.ts`) is a small, pure, deterministic
+function with no AI call and no invented pricing — every result only ever
+points at a package or tier already defined in `lib/catalog.ts`, the same
+source of truth used by `Pricing.tsx` and `Corporate.tsx`, so a recommendation
+can never promise something checkout can't honour.
 
 ### AI features (`src/lib/ai.ts`)
 
