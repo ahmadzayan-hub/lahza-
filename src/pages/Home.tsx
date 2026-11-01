@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Truck, ShieldCheck, Coffee } from "lucide-react";
+import { ArrowRight, Sparkles, Truck, ShieldCheck, Coffee, Wand2 } from "lucide-react";
 import { useI18n } from "@/i18n/I18nContext";
 import { Seo } from "@/components/Seo";
 import { Section, SectionHeader } from "@/components/Section";
@@ -78,6 +78,28 @@ export default function Home() {
         {/* Three customer paths — above the fold */}
         <div className="container-max pb-4">
           <CustomerPaths />
+        </div>
+
+        {/* Smart Gift Finder — a quick interactive route to the right path */}
+        <div className="container-max pb-10">
+          <Reveal>
+            <Link
+              to="/gift-finder"
+              className="group flex flex-col items-center gap-4 rounded-2xl border border-gold-500/30 bg-gradient-to-br from-gold-500/10 to-white p-5 text-center shadow-soft transition hover:-translate-y-0.5 hover:shadow-card sm:flex-row sm:text-start"
+            >
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gold-500/15">
+                <Wand2 className="h-6 w-6 text-gold-600" />
+              </span>
+              <span className="flex-1">
+                <span className="block font-serif text-lg font-bold text-coffee-900">{t("wizard.heading")}</span>
+                <span className="block text-sm text-coffee-600">{t("wizard.sub")}</span>
+              </span>
+              <span className="btn btn-outline shrink-0">
+                {t("wizard.cta")}
+                <ArrowRight className={`h-4 w-4 ${isRtl ? "rotate-180" : ""}`} />
+              </span>
+            </Link>
+          </Reveal>
         </div>
       </section>
 

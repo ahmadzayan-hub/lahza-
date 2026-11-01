@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, CheckCircle2, PartyPopper, MessageCircle } from "lucide-react";
 import { useI18n } from "@/i18n/I18nContext";
 import { Seo } from "@/components/Seo";
@@ -7,6 +7,7 @@ import { Stepper } from "@/components/Stepper";
 import { moderateImage } from "@/lib/ai";
 import { makeRef } from "@/lib/id";
 import { waLink } from "@/lib/whatsapp";
+import { GIFT_PACKAGES } from "@/lib/catalog";
 import { buildOrderMessage } from "./customize/orderMessage";
 import { INITIAL_DRAFT, STEP_KEYS, type OrderDraft } from "./customize/types";
 import {
@@ -32,8 +33,17 @@ function loadDraft(): OrderDraft {
 
 export default function Customize() {
   const { t, isRtl, lang } = useI18n();
+  const [searchParams] = useSearchParams();
   const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState<OrderDraft>(loadDraft);
+  const [draft, setDraft] = useState<OrderDraft>(() => {
+    const d = loadDraft();
+    // Coming from the Gift Finder with a recommended package? Pre-select it.
+    const fromWizard = searchParams.get("package");
+    if (!d.packageId && fromWizard && GIFT_PACKAGES.some((p) => p.id === fromWizard)) {
+      return { ...d, packageId: fromWizard };
+    }
+    return d;
+  });
   const [error, setError] = useState<string | null>(null);
   const [checking, setChecking] = useState(false);
   const [result, setResult] = useState<Result>(null);

@@ -16,6 +16,7 @@
 ## Pages
 - Home: https://lahza.ae/
 - Customise a gift: https://lahza.ae/customize
+- Gift Finder (interactive quiz that recommends the right package): https://lahza.ae/gift-finder
 - Corporate & events: https://lahza.ae/corporate
 - Pricing: https://lahza.ae/pricing
 - How it works: https://lahza.ae/how-it-works

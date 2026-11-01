@@ -6,6 +6,7 @@ import Home from "@/pages/Home";
 
 // Route-level code splitting keeps the initial (home) bundle small → better LCP.
 const Customize = lazy(() => import("@/pages/Customize"));
+const GiftFinder = lazy(() => import("@/pages/GiftFinder"));
 const Gallery = lazy(() => import("@/pages/Gallery"));
 const Corporate = lazy(() => import("@/pages/Corporate"));
 const Pricing = lazy(() => import("@/pages/Pricing"));
@@ -39,6 +40,7 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="/customize" element={<Customize />} />
+          <Route path="/gift-finder" element={<GiftFinder />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/corporate" element={<Corporate />} />
           <Route path="/pricing" element={<Pricing />} />
