@@ -46,6 +46,7 @@
 | 2026-11-01 | Add licence: all rights reserved | `55483f6` |
 | 2026-10-27 | ci: fix lockfile and add typecheck and build workflow (#4) | `57e8505` |
 | 2026-10-27 | feat: react-router 7, ErrorBoundary, WhatsAppFab, hero image (#3) | `e765a40` |
+| 2026-10-23 | Add Smart Gift Finder quiz and give the repo README a proper overhaul | `3a698a1` |
 | 2026-09-08 | Add Jekyll deployment workflow for GitHub Pages | `da12c17` |
 | 2026-09-08 | Add GitHub Actions workflow for GitHub Pages deployment | `8d67cec` |
 | 2026-08-07 | Add Beyond Style storefront as a second brand surface (PWA + SEO/AIO) (#60) | `7cd6545` |
@@ -67,7 +68,6 @@
 | 2026-07-14 | Agent-OS: interactive Skills/Tools, live Memory sync, deploy guide (#67) | `d79ad16` |
 | 2026-07-14 | Agentic OS: workspace structure (agent-os/) + Wisal desktop OS shell (#65) | `d8f1ff4` |
 | 2026-07-14 | Desktop custom icon + Windows download buttons on landing (#64) | `86f8d0c` |
-| 2026-07-13 | feat(media): fill every gallery tile & preview with real imagery (#63) | `156d37b` |
 
 > بيتولّد أوتوماتيك بواسطة `agent-os/memory/sync.js` — متعدّلش القسم ده بإيدك.
 
